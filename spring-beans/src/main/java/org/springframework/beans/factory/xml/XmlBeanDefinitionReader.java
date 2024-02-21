@@ -76,6 +76,7 @@ import org.springframework.util.xml.XmlValidationModeDetector;
  * @see org.springframework.beans.factory.support.DefaultListableBeanFactory
  * @see org.springframework.context.support.GenericApplicationContext
  */
+//Bean definition reader for XML bean definitions。
 public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**

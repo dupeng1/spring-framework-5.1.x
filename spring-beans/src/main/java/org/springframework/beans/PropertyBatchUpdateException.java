@@ -36,6 +36,7 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @since 18 April 2001
  */
+//组合异常，由多个的单个PropertyAccessException实例组成
 @SuppressWarnings("serial")
 public class PropertyBatchUpdateException extends BeansException {
 

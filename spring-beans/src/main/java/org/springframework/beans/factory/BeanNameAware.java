@@ -33,6 +33,7 @@ package org.springframework.beans.factory;
  * @see BeanFactoryAware
  * @see InitializingBean
  */
+//实现此接口的bean可以在一个bean factory中获取到它们的bean名称。但是需要注意的是，并不推荐一个通过一个bean name去定位bean，在外部配置中，这种对应关系并不严格对应。
 public interface BeanNameAware extends Aware {
 
 	/**

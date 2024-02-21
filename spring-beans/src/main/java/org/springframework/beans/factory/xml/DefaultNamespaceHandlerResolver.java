@@ -47,6 +47,7 @@ import org.springframework.util.CollectionUtils;
  * @see NamespaceHandler
  * @see DefaultBeanDefinitionDocumentReader
  */
+//NamespaceHandlerResolver接口的默认实现
 public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver {
 
 	/**

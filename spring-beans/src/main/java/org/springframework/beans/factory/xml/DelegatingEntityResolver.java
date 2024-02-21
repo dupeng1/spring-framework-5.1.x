@@ -36,6 +36,7 @@ import org.springframework.util.Assert;
  * @see BeansDtdResolver
  * @see PluggableSchemaResolver
  */
+//EntityResolver的实现，分别代理了dtd的BeansDtdResolver和xml schemas的 PluggableSchemaResolver
 public class DelegatingEntityResolver implements EntityResolver {
 
 	/** Suffix for DTD files. */

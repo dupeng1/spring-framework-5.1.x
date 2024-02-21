@@ -57,6 +57,8 @@ import org.springframework.util.StringUtils;
  * @see Qualifier
  * @see Value
  */
+//@qualifier的注解实现类
+//间接实现了AutowireCandidateResolver，对要自动绑定的field或者参数和bean definition根据@qualifier注解进行匹配。同时也支持通过@value注解来绑定表达式的值。
 public class QualifierAnnotationAutowireCandidateResolver extends GenericTypeAwareAutowireCandidateResolver {
 
 	private final Set<Class<? extends Annotation>> qualifierTypes = new LinkedHashSet<>(2);

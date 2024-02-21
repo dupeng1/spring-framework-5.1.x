@@ -27,6 +27,7 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @since 2.5
  */
+//bean definition定义中的属性-键值对（key-value）容器
 public class BeanMetadataAttribute implements BeanMetadataElement {
 
 	private final String name;

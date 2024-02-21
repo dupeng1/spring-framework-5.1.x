@@ -30,6 +30,7 @@ package org.springframework.beans;
  * @see PropertyEditorRegistry
  * @see java.beans.PropertyEditor
  */
+//用一个属性编辑器注册器（PropertyEditorRegistry）注册一个自定义的属性编辑器（PropertyEditor）的策略接口
 public interface PropertyEditorRegistrar {
 
 	/**

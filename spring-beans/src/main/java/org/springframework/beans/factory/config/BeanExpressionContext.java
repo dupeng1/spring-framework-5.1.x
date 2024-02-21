@@ -25,6 +25,7 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @since 3.0
  */
+//计算一个BeanDefinition内部的表达式的容器对象
 public class BeanExpressionContext {
 
 	private final ConfigurableBeanFactory beanFactory;

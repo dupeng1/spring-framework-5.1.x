@@ -45,6 +45,7 @@ import org.springframework.util.xml.XmlValidationModeDetector;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//spring 的DocumentLoader默认实现。
 public class DefaultDocumentLoader implements DocumentLoader {
 
 	/**

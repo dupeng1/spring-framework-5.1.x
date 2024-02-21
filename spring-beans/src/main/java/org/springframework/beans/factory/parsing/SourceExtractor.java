@@ -34,6 +34,7 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.BeanMetadataElement#getSource()
  * @see org.springframework.beans.factory.config.BeanDefinition
  */
+//简单策略接口，允许工具控制source元数据关联到bean definition元数据。
 @FunctionalInterface
 public interface SourceExtractor {
 

@@ -55,6 +55,7 @@ import org.springframework.util.StringUtils;
  * @since 1.1
  * @see #setStaticField
  */
+//检索静态或者非静态Field的值的工厂bean
 public class FieldRetrievingFactoryBean
 		implements FactoryBean<Object>, BeanNameAware, BeanClassLoaderAware, InitializingBean {
 

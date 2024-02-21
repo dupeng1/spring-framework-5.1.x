@@ -28,6 +28,7 @@ import org.springframework.beans.factory.BeanClassLoaderAware;
  * @since 2.5
  * @see java.util.ServiceLoader
  */
+//暴露指定配置服务类的JDK1.6 serviceLoader的FactoryBean
 public class ServiceLoaderFactoryBean extends AbstractServiceLoaderBasedFactoryBean implements BeanClassLoaderAware {
 
 	@Override

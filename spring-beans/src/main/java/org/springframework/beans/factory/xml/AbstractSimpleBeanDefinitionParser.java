@@ -105,6 +105,7 @@ import org.springframework.util.StringUtils;
  * @since 2.0
  * @see Conventions#attributeNameToPropertyName(String)
  */
+//AbstractBeanDefinitionParser的简单实现，当将要解析元素的属性名和配置类的属性名一一对应的时候，可以用到该类。
 public abstract class AbstractSimpleBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
 
 	/**

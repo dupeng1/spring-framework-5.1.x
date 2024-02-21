@@ -71,6 +71,7 @@ import org.springframework.util.StringUtils;
  * @see #clearClassLoader(ClassLoader)
  * @see #forClass(Class)
  */
+//内部类，在BeanWrapperImpl类中会用到，为这个类的javabean缓存属性描述信息，以提高效率，减小开销
 public final class CachedIntrospectionResults {
 
 	/**

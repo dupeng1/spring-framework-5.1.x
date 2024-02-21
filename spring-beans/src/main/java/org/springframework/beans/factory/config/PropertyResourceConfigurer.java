@@ -49,6 +49,7 @@ import org.springframework.util.ObjectUtils;
  * @see PropertyOverrideConfigurer
  * @see PropertyPlaceholderConfigurer
  */
+//支持从一个属性资源中对单个bean的属性值进行配置。
 public abstract class PropertyResourceConfigurer extends PropertiesLoaderSupport
 		implements BeanFactoryPostProcessor, PriorityOrdered {
 

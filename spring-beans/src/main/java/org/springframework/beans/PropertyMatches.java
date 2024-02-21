@@ -40,6 +40,8 @@ import org.springframework.util.StringUtils;
  * @see #forProperty(String, Class)
  * @see #forField(String, Class)
  */
+//根据一个可配置的距离计算一个属性的匹配度。可同时用于java bean的成员变量（fields）与属性（properties）。
+// 其核心函数calculateStringDistance，利用Levenshtein算法计算两个字符串的相似度。
 public abstract class PropertyMatches {
 
 	/** Default maximum property distance: 2. */

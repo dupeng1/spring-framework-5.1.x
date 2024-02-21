@@ -42,6 +42,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//ReaderContext的扩展，一般和XmlBeanDefinitionReader一起使用。
 public class XmlReaderContext extends ReaderContext {
 
 	private final XmlBeanDefinitionReader reader;

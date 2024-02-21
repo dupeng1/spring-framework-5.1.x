@@ -38,6 +38,7 @@ import org.springframework.beans.BeansException;
  * @see InitializingBean
  * @see org.springframework.context.ApplicationContextAware
  */
+//实现此接口的bean可以获取到它们自己的Beanfactory。比如，bean可以通过factory寻找一些具有协作关系的beans
 public interface BeanFactoryAware extends Aware {
 
 	/**

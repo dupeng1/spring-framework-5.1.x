@@ -34,6 +34,7 @@ import org.springframework.lang.Nullable;
  * @see BeanWrapper
  * @see org.springframework.validation.DataBinder
  */
+//属性编辑器注册器。封装了JavaBean属性编辑器的注册方法。主要函数为void registerCustomEditor()。
 public interface PropertyEditorRegistry {
 
 	/**

@@ -24,6 +24,7 @@ import java.security.AccessControlContext;
  * @author Costin Leau
  * @since 3.0
  */
+//运行在beanFactory中的安全Context的提供者
 public interface SecurityContextProvider {
 
 	/**

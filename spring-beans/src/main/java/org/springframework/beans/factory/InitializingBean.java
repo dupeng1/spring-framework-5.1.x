@@ -31,6 +31,7 @@ package org.springframework.beans.factory;
  * @see org.springframework.beans.factory.config.BeanDefinition#getPropertyValues()
  * @see org.springframework.beans.factory.support.AbstractBeanDefinition#getInitMethodName()
  */
+//实现此接口的bean在BeanFactory设置为它们的属性时只需要执行一次，例如：初始化定制或者仅仅检查必须存在的属性是否已经设置完成等等。
 public interface InitializingBean {
 
 	/**

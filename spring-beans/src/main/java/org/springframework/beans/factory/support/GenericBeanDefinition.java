@@ -37,6 +37,12 @@ import org.springframework.util.ObjectUtils;
  * @see RootBeanDefinition
  * @see ChildBeanDefinition
  */
+/**
+ * 通用BeanDefinition是一站式的标准bean Definition
+ * 1、除了具有指定类、可选的构造参数值、属性参数这些其他bean definition一样的特性外，它还具有通过parenetName属性来灵活设置parent bean definition
+ * 2、通常GenericBeanDefinition用来注册用户可见的bean definition（可见的bean definition意味着可以在该类bean definition上定义post-processor来对bean进行操作
+ * ，甚至为配置parent name做拓展准备）
+ */
 @SuppressWarnings("serial")
 public class GenericBeanDefinition extends AbstractBeanDefinition {
 

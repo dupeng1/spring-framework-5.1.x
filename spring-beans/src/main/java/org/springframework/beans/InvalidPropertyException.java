@@ -25,6 +25,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 1.0.2
  */
+//遇到非法的bean property时异常类
 @SuppressWarnings("serial")
 public class InvalidPropertyException extends FatalBeanException {
 

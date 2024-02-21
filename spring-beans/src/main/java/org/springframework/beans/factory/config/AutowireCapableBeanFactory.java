@@ -59,6 +59,9 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.factory.config.ConfigurableListableBeanFactory
  * @see org.springframework.context.ApplicationContext#getAutowireCapableBeanFactory()
  */
+//beanFactory的扩展接口，实现了自动绑定功能。
+// 这个接口的两个主要方法是：autowire：使用给定的自动绑定策略，来给一个类的新实例进行初始化。
+// autowireBeanProperties使用名称或者类型来自动绑定给定bean实例的属性
 public interface AutowireCapableBeanFactory extends BeanFactory {
 
 	/**

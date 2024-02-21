@@ -45,6 +45,7 @@ import org.springframework.util.ReflectionUtils;
  * @see org.springframework.validation.DirectFieldBindingResult
  * @see org.springframework.validation.DataBinder#initDirectFieldAccess()
  */
+//ConfigurablePropertyAccessor接口的实现类，用来直接获取实例的字段（field）。
 public class DirectFieldAccessor extends AbstractNestablePropertyAccessor {
 
 	private final Map<String, FieldPropertyHandler> fieldMap = new HashMap<>();

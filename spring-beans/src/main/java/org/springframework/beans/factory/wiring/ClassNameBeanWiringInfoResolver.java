@@ -29,6 +29,7 @@ import org.springframework.util.ClassUtils;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//BeanWiringInfoResolver的简单默认实现，查找一个和全限定名同名的bean的名称
 public class ClassNameBeanWiringInfoResolver implements BeanWiringInfoResolver {
 
 	@Override

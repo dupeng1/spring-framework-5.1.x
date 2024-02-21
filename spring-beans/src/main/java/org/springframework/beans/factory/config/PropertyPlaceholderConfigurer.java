@@ -56,6 +56,7 @@ import org.springframework.util.StringValueResolver;
  * @see PropertyOverrideConfigurer
  * @see org.springframework.context.support.PropertySourcesPlaceholderConfigurer
  */
+//PlaceholderConfigurerSupport的子类，它解析本地属性或者系统属性或者环境变量定义的占位符（以${}描述）。
 public class PropertyPlaceholderConfigurer extends PlaceholderConfigurerSupport {
 
 	/** Never check system properties. */

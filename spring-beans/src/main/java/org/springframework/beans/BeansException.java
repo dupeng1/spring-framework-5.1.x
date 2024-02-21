@@ -29,6 +29,7 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+//在beans包和子包中所抛出的所有异常的抽象超类。
 @SuppressWarnings("serial")
 public abstract class BeansException extends NestedRuntimeException {
 

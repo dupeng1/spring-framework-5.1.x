@@ -41,6 +41,9 @@ package org.springframework.beans.factory;
  * @since 4.1
  * @see org.springframework.beans.factory.config.ConfigurableListableBeanFactory#preInstantiateSingletons()
  */
+//回调接口，当一个bean工厂创建时，单例singleton实例化阶段结束时被触发。一些单例模式的bean可以实现此接口，
+// 在单例实例做完一些规律性、常做的初始化可以用来做一些初始化工作。以避免突发的Early initialization产生的负面效果。
+//比如ListableBeanFactory中的getBeansOfType函数调用
 public interface SmartInitializingSingleton {
 
 	/**

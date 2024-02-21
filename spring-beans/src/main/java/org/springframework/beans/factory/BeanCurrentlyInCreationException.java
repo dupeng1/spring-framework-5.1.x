@@ -23,6 +23,7 @@ package org.springframework.beans.factory;
  * @author Juergen Hoeller
  * @since 1.1
  */
+//一个bean的引用当前正在创建过程中抛出的异常。
 @SuppressWarnings("serial")
 public class BeanCurrentlyInCreationException extends BeanCreationException {
 

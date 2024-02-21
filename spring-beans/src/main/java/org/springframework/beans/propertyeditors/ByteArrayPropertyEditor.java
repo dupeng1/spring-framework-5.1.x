@@ -28,6 +28,8 @@ import org.springframework.lang.Nullable;
  * @since 1.0.1
  * @see java.lang.String#getBytes
  */
+//　属性编辑器，用来将string类型的值转换成object类型的。他们都继承自PropertyEditorSupport，这个类可以用于自定义的类型转换，
+// 继承后重写了public void setAsText()，public String getAsText() 两个方法
 public class ByteArrayPropertyEditor extends PropertyEditorSupport {
 
 	@Override

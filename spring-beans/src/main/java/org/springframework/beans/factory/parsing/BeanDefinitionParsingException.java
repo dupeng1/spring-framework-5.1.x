@@ -26,6 +26,7 @@ import org.springframework.beans.factory.BeanDefinitionStoreException;
  * @author Rob Harrop
  * @since 2.0
  */
+//一个bean definition验证失败时抛出异常的异常类
 @SuppressWarnings("serial")
 public class BeanDefinitionParsingException extends BeanDefinitionStoreException {
 

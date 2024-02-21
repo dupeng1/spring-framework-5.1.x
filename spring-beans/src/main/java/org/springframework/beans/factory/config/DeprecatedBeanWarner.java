@@ -30,6 +30,7 @@ import org.springframework.util.StringUtils;
  * @author Arjen Poutsma
  * @since 3.0.3
  */
+//继承自BeanFactoryPostProcessor，记录@Deprecated bean的报警信息
 public class DeprecatedBeanWarner implements BeanFactoryPostProcessor {
 
 	/**

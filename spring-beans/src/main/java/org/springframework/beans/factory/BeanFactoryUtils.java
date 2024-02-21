@@ -44,6 +44,8 @@ import org.springframework.util.StringUtils;
  * @author Chris Beams
  * @since 04.07.2003
  */
+//beanFactory上的操作方法工具类，特别是在ListableBeanFactory接口上。
+// 包括返回bean的个数，bean的名字，bean实例等，考虑到了一些具有嵌套关系的hierarchy factory，而如果这些方法在ListableBeanFactory中不需要考虑这些。
 public abstract class BeanFactoryUtils {
 
 	/**

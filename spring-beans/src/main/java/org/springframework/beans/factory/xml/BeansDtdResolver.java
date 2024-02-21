@@ -42,6 +42,7 @@ import org.springframework.lang.Nullable;
  * @since 04.06.2003
  * @see ResourceEntityResolver
  */
+//spring bean dtd解析器EntityResolver的实现，用来从classpath或者jar文件加载dtd
 public class BeansDtdResolver implements EntityResolver {
 
 	private static final String DTD_EXTENSION = ".dtd";

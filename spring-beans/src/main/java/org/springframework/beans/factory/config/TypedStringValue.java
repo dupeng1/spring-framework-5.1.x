@@ -35,6 +35,7 @@ import org.springframework.util.ObjectUtils;
  * @see BeanDefinition#getPropertyValues
  * @see org.springframework.beans.MutablePropertyValues#addPropertyValue
  */
+//保存一个类型的属性值
 public class TypedStringValue implements BeanMetadataElement {
 
 	@Nullable

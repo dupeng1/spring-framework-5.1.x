@@ -40,6 +40,7 @@ import org.springframework.util.StringUtils;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//工具命名空间的NamespaceHandler
 public class UtilNamespaceHandler extends NamespaceHandlerSupport {
 
 	private static final String SCOPE_ATTRIBUTE = "scope";

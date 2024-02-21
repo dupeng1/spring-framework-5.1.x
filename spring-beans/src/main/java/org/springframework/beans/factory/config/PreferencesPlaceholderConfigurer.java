@@ -43,6 +43,7 @@ import org.springframework.lang.Nullable;
  * @see #setUserTreePath
  * @see java.util.prefs.Preferences
  */
+//PropertyPlaceholderConfigurer的子类，支持JDK1.4中的Preferences API （java.util.prefs）
 public class PreferencesPlaceholderConfigurer extends PropertyPlaceholderConfigurer implements InitializingBean {
 
 	@Nullable

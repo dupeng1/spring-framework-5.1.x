@@ -33,6 +33,7 @@ import org.springframework.lang.Nullable;
  * @since 27.05.2003
  * @param <E> the element type
  */
+//集合类，用来保存它所管理的List元素，它可以包含运行时期的bean引用（将被解析为bean对象）
 @SuppressWarnings("serial")
 public class ManagedList<E> extends ArrayList<E> implements Mergeable, BeanMetadataElement {
 

@@ -37,6 +37,7 @@ import org.springframework.lang.Nullable;
  * @see BeanInfoFactory
  * @see CachedIntrospectionResults
  */
+//用来评估bean的class是否有不满足JabaBean规范的set方法
 public class ExtendedBeanInfoFactory implements BeanInfoFactory, Ordered {
 
 	/**

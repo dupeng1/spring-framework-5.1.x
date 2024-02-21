@@ -89,6 +89,7 @@ import org.springframework.util.ClassUtils;
  * @see java.beans.PropertyEditorSupport#setAsText
  * @see java.beans.PropertyEditorSupport#setValue
  */
+//PropertyEditorRegistry接口的基本实现类。主要作为BeanWrapperImpl父类使用
 public class PropertyEditorRegistrySupport implements PropertyEditorRegistry {
 
 	@Nullable

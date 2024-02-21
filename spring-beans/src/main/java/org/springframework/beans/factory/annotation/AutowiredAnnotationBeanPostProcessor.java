@@ -115,6 +115,9 @@ import org.springframework.util.StringUtils;
  * @see Autowired
  * @see Value
  */
+//@Autowired注解实现类
+//实现了BeanPostProcessor接口，它自动绑定注解的field，setter方法和任意配置方法。AutowiredAnnotationBeanPostProcessor
+// 间接继承了BeanPostProcessor，它自动绑定注解的field，setter方法和任意的配置方法。当检测到5个java注解时这些成员被注入其中
 public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBeanPostProcessorAdapter
 		implements MergedBeanDefinitionPostProcessor, PriorityOrdered, BeanFactoryAware {
 
@@ -228,7 +231,11 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 
 	@Override
 	public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
+		//寻找bean中所有被@Autowired @value方法method或属性field，并将属性封装成InjectedElement类型
+		//找出所有需要完成注入的点，@Autowired @value注解方法或者属性
 		InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);
+		//injectedElements做了一个复制
+		//且把将Field或Method记录到BeanDefinition中的externallyManagedConfigMembers中，表示该Field或Method是BeanFactory外部管理的
 		metadata.checkConfigMembers(beanDefinition);
 	}
 
@@ -369,10 +376,13 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 		return (candidateConstructors.length > 0 ? candidateConstructors : null);
 	}
 
+	//把缓存中已经被解析的@Autowired、@Value、@Resource的属性和方法拿出来，属性赋值进bean实例中
 	@Override
 	public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) {
+		//再次调用findAutowiringMetadata方法，此时为第二次调用将会直接从this.injectionMetadataCache中获取Bean所需要的依赖注入Bean
 		InjectionMetadata metadata = findAutowiringMetadata(beanName, bean.getClass(), pvs);
 		try {
+			//执行Bean配置的注解依赖注入
 			metadata.inject(bean, beanName, pvs);
 		}
 		catch (BeanCreationException ex) {
@@ -416,9 +426,14 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 
 	private InjectionMetadata findAutowiringMetadata(String beanName, Class<?> clazz, @Nullable PropertyValues pvs) {
 		// Fall back to class name as cache key, for backwards compatibility with custom callers.
+		//获取缓存的key值，一般以beanName为key
 		String cacheKey = (StringUtils.hasLength(beanName) ? beanName : clazz.getName());
 		// Quick check on the concurrent map first, with minimal locking.
+		// 从缓存中获取metadata，第一次执行到这里，肯定没有，继续往下解析
+		//当第二次调用的时候，将会是待处理Bean实例化完成开始组装的时候，通过这里将会直接获取到想要依赖注入的Bean的信息
+		//这里获取的缓存就是下面this.injectionMetadataCache.put(cacheKey, metadata)添加的
 		InjectionMetadata metadata = this.injectionMetadataCache.get(cacheKey);
+		//判断当前Bean是否需要依赖注入元数据解析
 		if (InjectionMetadata.needsRefresh(metadata, clazz)) {
 			synchronized (this.injectionMetadataCache) {
 				metadata = this.injectionMetadataCache.get(cacheKey);
@@ -426,7 +441,9 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 					if (metadata != null) {
 						metadata.clear(pvs);
 					}
+					//通过clazz类，查找所有@Autowired的属性或者方法，并封装成InjectionMetadata类型
 					metadata = buildAutowiringMetadata(clazz);
+					//将metadata加入缓存
 					this.injectionMetadataCache.put(cacheKey, metadata);
 				}
 			}

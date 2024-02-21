@@ -42,6 +42,7 @@ import org.springframework.util.ClassUtils;
  * @author Juergen Hoeller
  * @since 4.0
  */
+//继承自SimpleAutowireCandidateResolver，一个通用的AutowireCandidateResolver
 public class GenericTypeAwareAutowireCandidateResolver extends SimpleAutowireCandidateResolver
 		implements BeanFactoryAware {
 

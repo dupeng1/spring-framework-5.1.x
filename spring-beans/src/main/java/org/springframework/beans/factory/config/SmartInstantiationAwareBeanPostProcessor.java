@@ -35,6 +35,7 @@ import org.springframework.lang.Nullable;
  * @since 2.0.3
  * @see InstantiationAwareBeanPostProcessorAdapter
  */
+//InstantiationAwareBeanPostProcessor的扩展接口，它增加了对一个处理过bean的最终类型进行预测的回调方法。
 public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationAwareBeanPostProcessor {
 
 	/**
@@ -59,6 +60,8 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 	 * @return the candidate constructors, or {@code null} if none specified
 	 * @throws org.springframework.beans.BeansException in case of errors
 	 */
+	//第二次扩展后置处理器的方法
+	//选举出合适的构造函数对象
 	@Nullable
 	default Constructor<?>[] determineCandidateConstructors(Class<?> beanClass, String beanName)
 			throws BeansException {
@@ -87,6 +90,9 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 	 * (typically with the passed-in bean instance as default)
 	 * @throws org.springframework.beans.BeansException in case of errors
 	 */
+	//第四次扩展后置处理器的方法
+	//大名鼎鼎的依赖注入就是在这里实现第一步的，他提前曝光了一个工厂对象，是一个三级缓存来的(singletonFactories)，
+	// 用于创建beanName所对应的Bean对象。这个bean是前面实例化后，还未到属性赋值阶段的
 	default Object getEarlyBeanReference(Object bean, String beanName) throws BeansException {
 		return bean;
 	}

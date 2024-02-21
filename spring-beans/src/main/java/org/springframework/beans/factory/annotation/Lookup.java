@@ -53,6 +53,9 @@ import java.lang.annotation.Target;
  * @see org.springframework.beans.factory.BeanFactory#getBean(Class, Object...)
  * @see org.springframework.beans.factory.BeanFactory#getBean(String, Object...)
  */
+//@Lookup的注解，这是一个作用在方法上的注解，被其标注的方法会被重写，然后根据其返回值的类型，容器调用BeanFactory的getBean()方法来返回一个bean。
+//比如：如果有一个类C，需要用到类B，如果使用@Autowired注解注入B，那么B每次调用都是同一个对象，
+// 即使B不是单例的，现在我希望每次调用B都是不一样的，那么实现方案有2个：方案A : 每次从容器中获取B；方案B: 使用@lookup注解。
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

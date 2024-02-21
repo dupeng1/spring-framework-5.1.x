@@ -27,6 +27,7 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+//获取属性相关的异常超类，例如类型不匹配或者目标调用异常
 @SuppressWarnings("serial")
 public abstract class PropertyAccessException extends BeansException {
 

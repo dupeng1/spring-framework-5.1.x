@@ -46,6 +46,7 @@ import org.springframework.lang.Nullable;
  * @see DefaultBeanDefinitionDocumentReader
  * @see NamespaceHandlerResolver
  */
+//实现了特定的URI命名空间。
 public interface NamespaceHandler {
 
 	/**

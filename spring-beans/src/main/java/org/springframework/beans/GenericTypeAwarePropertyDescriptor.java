@@ -41,6 +41,7 @@ import org.springframework.util.StringUtils;
  * @author Juergen Hoeller
  * @since 2.5.2
  */
+//JavaBeans的PropertyDescriptor类的拓展，重载了getPropertyType函数
 final class GenericTypeAwarePropertyDescriptor extends PropertyDescriptor {
 
 	private final Class<?> beanClass;

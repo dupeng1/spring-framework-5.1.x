@@ -52,6 +52,7 @@ import org.springframework.util.StringUtils;
  * @see BeanWrapperImpl
  * @see SimpleTypeConverter
  */
+//内部用的类，用来将属性值转换为目标类型的值
 class TypeConverterDelegate {
 
 	private static final Log logger = LogFactory.getLog(TypeConverterDelegate.class);

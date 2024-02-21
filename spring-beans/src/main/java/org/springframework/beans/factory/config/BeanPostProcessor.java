@@ -40,6 +40,12 @@ import org.springframework.lang.Nullable;
  * @see ConfigurableBeanFactory#addBeanPostProcessor
  * @see BeanFactoryPostProcessor
  */
+//1、Bean后置处理器，在Spring容器的创建过程中（具体为Bean初始化前后）会回调BeanPostProcessor中定义的方法
+//2、执行原理：BeanPostProcessor的执行是定义在容器的刷新过程中，容器刷新对象具体的方法为：AbstractApplicationContext.refresh()。
+//在refresh方法执行的调用栈中会去调用AbstractAutowireCapableBeanFactory.doCreateBean()方法
+//3、允许对一个新的bean实例进行定制修改的工厂钩子，在工厂创建完这个对象之后，对这个对象进行再加工。
+//4、在调用构造方法并且注入属性后，把对象交给BeanPostProcessor，执行postProcessBeforeInitialization对对象加工
+//5、加工后返回给Spring，由Spring对对象进行初始化操作，初始化之后由Spring交给postProcessAfterInitialization进行再次加工，最后将对象给客户
 public interface BeanPostProcessor {
 
 	/**
@@ -55,6 +61,7 @@ public interface BeanPostProcessor {
 	 * @throws org.springframework.beans.BeansException in case of errors
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet
 	 */
+	//在bean初始化之前调用，相当于把bean注入spring上下文之前
 	@Nullable
 	default Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		return bean;
@@ -81,6 +88,7 @@ public interface BeanPostProcessor {
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet
 	 * @see org.springframework.beans.factory.FactoryBean
 	 */
+	//在bean初始化之后调用，相当于把bean注入spring上下文之后
 	@Nullable
 	default Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		return bean;

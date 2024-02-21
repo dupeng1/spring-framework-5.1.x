@@ -43,6 +43,7 @@ import org.springframework.lang.Nullable;
  * @see #setLocalOverride
  * @see java.util.Properties
  */
+//它支持从classpath位置的文件中读取属性实例的工厂bean
 public class PropertiesFactoryBean extends PropertiesLoaderSupport
 		implements FactoryBean<Properties>, InitializingBean {
 

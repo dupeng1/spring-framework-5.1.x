@@ -56,6 +56,7 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.aop.framework.ProxyFactoryBean
  * @see org.springframework.jndi.JndiObjectFactoryBean
  */
+//实现了此接口的bean不能看做一个通常意义上的bean，一个FactoryBean虽然以bean的形式来定义，但它暴露的对象通常是它创建的对象，而不是作为一个bean实例暴露自己。
 public interface FactoryBean<T> {
 
 	/**

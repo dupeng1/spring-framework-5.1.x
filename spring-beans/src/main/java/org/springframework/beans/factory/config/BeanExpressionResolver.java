@@ -31,6 +31,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 3.0
  */
+//通过计算一个表达式来解析为值的策略接口
 public interface BeanExpressionResolver {
 
 	/**

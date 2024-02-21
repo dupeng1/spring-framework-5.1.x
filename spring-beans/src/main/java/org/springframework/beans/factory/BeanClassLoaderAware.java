@@ -35,6 +35,7 @@ package org.springframework.beans.factory;
  * @see BeanFactoryAware
  * @see InitializingBean
  */
+//允许一个获取它的classLoader(即当前bean factory加载bean类使用的class loader)的回调类，实现了void setBeanClassLoader(ClassLoader classLoader)。
 public interface BeanClassLoaderAware extends Aware {
 
 	/**

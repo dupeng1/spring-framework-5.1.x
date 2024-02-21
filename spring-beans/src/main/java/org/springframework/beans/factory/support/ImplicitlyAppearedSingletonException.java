@@ -24,6 +24,7 @@ package org.springframework.beans.factory.support;
  * @author Juergen Hoeller
  * @since 5.0
  */
+//继承自IllegalStateException，一个内部使用的异常类，在ConstructorResolver引发，传递给初始化DefaultSingletonBeanRegistry
 @SuppressWarnings("serial")
 class ImplicitlyAppearedSingletonException extends IllegalStateException {
 

@@ -32,6 +32,7 @@ import org.springframework.util.Assert;
  * @see org.springframework.beans.factory.config.AutowireCapableBeanFactory
  * @see org.springframework.beans.factory.annotation.Configurable
  */
+//保存特定类的bean的绑定元数据信息。在对注解和切面进行连接时使用
 public class BeanWiringInfo {
 
 	/**

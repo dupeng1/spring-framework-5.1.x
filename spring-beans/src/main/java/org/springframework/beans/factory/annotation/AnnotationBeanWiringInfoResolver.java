@@ -35,6 +35,10 @@ import org.springframework.util.ClassUtils;
  * @see Configurable
  * @see org.springframework.beans.factory.wiring.ClassNameBeanWiringInfoResolver
  */
+//@configurable注解实现
+//继承自BeanWiringInfoResolver，使用configurable的注解来查找哪些类需要自动绑定
+//设置 @Configurable 注解中的autowire属性就可以让Spring来自动装配
+//@Configurable(autowire= Autowire.BY_TYPE) 或者 @Configurable(autowire=Autowire.BY_NAME，这样就可以按类型或者按名字自动装配了
 public class AnnotationBeanWiringInfoResolver implements BeanWiringInfoResolver {
 
 	@Override

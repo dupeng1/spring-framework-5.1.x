@@ -28,6 +28,7 @@ import org.springframework.util.Assert;
  * @see BeanDefinition#getPropertyValues()
  * @see org.springframework.beans.factory.BeanFactory#getBean(String)
  */
+//固定占位符类，当在beanfactory中作为另外一个bean的引用时，作为属性值对象，将在运行时进行解析
 public class RuntimeBeanReference implements BeanReference {
 
 	private final String beanName;

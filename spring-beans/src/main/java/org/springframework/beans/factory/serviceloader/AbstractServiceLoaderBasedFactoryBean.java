@@ -32,6 +32,7 @@ import org.springframework.util.ClassUtils;
  * @since 2.5
  * @see java.util.ServiceLoader
  */
+//FactoryBean的抽象基类，它是操作JDK1.6 ServiceLoader的基础工具
 public abstract class AbstractServiceLoaderBasedFactoryBean extends AbstractFactoryBean<Object>
 		implements BeanClassLoaderAware {
 

@@ -29,6 +29,7 @@ import org.springframework.util.StringUtils;
  * @since 26.05.2003
  * @see #setToggleAscendingOnProperty
  */
+//SortDefinition接口的可变实现。支持在对同一个属性值进行设置的时候可以利用升序排列的值进行切换
 @SuppressWarnings("serial")
 public class MutableSortDefinition implements SortDefinition, Serializable {
 

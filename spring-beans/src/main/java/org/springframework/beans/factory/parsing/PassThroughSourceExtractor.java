@@ -33,6 +33,7 @@ import org.springframework.lang.Nullable;
  * @author Rob Harrop
  * @since 2.0
  */
+//SourceExtractor的简单实现，它通过一个attachment来传递备选的源数据类型对象
 public class PassThroughSourceExtractor implements SourceExtractor {
 
 	/**

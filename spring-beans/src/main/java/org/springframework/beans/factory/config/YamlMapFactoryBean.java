@@ -70,6 +70,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 4.1
  */
+//为读取YAML源文件的Map的工厂，保持YAML声明的值类型和结构的原样
 public class YamlMapFactoryBean extends YamlProcessor implements FactoryBean<Map<String, Object>>, InitializingBean {
 
 	private boolean singleton = true;

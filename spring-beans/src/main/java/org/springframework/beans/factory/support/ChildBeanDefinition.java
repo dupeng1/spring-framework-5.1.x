@@ -43,6 +43,11 @@ import org.springframework.util.ObjectUtils;
  * @see GenericBeanDefinition
  * @see RootBeanDefinition
  */
+//从父类继承各种设置的bean的beanDefinition
+//它可以继承它父类的设置，即ChildBeanDefinition对RootBeanDefinition有一定的依赖关系，
+// ChildBeanDefinition从父类继承构造函数参数值、属性值，并可以重写父类的方法，同时也可以增加新的属性或则方法，
+// 若指定初始化方法、销毁方法、静态工厂方法，ChildBeanDefinition将重写相应父类的设置
+// depends on、 autowire mode、dependency check、singleton、lazy int一般由子类自行设定
 @SuppressWarnings("serial")
 public class ChildBeanDefinition extends AbstractBeanDefinition {
 

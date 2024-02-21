@@ -74,6 +74,7 @@ import org.springframework.beans.factory.config.BeanReference;
  * @see BeanComponentDefinition
  * @see ReaderEventListener#componentRegistered(ComponentDefinition)
  */
+//描述在同一配置的Context中一组BeanDefinition和BeanReference的逻辑视图的接口
 public interface ComponentDefinition extends BeanMetadataElement {
 
 	/**

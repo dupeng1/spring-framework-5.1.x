@@ -33,6 +33,7 @@ import org.springframework.lang.Nullable;
  * @param <K> the key type
  * @param <V> the value type
  */
+//集合类，用来保存它所管理的array值，它可以包含运行时期的bean引用（将被解析为bean对象）
 @SuppressWarnings("serial")
 public class ManagedMap<K, V> extends LinkedHashMap<K, V> implements Mergeable, BeanMetadataElement {
 

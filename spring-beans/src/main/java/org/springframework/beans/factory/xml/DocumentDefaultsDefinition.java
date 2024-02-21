@@ -27,6 +27,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0.2
  */
+//简单的javaBean，它保存标准的spring xml文件中级别的属性，如：default-lazy-init，default-autowire等等
 public class DocumentDefaultsDefinition implements DefaultsDefinition {
 
 	@Nullable

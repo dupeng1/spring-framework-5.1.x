@@ -37,6 +37,21 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.factory.support.RootBeanDefinition
  * @see org.springframework.beans.factory.support.ChildBeanDefinition
  */
+
+/**
+ * 1、一个bean实例的描述，它含有属性值、构造参数值。它的实现子类还提供更多的信息。
+ * bean的定义BeanDefinition，包装BeanWrapper是java bean的基础。
+ * 可以这么说，是spring的基石，再怎么强调它的重要性都不为过
+ * 2、BeanDefinition 作用：一个BeanDefinition描述了一个bean的实例，包括属性值，构造方法参数值和继承自它的类的更多信息。
+ * BeanDefinition仅仅是一个最简单的接口，主要功能是允许BeanFactoryPostProcessor，例如PropertyPlaceHolderConfigure
+ * （PropertyPlaceholderConfigurer是BeanFactoryPostProcessor的一个重要实现）能够检索并修改属性值和别的bean的元数据
+ * 3、BeanDefinition的继承关系：（1）父接口：AttributeAccessor、BeanMetadataElement。
+ * 其中，AttributeAccessor接口定义了最基本的对任意对象的元数据的修改或者获取，
+ * BeanMetadataElement接口提供了一个getResource()方法，用来传输一个可配置的源对象。
+ * （2）子接口：AnnotatedBeanDefinition。
+ * （3）子类: AbstractBeanDefinition、AnnotatedGenericBeanDefinition、ChildBeanDefinition、
+ * GenericBeanDefinition、RootBeanDefinition、ScannedGenericBeanDefinition。
+ */
 public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
@@ -92,7 +107,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	/**
 	 * Return the name of the parent definition of this bean definition, if any.
 	 */
-	//获取父Bean
+	//子类bean定义它所引用的父类bean，子类bean会继承父类bean的所有属性，子类bean也可以覆盖父类bean的属性
 	@Nullable
 	String getParentName();
 
@@ -144,7 +159,8 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * <p>If {@code false}, the bean will get instantiated on startup by bean
 	 * factories that perform eager initialization of singletons.
 	 */
-	//设置是否懒加载，是否启动初始化
+	//设置是否懒加载，用来定义这个bean是否实现延迟初始化，
+	// 如果为true，它将在BeanFactory启动时初始化所有的SingletonBean，如果为false，它只在bean请求时才开始创建SingletonBean
 	void setLazyInit(boolean lazyInit);
 
 	/**
@@ -158,7 +174,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Set the names of the beans that this bean depends on being initialized.
 	 * The bean factory will guarantee that these beans get initialized first.
 	 */
-	//设置该Bean依赖的所有Bean
+	//这个Bean在初始化时依赖的对象，这个对象会在这个Bean初始化之前创建
 	void setDependsOn(@Nullable String... dependsOn);
 
 	/**
@@ -204,7 +220,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * This the name of the bean to call the specified factory method on.
 	 * @see #setFactoryMethodName
 	 */
-	//如果该Bean采用工厂方法生成，指定工厂名称，有些实例不是反射生成的，而是用工厂模式生成的
+	//定义创建该bean对象的工厂类，如果该Bean采用工厂方法生成，指定工厂名称，有些实例不是反射生成的，而是用工厂模式生成的
 	void setFactoryBeanName(@Nullable String factoryBeanName);
 
 	/**
@@ -268,6 +284,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Set the name of the initializer method.
 	 * @since 5.1
 	 */
+	//用来定义bean的初始化方法，它会在bean组装之后调用，它必须是一个无参数的方法
 	void setInitMethodName(@Nullable String initMethodName);
 
 	/**
@@ -281,6 +298,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Set the name of the destroy method.
 	 * @since 5.1
 	 */
+	//用来定义bean的销毁方法，它在BeanFactory关闭时调用，它必须是一个无参数的方法
 	void setDestroyMethodName(@Nullable String destroyMethodName);
 
 	/**
@@ -344,6 +362,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	/**
 	 * Return whether this bean is "abstract", that is, not meant to be instantiated.
 	 */
+	//用来定义bean是否为抽象bean，它表示一个bean将不会被实例化，一般用于父类bean，因为父类bean主要是供子类继承使用
 	boolean isAbstract();
 
 	/**

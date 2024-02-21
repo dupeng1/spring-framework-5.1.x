@@ -78,6 +78,7 @@ import java.lang.annotation.Target;
  * @see Qualifier
  * @see Value
  */
+//按类型自动装配，用于替代基于XML配置的自动装配。基于@Autowired的自动装配，默认是根据类型注入，可以对成员变量、方法和构造函数进行标注，来完成自动装配的工作
 @Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

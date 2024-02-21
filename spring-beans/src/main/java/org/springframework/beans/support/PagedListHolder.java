@@ -50,6 +50,7 @@ import org.springframework.util.Assert;
  * @see #getPageList()
  * @see org.springframework.beans.support.MutableSortDefinition
  */
+//PagedListHolder是一个简单的状态保持，它处理一组对象，将它们分页。分页的起始页从0开始。主要用在web网站的用户界面上
 @SuppressWarnings("serial")
 public class PagedListHolder<E> implements Serializable {
 

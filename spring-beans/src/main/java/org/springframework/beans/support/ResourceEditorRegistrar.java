@@ -58,6 +58,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
  * @author Chris Beams
  * @since 2.0
  */
+//继承了PropertyEditorRegistrar，使用资源编辑器来填充指定的PropertyEditorRegistry
 public class ResourceEditorRegistrar implements PropertyEditorRegistrar {
 
 	private final PropertyResolver propertyResolver;

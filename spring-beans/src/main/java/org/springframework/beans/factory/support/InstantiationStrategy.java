@@ -33,6 +33,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 1.1
  */
+//负责根据相应的根bean definition创建实例的接口
 public interface InstantiationStrategy {
 
 	/**

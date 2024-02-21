@@ -31,6 +31,8 @@ import org.springframework.lang.Nullable;
  * @since 07.07.2003
  * @see org.springframework.beans.factory.config.ConfigurableBeanFactory#setParentBeanFactory
  */
+//子接口，实现此接口的bean factory具有层次结构即可以获取父BeanFactory
+//方法getParentBeanFactory()获取父BeanFactory；方法containsLocalBean()判断本地bean factory是否含有指定名字的bean，不考虑在父BeanFactory中的情况
 public interface HierarchicalBeanFactory extends BeanFactory {
 
 	/**

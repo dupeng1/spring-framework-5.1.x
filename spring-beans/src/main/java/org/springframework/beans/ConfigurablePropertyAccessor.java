@@ -31,6 +31,7 @@ import org.springframework.lang.Nullable;
  * @since 2.0
  * @see BeanWrapper
  */
+//PropertyAccessor配置方法的封装接口。是BeanWrapper的父接口。
 public interface ConfigurablePropertyAccessor extends PropertyAccessor, PropertyEditorRegistry, TypeConverter {
 
 	/**

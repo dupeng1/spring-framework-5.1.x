@@ -58,6 +58,8 @@ import org.springframework.util.StringValueResolver;
  * @see org.springframework.context.ApplicationContextAware
  * @see org.springframework.context.support.AbstractApplicationContext#refresh()
  */
+//作用：当应用程序定义的Bean实现了ApplicationContextAware接口
+// ApplicationContextAwareProcessor给Bean注入ApplicationContext对象
 class ApplicationContextAwareProcessor implements BeanPostProcessor {
 
 	private final ConfigurableApplicationContext applicationContext;
@@ -78,7 +80,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 	@Nullable
 	public Object postProcessBeforeInitialization(final Object bean, String beanName) throws BeansException {
 		AccessControlContext acc = null;
-
+		//Bean实现了ApplicationContextAware接口
 		if (System.getSecurityManager() != null &&
 				(bean instanceof EnvironmentAware || bean instanceof EmbeddedValueResolverAware ||
 						bean instanceof ResourceLoaderAware || bean instanceof ApplicationEventPublisherAware ||
@@ -117,6 +119,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 				((MessageSourceAware) bean).setMessageSource(this.applicationContext);
 			}
 			if (bean instanceof ApplicationContextAware) {
+				// 会执行这里回调Bean重写的setApplicationContext方法，然后将this.applicationContext注入给Bean
 				((ApplicationContextAware) bean).setApplicationContext(this.applicationContext);
 			}
 		}

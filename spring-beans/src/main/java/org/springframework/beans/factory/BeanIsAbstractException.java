@@ -24,6 +24,7 @@ package org.springframework.beans.factory;
  * @since 1.1
  * @see org.springframework.beans.factory.support.AbstractBeanDefinition#setAbstract
  */
+//当试图获取一个定义为abstract的bean definition时抛出的异常
 @SuppressWarnings("serial")
 public class BeanIsAbstractException extends BeanCreationException {
 

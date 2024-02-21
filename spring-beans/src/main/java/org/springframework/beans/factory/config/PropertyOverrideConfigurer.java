@@ -62,6 +62,7 @@ import org.springframework.beans.factory.BeanInitializationException;
  * @see #convertPropertyValue
  * @see PropertyPlaceholderConfigurer
  */
+//属性资源配置器，它支持在applicationContext中重写一个bean的属性值
 public class PropertyOverrideConfigurer extends PropertyResourceConfigurer {
 
 	/**

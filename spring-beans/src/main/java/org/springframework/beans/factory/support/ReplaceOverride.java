@@ -34,6 +34,7 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @since 1.1
  */
+//MethodOverride的扩展，表示一个IOC容器方法的任意重写
 public class ReplaceOverride extends MethodOverride {
 
 	private final String methodReplacerBeanName;

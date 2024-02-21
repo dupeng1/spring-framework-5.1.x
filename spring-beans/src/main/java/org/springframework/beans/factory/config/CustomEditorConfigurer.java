@@ -93,6 +93,7 @@ import org.springframework.util.ClassUtils;
  * @see ConfigurableBeanFactory#registerCustomEditor
  * @see org.springframework.validation.DataBinder#registerCustomEditor
  */
+//继承自BeanFactoryPostProcessor，给自定义属性编辑器的注册提供了便利的方法
 public class CustomEditorConfigurer implements BeanFactoryPostProcessor, Ordered {
 
 	protected final Log logger = LogFactory.getLog(getClass());

@@ -27,6 +27,7 @@ import org.springframework.util.Assert;
  * @param <T> the bean type
  * @see AutowireCapableBeanFactory#resolveNamedBean(Class)
  */
+//给定名字的bean实例的简单占位符
 public class NamedBeanHolder<T> implements NamedBean {
 
 	private final String beanName;

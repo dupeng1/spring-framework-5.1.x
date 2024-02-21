@@ -27,6 +27,7 @@ import org.springframework.lang.Nullable;
  * @see NamespaceHandler
  * @see org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader
  */
+//DefaultBeanDefinitionDocumentReader用来定位NamespaceHandler的接口
 @FunctionalInterface
 public interface NamespaceHandlerResolver {
 

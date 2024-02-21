@@ -60,6 +60,7 @@ import org.springframework.util.ReflectionUtils;
  * @see #setSingleton
  * @see #createInstance()
  */
+//实现了FactoryBean的简单模板超类，它根据singleton标志来决定是创建一个单例还是一个prototype对象
 public abstract class AbstractFactoryBean<T>
 		implements FactoryBean<T>, BeanClassLoaderAware, BeanFactoryAware, InitializingBean, DisposableBean {
 

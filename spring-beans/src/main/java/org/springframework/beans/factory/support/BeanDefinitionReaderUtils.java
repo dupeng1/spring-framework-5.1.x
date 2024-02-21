@@ -35,6 +35,7 @@ import org.springframework.util.StringUtils;
  * @see PropertiesBeanDefinitionReader
  * @see org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader
  */
+//BeanDefinitionReader实现使用的工具方法类
 public abstract class BeanDefinitionReaderUtils {
 
 	/**
@@ -58,9 +59,11 @@ public abstract class BeanDefinitionReaderUtils {
 			@Nullable String parentName, @Nullable String className, @Nullable ClassLoader classLoader) throws ClassNotFoundException {
 
 		GenericBeanDefinition bd = new GenericBeanDefinition();
+		// parentName可能为空
 		bd.setParentName(parentName);
 		if (className != null) {
 			if (classLoader != null) {
+				//如果classLoader不为空,则使用传入的classLoader同一虚拟机加载类对象
 				bd.setBeanClass(ClassUtils.forName(className, classLoader));
 			}
 			else {

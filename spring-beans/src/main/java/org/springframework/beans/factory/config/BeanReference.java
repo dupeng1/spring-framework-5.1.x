@@ -30,6 +30,7 @@ import org.springframework.beans.BeanMetadataElement;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//暴露bean名称的引用接口。这个接口并不需要实际指向一个bean实例，只需要逻辑指向bean的名字
 public interface BeanReference extends BeanMetadataElement {
 
 	/**

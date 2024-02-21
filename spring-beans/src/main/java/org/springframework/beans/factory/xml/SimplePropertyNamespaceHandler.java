@@ -48,6 +48,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//简单NamespaceHandler实现，它将自定义属性直接映射到bean属性
 public class SimplePropertyNamespaceHandler implements NamespaceHandler {
 
 	private static final String REF_SUFFIX = "-ref";

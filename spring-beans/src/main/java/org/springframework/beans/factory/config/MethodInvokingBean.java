@@ -64,6 +64,7 @@ import org.springframework.util.ClassUtils;
  * @see MethodInvokingFactoryBean
  * @see org.springframework.util.MethodInvoker
  */
+//一个简单的method invoker bean，和MethodInvokingFactoryBean不同，它并不返回触发一个方法的结果，而是仅仅返回触发一个目标方法
 public class MethodInvokingBean extends ArgumentConvertingMethodInvoker
 		implements BeanClassLoaderAware, BeanFactoryAware, InitializingBean {
 

@@ -31,6 +31,7 @@ import org.springframework.util.Assert;
  * @since 2.0.1
  * @see #getNestedComponents()
  */
+//保存了一个或者多个内嵌ComponentDefinition实例的ComponentDefinition实现，它把这些ComponentDefinition实例聚合成具有命名的组。
 public class CompositeComponentDefinition extends AbstractComponentDefinition {
 
 	private final String name;

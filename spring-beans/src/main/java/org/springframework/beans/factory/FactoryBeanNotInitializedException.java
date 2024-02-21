@@ -34,6 +34,7 @@ import org.springframework.beans.FatalBeanException;
  * @since 30.10.2003
  * @see FactoryBean#getObject()
  */
+//工厂bean没有初始化异常
 @SuppressWarnings("serial")
 public class FactoryBeanNotInitializedException extends FatalBeanException {
 

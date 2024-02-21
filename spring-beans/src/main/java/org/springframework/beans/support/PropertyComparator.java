@@ -38,6 +38,7 @@ import org.springframework.util.StringUtils;
  * @param <T> the type of objects that may be compared by this comparator
  * @see org.springframework.beans.BeanWrapper
  */
+//对两个bean进行比较，通过BeanWrapper来比较指定bean的属性。
 public class PropertyComparator<T> implements Comparator<T> {
 
 	protected final Log logger = LogFactory.getLog(getClass());

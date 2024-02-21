@@ -24,6 +24,7 @@ package org.springframework.beans;
  * @author Juergen Hoeller
  * @since 2.5.2
  */
+//获取PropertyAccessor实例简单工厂，特别是BeanWrapper实例（BeanWrapper继承自PropertyAccessor）
 public final class PropertyAccessorFactory {
 
 	private PropertyAccessorFactory() {

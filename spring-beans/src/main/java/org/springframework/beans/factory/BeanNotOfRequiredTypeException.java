@@ -25,6 +25,7 @@ import org.springframework.util.ClassUtils;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+//当一个bean的类型和期望类型不匹配时抛出的异常
 @SuppressWarnings("serial")
 public class BeanNotOfRequiredTypeException extends BeansException {
 

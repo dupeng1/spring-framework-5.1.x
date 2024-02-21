@@ -36,6 +36,8 @@ import org.springframework.util.StringValueResolver;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//JavaBean类型注解的通用工具方法。定义了一个静态方法：public static void copyPropertiesToBean()，将指定Annotation的属性复制到目标bean中。
+// 如果属性在excludeProperties中定义了，那么就不会被复制
 public abstract class AnnotationBeanUtils {
 
 	/**

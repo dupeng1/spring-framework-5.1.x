@@ -49,6 +49,7 @@ import java.lang.annotation.Target;
  * @see org.springframework.beans.factory.config.BeanExpressionResolver
  * @see org.springframework.beans.factory.support.AutowireCandidateResolver#getSuggestedValue
  */
+//注入int、float、String等基本数据类型，用于注入SpEL表达式，可以放置在字段方法或参数上
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

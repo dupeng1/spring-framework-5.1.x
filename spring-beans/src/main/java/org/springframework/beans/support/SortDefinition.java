@@ -22,6 +22,7 @@ package org.springframework.beans.support;
  * @author Juergen Hoeller
  * @since 26.05.2003
  */
+//根据一个指定的属性对一组bean实例进行排序的定义类。isAscending为True时进行升序排列，为False进行降序排列
 public interface SortDefinition {
 
 	/**

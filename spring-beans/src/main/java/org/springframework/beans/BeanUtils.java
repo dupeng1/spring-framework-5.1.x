@@ -63,6 +63,7 @@ import org.springframework.util.StringUtils;
  * @author Sam Brannen
  * @author Sebastien Deleuze
  */
+//JavaBeans的静态工具方法，用来初始化bean，检查bean属性类型，复制bean属性等
 public abstract class BeanUtils {
 
 	private static final Log logger = LogFactory.getLog(BeanUtils.class);

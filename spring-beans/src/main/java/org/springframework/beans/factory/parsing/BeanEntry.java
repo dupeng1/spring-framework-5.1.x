@@ -22,6 +22,7 @@ package org.springframework.beans.factory.parsing;
  * @author Rob Harrop
  * @since 2.0
  */
+//代表了一个BeanDefinition
 public class BeanEntry implements ParseState.Entry {
 
 	private String beanDefinitionName;

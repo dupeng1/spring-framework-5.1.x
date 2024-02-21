@@ -29,6 +29,8 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.factory.support.ManagedMap
  * @see org.springframework.beans.factory.support.ManagedProperties
  */
+//代表一个对象的值可以和父对象的值进行合并的接口。其主要的子类有：ManagedList、ManagedArray、ManagedMap、ManagedProperties、ManagedSet。
+// 这几个类在org.springframework.beans.factory 包中。
 public interface Mergeable {
 
 	/**

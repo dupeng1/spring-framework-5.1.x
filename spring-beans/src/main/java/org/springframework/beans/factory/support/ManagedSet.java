@@ -32,6 +32,7 @@ import org.springframework.lang.Nullable;
  * @since 21.01.2004
  * @param <E> the element type
  */
+//集合类，用来保存它所管理的set值，它可以包含运行时期的bean引用（将被解析为bean对象）
 @SuppressWarnings("serial")
 public class ManagedSet<E> extends LinkedHashSet<E> implements Mergeable, BeanMetadataElement {
 

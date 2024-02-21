@@ -45,6 +45,7 @@ import org.springframework.lang.Nullable;
  * @see #getBeanClassName
  * @see #doParse
  */
+//BeanDefinitionParser的基类，需要解析和定义单独的BeanDefinition
 public abstract class AbstractSingleBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
 	/**

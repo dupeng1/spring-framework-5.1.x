@@ -26,6 +26,7 @@ import org.springframework.lang.Nullable;
  * @author Alef Arendsen
  * @author Arjen Poutsma
  */
+//当试图向一个不可写属性写入属性值时抛出的异常，典型场景bean属性没有set方法
 @SuppressWarnings("serial")
 public class NotWritablePropertyException extends InvalidPropertyException {
 

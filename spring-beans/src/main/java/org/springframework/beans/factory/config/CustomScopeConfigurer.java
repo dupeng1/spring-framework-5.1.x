@@ -44,6 +44,7 @@ import org.springframework.util.ClassUtils;
  * @since 2.0
  * @see ConfigurableBeanFactory#registerScope
  */
+//BeanFactoryPostProcessor的简单实现，给自定义Scope的注册提供了便利的方法，上面提到ConfigurableBeanFactory提供了Scope的注册。
 public class CustomScopeConfigurer implements BeanFactoryPostProcessor, BeanClassLoaderAware, Ordered {
 
 	@Nullable

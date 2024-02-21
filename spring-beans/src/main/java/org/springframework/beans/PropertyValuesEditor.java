@@ -34,6 +34,7 @@ import org.springframework.beans.propertyeditors.PropertiesEditor;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+//PropertyValues对象的编辑器
 public class PropertyValuesEditor extends PropertyEditorSupport {
 
 	private final PropertiesEditor propertiesEditor = new PropertiesEditor();

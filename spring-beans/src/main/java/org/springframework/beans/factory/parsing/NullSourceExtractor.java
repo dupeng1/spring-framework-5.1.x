@@ -29,6 +29,7 @@ import org.springframework.lang.Nullable;
  * @author Rob Harrop
  * @since 2.0
  */
+//SourceExtractor接口的简单实现，返回null作为source元数据
 public class NullSourceExtractor implements SourceExtractor {
 
 	/**

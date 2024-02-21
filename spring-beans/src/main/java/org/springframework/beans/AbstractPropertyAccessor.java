@@ -34,6 +34,7 @@ import org.springframework.lang.Nullable;
  * @see #getPropertyValue
  * @see #setPropertyValue
  */
+//PropertyAccessor接口的抽象实现
 public abstract class AbstractPropertyAccessor extends TypeConverterSupport implements ConfigurablePropertyAccessor {
 
 	private boolean extractOldValueForEditor = false;

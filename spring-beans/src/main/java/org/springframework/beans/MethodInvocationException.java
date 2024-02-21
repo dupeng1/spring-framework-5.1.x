@@ -24,6 +24,7 @@ import java.beans.PropertyChangeEvent;
  *
  * @author Rod Johnson
  */
+//当一个bean属性的get和set方法抛出异常时抛出该异常，类似于InvocationTargetException
 @SuppressWarnings("serial")
 public class MethodInvocationException extends PropertyAccessException {
 

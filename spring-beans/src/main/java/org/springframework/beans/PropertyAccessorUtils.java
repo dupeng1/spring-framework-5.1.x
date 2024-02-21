@@ -25,6 +25,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 1.2.6
  */
+//PropertyAccessor类获取和设置属性的一些工具方法。
 public abstract class PropertyAccessorUtils {
 
 	/**

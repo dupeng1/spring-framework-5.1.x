@@ -34,6 +34,7 @@ import java.lang.annotation.Target;
  * @author Ramnivas Laddad
  * @since 2.0
  */
+//autowire属性就可以让Spring来自动装配
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited

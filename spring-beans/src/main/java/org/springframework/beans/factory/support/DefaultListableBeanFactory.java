@@ -116,7 +116,13 @@ import org.springframework.util.StringUtils;
  * @see #getBean
  * @see #resolveDependency
  */
-//整个bean加载的核心部分，是spring注册及加载bean的默认实现
+/**
+ * 基于beanDefinition对象的一个成熟的beanFactory，真正可以作为一个独立使用的IOC容器，因此可以说DefaultListableBeanFactory是整个spring IOC的始祖
+ * 1、BeanDefinitionRegistry（在此包中）提供了beanDefinition的管理
+ * 2、AbstractAutowireCapableBeanFactory实现属性的自动绑定功能
+ * 3、ConfigurableListableBeanFactory提供了对bean定义的分析和修改的便利方法，同时也提供了对单例的预实例化
+ *
+ */
 @SuppressWarnings("serial")
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
 		implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {

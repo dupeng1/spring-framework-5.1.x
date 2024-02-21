@@ -49,6 +49,7 @@ import org.springframework.util.ClassUtils;
  * @since 1.1.2
  * @see AbstractAutowireCapableBeanFactory
  */
+//工具类，为具有自动装载能力的bean工厂提供一些有用的方法
 abstract class AutowireUtils {
 
 	private static final Comparator<Executable> EXECUTABLE_COMPARATOR = (e1, e2) -> {

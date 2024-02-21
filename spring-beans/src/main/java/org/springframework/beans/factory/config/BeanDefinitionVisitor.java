@@ -45,6 +45,8 @@ import org.springframework.util.StringValueResolver;
  * @see BeanDefinition#getConstructorArgumentValues
  * @see PropertyPlaceholderConfigurer
  */
+//遍历BeanDefinition对象的参观者类，特别是也遍历bean中的属性值和构造参数值，解析bean的元数据值。
+// 在PlaceholderConfigurerSupport中被使用，用来解析包含在BeanDefinition中所有的字符串值，解析发现的所有占位符
 public class BeanDefinitionVisitor {
 
 	@Nullable

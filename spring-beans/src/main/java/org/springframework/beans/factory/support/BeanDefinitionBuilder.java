@@ -34,6 +34,7 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//使用建造者模式构建BeanDefinition的编程方法
 public final class BeanDefinitionBuilder {
 
 	/**

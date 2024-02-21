@@ -45,6 +45,7 @@ import org.springframework.util.Assert;
  * @since 3.1.2
  * @see BeanFactoryUtils
  */
+//关联注解的bean的查询的工具方法，例如spring的@Qualifier注解
 public abstract class BeanFactoryAnnotationUtils {
 
 	/**

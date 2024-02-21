@@ -55,6 +55,7 @@ import org.springframework.util.CollectionUtils;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//继承自EntityResolver，使用一系列map文件将schema url解析到本地classpath资源
 public class PluggableSchemaResolver implements EntityResolver {
 
 	/**

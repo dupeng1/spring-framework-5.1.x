@@ -36,6 +36,7 @@ import org.springframework.lang.Nullable;
  * @see NamespaceHandler
  * @see AbstractBeanDefinitionParser
  */
+//DefaultBeanDefinitionDocumentReader用来处理自定义的，高层的标签的接口
 public interface BeanDefinitionParser {
 
 	/**

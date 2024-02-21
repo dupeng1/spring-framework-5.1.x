@@ -24,6 +24,7 @@ import org.springframework.util.StringUtils;
  * @author Mark Fisher
  * @since 2.5
  */
+//代表了一个自动绑定的备选qualifier
 public class QualifierEntry implements ParseState.Entry {
 
 	private String typeName;

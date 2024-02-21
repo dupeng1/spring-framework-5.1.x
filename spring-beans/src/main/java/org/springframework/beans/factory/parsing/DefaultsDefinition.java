@@ -30,6 +30,7 @@ import org.springframework.beans.BeanMetadataElement;
  * @see org.springframework.beans.factory.xml.DocumentDefaultsDefinition
  * @see ReaderEventListener#defaultsRegistered(DefaultsDefinition)
  */
+//一个默认definition标识接口，继承了BeanMetadataElement，没有实现任何方法
 public interface DefaultsDefinition extends BeanMetadataElement {
 
 }

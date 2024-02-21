@@ -30,6 +30,7 @@ import org.springframework.beans.factory.config.BeanReference;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//ComponentDefinition接口的基本实现，提供了getDescription()来代理ComponentDefinition.getName()方法。
 public abstract class AbstractComponentDefinition implements ComponentDefinition {
 
 	/**

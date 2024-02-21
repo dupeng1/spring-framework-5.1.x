@@ -33,6 +33,7 @@ import org.springframework.util.Assert;
  * @since 3.2
  * @see SimpleTypeConverter
  */
+//TypeConverter接口的基本实现类，使用了代理typeConverterDelegate。这个类主要用作BeanWrapperImpl的基类使用
 public abstract class TypeConverterSupport extends PropertyEditorRegistrySupport implements TypeConverter {
 
 	@Nullable

@@ -31,6 +31,7 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @since 1.1
  */
+//表示可以重写一个在同一个IOC上下文中查找对象的方法
 public class LookupOverride extends MethodOverride {
 
 	@Nullable

@@ -83,6 +83,7 @@ import org.springframework.util.StringUtils;
  * @see #setTargetBeanName
  * @see #setPropertyPath
  */
+//通过给定目标对象计算属性路径的工厂bean
 public class PropertyPathFactoryBean implements FactoryBean<Object>, BeanNameAware, BeanFactoryAware {
 
 	private static final Log logger = LogFactory.getLog(PropertyPathFactoryBean.class);

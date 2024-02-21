@@ -25,6 +25,7 @@ package org.springframework.beans.factory;
  * @since 10.03.2003
  * @see org.springframework.beans.factory.FactoryBean
  */
+//当一个bean不是工厂，但用户试图通过给定bean名称访问工厂
 @SuppressWarnings("serial")
 public class BeanIsNotAFactoryException extends BeanNotOfRequiredTypeException {
 

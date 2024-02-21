@@ -31,6 +31,7 @@ import org.springframework.beans.factory.BeanClassLoaderAware;
  * @since 2.5
  * @see java.util.ServiceLoader
  */
+//暴露配置的服务类的所有基础服务的FactoryBean，表现为一组服务对象，可以通过JDK1.6 serviceLoader基础类来获取这些服务。
 public class ServiceListFactoryBean extends AbstractServiceLoaderBasedFactoryBean implements BeanClassLoaderAware {
 
 	@Override

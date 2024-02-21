@@ -51,6 +51,7 @@ import org.springframework.core.io.Resource;
  * {@link XmlBeanDefinitionReader}
  */
 //继承DefaultListableBeanFactory，使用了自定义的XML读取器XmlBeanDefinitionReader，实现个性化的BeanDefinitionReader
+//过期，从spring 3.2 后推荐使用DefaultListableBeanFactory和XmlBeanDefinitionReader来代替它
 @Deprecated
 @SuppressWarnings({"serial", "all"})
 public class XmlBeanFactory extends DefaultListableBeanFactory {

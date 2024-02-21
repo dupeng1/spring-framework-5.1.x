@@ -26,6 +26,7 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @since 3.0
  */
+//集合类，用来保存它所管理的array元素，它可以包含运行时期的bean引用（将被解析为bean对象）
 @SuppressWarnings("serial")
 public class ManagedArray extends ManagedList<Object> {
 

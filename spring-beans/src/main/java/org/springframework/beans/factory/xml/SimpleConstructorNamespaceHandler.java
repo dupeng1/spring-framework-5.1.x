@@ -57,6 +57,7 @@ import org.springframework.util.StringUtils;
  * @since 3.1
  * @see SimplePropertyNamespaceHandler
  */
+//单NamespaceHandler实现，它将自定义属性直接映射到bean属性
 public class SimpleConstructorNamespaceHandler implements NamespaceHandler {
 
 	private static final String REF_SUFFIX = "-ref";

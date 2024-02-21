@@ -48,6 +48,8 @@ import org.springframework.util.StringValueResolver;
  * @see org.springframework.beans.factory.ListableBeanFactory
  * @see ConfigurableListableBeanFactory
  */
+//将会被大部分beanFactory实现的配置接口。为对bean factory进行配置提供一些功能服务，
+// 包括BeanFactory接口中的一些函数。这个接口并不用于普通的应用代码，而是用于同BeanFactory或 ListableBeanFactory一起出现使用
 public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, SingletonBeanRegistry {
 
 	/**

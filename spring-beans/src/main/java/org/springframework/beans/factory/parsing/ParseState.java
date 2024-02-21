@@ -32,6 +32,7 @@ import org.springframework.lang.Nullable;
  * @author Rob Harrop
  * @since 2.0
  */
+//在解析进程中作为一个简单的基于栈结构的追踪逻辑位置类
 public final class ParseState {
 
 	/**

@@ -26,6 +26,7 @@ package org.springframework.beans;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+//当获取一个内嵌属性路径的属性时遇到空指针异常时抛出的异常
 @SuppressWarnings("serial")
 public class NullValueInNestedPathException extends InvalidPropertyException {
 

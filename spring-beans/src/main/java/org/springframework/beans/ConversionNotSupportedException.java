@@ -27,6 +27,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 3.0
  */
+//当一个bean的属性没有适合的编辑器或者转换器时所抛出的异常
 @SuppressWarnings("serial")
 public class ConversionNotSupportedException extends TypeMismatchException {
 

@@ -73,6 +73,10 @@ import org.springframework.util.ReflectionUtils;
  * @see #setInitAnnotationType
  * @see #setDestroyAnnotationType
  */
+//@PostConstruct：Bean方法注解，在bean创建完成并且属性赋值完成，执行初始化方法
+//@PreDestroy：在容器销毁bean之前通知我们进行清理工作
+//实现了通过注解来初始化init和销毁destroy方法
+//会在Bean创建的时候通过反射的方式查找包含@PostConstruct和@PreDestroy注解的方法，然后通过反射执行
 @SuppressWarnings("serial")
 public class InitDestroyAnnotationBeanPostProcessor
 		implements DestructionAwareBeanPostProcessor, MergedBeanDefinitionPostProcessor, PriorityOrdered, Serializable {

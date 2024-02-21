@@ -26,6 +26,7 @@ package org.springframework.beans.factory;
  * @since 2.0
  * @see BeanNameAware
  */
+//对应BeanNameAware接口，返回bean的名称。函数String getBeanName()
 public interface NamedBean {
 
 	/**

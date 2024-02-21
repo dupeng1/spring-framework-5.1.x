@@ -41,6 +41,7 @@ import org.springframework.util.Assert;
  * @see javax.inject.Provider
  * @see ObjectFactoryCreatingFactoryBean
  */
+//返回一个JSR-330 Provider的工厂bean，JSR-330 Provider反过来从beanFactory返回一个bean资源。JSR-330 是 Java 的依赖注入标准
 public class ProviderCreatingFactoryBean extends AbstractFactoryBean<Provider<Object>> {
 
 	@Nullable

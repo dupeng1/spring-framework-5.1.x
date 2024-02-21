@@ -33,6 +33,7 @@ import org.springframework.lang.Nullable;
  * @see SetFactoryBean
  * @see MapFactoryBean
  */
+//共享一组（list）实例的简单工厂bean
 public class ListFactoryBean extends AbstractFactoryBean<List<Object>> {
 
 	@Nullable

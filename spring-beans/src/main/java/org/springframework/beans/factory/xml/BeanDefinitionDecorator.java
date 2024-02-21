@@ -55,6 +55,7 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
  * @see NamespaceHandler
  * @see BeanDefinitionParser
  */
+//DefaultBeanDefinitionDocumentReader用来处理自定义的，内嵌的标签的接口
 public interface BeanDefinitionDecorator {
 
 	/**

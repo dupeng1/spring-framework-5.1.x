@@ -33,6 +33,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 5.0
  */
+//一个空bean的内部表示，比如调用FactoryBean的getObect()或者其他的工厂方法返回的是null值
 final class NullBean {
 
 	NullBean() {

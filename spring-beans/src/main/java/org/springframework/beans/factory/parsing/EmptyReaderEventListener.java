@@ -23,6 +23,7 @@ package org.springframework.beans.factory.parsing;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//ReaderEventListener接口的空实现，所有回调方法都没有提供可执行操作。
 public class EmptyReaderEventListener implements ReaderEventListener {
 
 	@Override

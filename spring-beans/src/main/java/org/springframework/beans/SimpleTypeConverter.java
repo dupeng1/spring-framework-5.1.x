@@ -30,6 +30,7 @@ package org.springframework.beans;
  * @since 2.0
  * @see BeanWrapperImpl
  */
+//TypeConverter接口的简单实现，它不会针对一个特定的目标进行操作
 public class SimpleTypeConverter extends TypeConverterSupport {
 
 	public SimpleTypeConverter() {

@@ -28,6 +28,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.5
  */
+//继承自AutowireCandidateResolver，当出现不支持的注解时使用
 public class SimpleAutowireCandidateResolver implements AutowireCandidateResolver {
 
 	@Override

@@ -31,6 +31,7 @@ import org.springframework.util.StringUtils;
  * @since 3.2.1
  * @see BeanFactory#getBean(Class)
  */
+//返回多个bean definition异常
 @SuppressWarnings("serial")
 public class NoUniqueBeanDefinitionException extends NoSuchBeanDefinitionException {
 

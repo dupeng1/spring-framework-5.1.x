@@ -35,6 +35,7 @@ import org.springframework.lang.Nullable;
  * @see SimpleTypeConverter
  * @see BeanWrapperImpl
  */
+//定义了类型转换方法的接口。将值转换成指定的类型
 public interface TypeConverter {
 
 	/**

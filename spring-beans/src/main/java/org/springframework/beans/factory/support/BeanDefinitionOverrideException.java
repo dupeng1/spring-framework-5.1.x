@@ -30,6 +30,8 @@ import org.springframework.lang.NonNull;
  * @see DefaultListableBeanFactory#setAllowBeanDefinitionOverriding
  * @see DefaultListableBeanFactory#registerBeanDefinition
  */
+//BeanDefinitionStoreException一个子类，显示一个在尝试一个非法的重载。比如为同一个bean name注册一个新的definition，
+// 但是DefaultListableBeanFactory的isAllowBeanDefinitionOverriding却为false的时候。
 public class BeanDefinitionOverrideException extends BeanDefinitionStoreException {
 
 	private final BeanDefinition beanDefinition;

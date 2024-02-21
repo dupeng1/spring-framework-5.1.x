@@ -62,6 +62,7 @@ import org.springframework.util.StringUtils;
  * @since 06.01.2003
  * @see DefaultListableBeanFactory
  */
+//静态BeanFactory的实现，用来编程实现注册已经存在的单例实例
 public class StaticListableBeanFactory implements ListableBeanFactory {
 
 	/** Map from bean name to bean instance. */

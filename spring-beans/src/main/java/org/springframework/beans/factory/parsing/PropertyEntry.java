@@ -24,6 +24,7 @@ import org.springframework.util.StringUtils;
  * @author Rob Harrop
  * @since 2.0
  */
+//代表了一个javaBean的属性
 public class PropertyEntry implements ParseState.Entry {
 
 	private final String name;

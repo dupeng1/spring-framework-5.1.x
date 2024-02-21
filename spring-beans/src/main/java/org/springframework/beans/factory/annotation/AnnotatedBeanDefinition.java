@@ -31,6 +31,8 @@ import org.springframework.lang.Nullable;
  * @see AnnotatedGenericBeanDefinition
  * @see org.springframework.core.type.AnnotationMetadata
  */
+//它暴露了它的bean 类的AnnotationMetadata，不需要加载类。
+// 提供了一个getMetadata()方法来获取该bean definition的注解元数据， ClassMetadata定义了一个特定类的抽象元数据，不需要加载此类即可访问
 public interface AnnotatedBeanDefinition extends BeanDefinition {
 
 	/**

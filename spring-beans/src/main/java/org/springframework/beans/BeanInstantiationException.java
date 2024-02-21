@@ -28,6 +28,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 1.2.8
  */
+//bean初始化失败时抛出的异常
 @SuppressWarnings("serial")
 public class BeanInstantiationException extends FatalBeanException {
 

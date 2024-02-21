@@ -39,6 +39,7 @@ import org.springframework.util.ReflectionUtils;
  * @since 1.1
  * @see org.springframework.beans.BeanWrapperImpl#convertIfNecessary
  */
+//MethodInvoker的子类，通过TypeConverter将真实目标方法的指定参数进行转换
 public class ArgumentConvertingMethodInvoker extends MethodInvoker {
 
 	@Nullable

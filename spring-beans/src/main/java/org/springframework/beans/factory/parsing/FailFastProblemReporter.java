@@ -36,6 +36,7 @@ import org.springframework.lang.Nullable;
  * @author Rick Evans
  * @since 2.0
  */
+//ProblemReporter接口的简单实现，当遇到错误发生时展示fail-fast行为
 public class FailFastProblemReporter implements ProblemReporter {
 
 	private Log logger = LogFactory.getLog(getClass());

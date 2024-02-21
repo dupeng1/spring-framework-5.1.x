@@ -188,6 +188,7 @@ import org.springframework.util.StringUtils;
  * @see #setServiceMappings
  * @see ObjectFactoryCreatingFactoryBean
  */
+//继承自FactoryBean，在beanFactory中创建一个动态代理，来代理一个具有一个或者多个服务或者类型的接口
 public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFactoryAware, InitializingBean {
 
 	@Nullable

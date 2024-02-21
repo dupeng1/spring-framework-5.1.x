@@ -27,6 +27,7 @@ import java.util.EventListener;
  * @since 2.0
  * @see ReaderContext
  */
+//接受在读取BeanDefinition进程中注册组件、别名、import时的回调接口
 public interface ReaderEventListener extends EventListener {
 
 	/**

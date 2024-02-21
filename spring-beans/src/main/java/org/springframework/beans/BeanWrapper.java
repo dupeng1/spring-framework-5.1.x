@@ -46,6 +46,8 @@ import java.beans.PropertyDescriptor;
  * @see org.springframework.validation.BeanPropertyBindingResult
  * @see org.springframework.validation.DataBinder#initBeanPropertyAccess()
  */
+//Spring底层JavaBean公共基础的核心接口。通常不直接使用，而是通过BeanFactory间接使用
+//作用：提供对标准javabean的分析和操作方法：单个或者批量获取和设置属性值，获取属性描述符，查询属性的可读性和可写性等，支持属性的嵌套设置，深度没有限制
 public interface BeanWrapper extends ConfigurablePropertyAccessor {
 
 	/**

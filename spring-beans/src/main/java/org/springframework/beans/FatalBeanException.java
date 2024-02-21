@@ -24,6 +24,7 @@ import org.springframework.lang.Nullable;
  *
  * @author Rod Johnson
  */
+//在bean包和子包中遇到的不可恢复问题抛出的异常，例如：当引用一个无效的bean属性时抛出的InvalidPropertyException异常
 @SuppressWarnings("serial")
 public class FatalBeanException extends BeansException {
 

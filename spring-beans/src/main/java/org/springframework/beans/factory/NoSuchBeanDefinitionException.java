@@ -32,6 +32,7 @@ import org.springframework.lang.Nullable;
  * @see BeanFactory#getBean(Class)
  * @see NoUniqueBeanDefinitionException
  */
+//没有该bean definition异常
 @SuppressWarnings("serial")
 public class NoSuchBeanDefinitionException extends BeansException {
 

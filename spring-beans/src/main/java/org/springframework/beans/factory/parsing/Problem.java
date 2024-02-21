@@ -30,6 +30,7 @@ import org.springframework.util.Assert;
  * @since 2.0
  * @see ProblemReporter
  */
+//代表了一个beanDefinition配置问题
 public class Problem {
 
 	private final String message;

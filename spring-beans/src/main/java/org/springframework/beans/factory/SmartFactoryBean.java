@@ -39,6 +39,7 @@ package org.springframework.beans.factory;
  * @see #isPrototype()
  * @see #isSingleton()
  */
+//FactoryBean接口的扩展实现。实现该接口可以表明每次是否返回的都是独立的实例，因为用isSingleton()函数判断为假，表明非单例模式，但这并不足以表明返回的都是独立的实例。
 public interface SmartFactoryBean<T> extends FactoryBean<T> {
 
 	/**

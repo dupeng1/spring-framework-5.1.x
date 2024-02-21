@@ -34,6 +34,7 @@ import org.springframework.lang.Nullable;
  * @see ClassNameBeanWiringInfoResolver
  * @see org.springframework.beans.factory.annotation.AnnotationBeanWiringInfoResolver
  */
+//策略接口，能够根据给定的一个新初始化的bean对象解析bean的名称信息。
 public interface BeanWiringInfoResolver {
 
 	/**

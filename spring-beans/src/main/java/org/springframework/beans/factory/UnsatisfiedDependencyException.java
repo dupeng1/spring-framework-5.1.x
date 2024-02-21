@@ -29,6 +29,7 @@ import org.springframework.util.StringUtils;
  * @author Juergen Hoeller
  * @since 03.09.2003
  */
+//当有依赖检查时，在bean factory定义中，bean的依赖或者属性没有指定时抛出的异常
 @SuppressWarnings("serial")
 public class UnsatisfiedDependencyException extends BeanCreationException {
 

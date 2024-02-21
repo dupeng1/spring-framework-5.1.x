@@ -32,6 +32,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
  * @see org.springframework.beans.factory.annotation.Configurable
  * @see org.springframework.beans.factory.config.AutowireCapableBeanFactory
  */
+//决定自动绑定状态的枚举，即一个bean的依赖是否由spring容器使用setter方式自动注入。这个是spring DI的核心概念
 public enum Autowire {
 
 	/**

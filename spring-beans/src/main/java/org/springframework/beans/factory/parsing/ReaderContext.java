@@ -27,6 +27,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//bean definition读取进程中传递的一个Context，封装了所有相关的配置，包括状态
 public class ReaderContext {
 
 	private final Resource resource;

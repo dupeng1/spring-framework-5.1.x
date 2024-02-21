@@ -81,6 +81,7 @@ import org.springframework.lang.Nullable;
  * @see MethodInvokingBean
  * @see org.springframework.util.MethodInvoker
  */
+//一个有返回值的工厂bean，它返回触发一个静态或者实例的方法的结果
 public class MethodInvokingFactoryBean extends MethodInvokingBean implements FactoryBean<Object> {
 
 	private boolean singleton = true;

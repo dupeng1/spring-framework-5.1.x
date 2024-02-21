@@ -24,6 +24,7 @@ import org.springframework.beans.FatalBeanException;
  * @author Juergen Hoeller
  * @since 3.0
  */
+//获取一个表达式的值失败时抛出的异常
 @SuppressWarnings("serial")
 public class BeanExpressionException extends FatalBeanException {
 

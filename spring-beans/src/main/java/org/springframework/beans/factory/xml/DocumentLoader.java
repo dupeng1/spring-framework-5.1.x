@@ -28,6 +28,7 @@ import org.xml.sax.InputSource;
  * @since 2.0
  * @see DefaultDocumentLoader
  */
+//加载xml文件的策略接口。
 public interface DocumentLoader {
 
 	/**

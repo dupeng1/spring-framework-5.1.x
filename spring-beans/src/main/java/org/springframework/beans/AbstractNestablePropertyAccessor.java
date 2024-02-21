@@ -69,6 +69,7 @@ import org.springframework.util.StringUtils;
  * @see BeanWrapper
  * @see PropertyEditorRegistrySupport
  */
+//继承自AbstractPropertyAccessor，也是ConfigurablePropertyAccessor的一种，可以为典型的一些应用场景提供支持
 public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyAccessor {
 
 	/**

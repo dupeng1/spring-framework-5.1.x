@@ -32,6 +32,7 @@ import org.springframework.util.Assert;
  * @since 2.5.2
  * @see org.springframework.core.io.DescriptiveResource
  */
+//继承自AbstractResource，描述BeanDefinition的资源
 class BeanDefinitionResource extends AbstractResource {
 
 	private final BeanDefinition beanDefinition;

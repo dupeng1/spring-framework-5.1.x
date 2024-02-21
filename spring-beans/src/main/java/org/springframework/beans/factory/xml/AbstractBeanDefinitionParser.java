@@ -48,6 +48,7 @@ import org.springframework.util.StringUtils;
  * @author Dave Syer
  * @since 2.0
  */
+//BeanDefinitionParser的抽象实现，提供了许多便利方法和模板方法，模板方法需要在子类进行重写来提供具体的逻辑实现。
 public abstract class AbstractBeanDefinitionParser implements BeanDefinitionParser {
 
 	/** Constant for the "id" attribute. */

@@ -38,6 +38,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//实现了SmartInstantiationAwareBeanPostProcessor所有方法的适配器，它没有任何操作，不会改变容器对bean进行初始化的处理过程。
 public abstract class InstantiationAwareBeanPostProcessorAdapter implements SmartInstantiationAwareBeanPostProcessor {
 
 	@Override

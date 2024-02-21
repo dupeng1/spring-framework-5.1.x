@@ -32,6 +32,7 @@ package org.springframework.beans.factory;
  * @author Juergen Hoeller
  * @since 3.1
  */
+//它是一个标签，内部没有任何属性或者方法。它是一个超级接口，实现它的子接口的bean标志着在spring容器中可以被特定框架的对象通知到，通过回调方式的方法来完成这种通知
 public interface Aware {
 
 }

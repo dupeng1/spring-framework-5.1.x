@@ -27,6 +27,7 @@ import org.springframework.lang.Nullable;
  * @author Costin Leau
  * @since 3.0
  */
+//SecurityContextProvider的简单扩展
 public class SimpleSecurityContextProvider implements SecurityContextProvider {
 
 	@Nullable

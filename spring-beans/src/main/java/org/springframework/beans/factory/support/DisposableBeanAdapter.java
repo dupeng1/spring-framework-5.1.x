@@ -59,6 +59,7 @@ import org.springframework.util.StringUtils;
  * @see org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor
  * @see AbstractBeanDefinition#getDestroyMethodName()
  */
+//对一个给定的bean实例进行销毁bean及进行销毁的相关工作的适配器
 @SuppressWarnings("serial")
 class DisposableBeanAdapter implements DisposableBean, Runnable, Serializable {
 

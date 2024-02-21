@@ -26,6 +26,7 @@ import org.springframework.util.StringUtils;
  * @author Juergen Hoeller
  * @since 2.5
  */
+//简单保持BeanDefinition的默认属性类
 public class BeanDefinitionDefaults {
 
 	private boolean lazyInit;

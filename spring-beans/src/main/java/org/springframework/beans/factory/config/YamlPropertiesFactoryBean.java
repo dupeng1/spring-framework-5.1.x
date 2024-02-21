@@ -81,6 +81,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 4.1
  */
+//从YAML源文件中读取属性的工厂，用来暴露字符串属性值扁平型组织结构
 public class YamlPropertiesFactoryBean extends YamlProcessor implements FactoryBean<Properties>, InitializingBean {
 
 	private boolean singleton = true;

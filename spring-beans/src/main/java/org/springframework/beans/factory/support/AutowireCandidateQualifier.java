@@ -29,6 +29,7 @@ import org.springframework.util.Assert;
  * @since 2.5
  * @see org.springframework.beans.factory.annotation.Qualifier
  */
+//解析自动绑定备选项Qualifier
 @SuppressWarnings("serial")
 public class AutowireCandidateQualifier extends BeanMetadataAttributeAccessor {
 

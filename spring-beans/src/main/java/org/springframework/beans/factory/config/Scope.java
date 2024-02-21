@@ -57,6 +57,10 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.web.context.request.RequestScope
  * @see org.springframework.web.context.request.SessionScope
  */
+
+/**
+ * ConfigurableBeanFactory使用的策略接口，代表了bean实例所在的作用域。Bean的作用域就是指Bean实例的生存空间或者有效范围。
+ */
 public interface Scope {
 
 	/**

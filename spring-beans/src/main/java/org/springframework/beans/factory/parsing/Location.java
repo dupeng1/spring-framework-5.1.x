@@ -33,6 +33,7 @@ import org.springframework.util.Assert;
  * @author Rob Harrop
  * @since 2.0
  */
+//模型接口，一个资源位置的模型
 public class Location {
 
 	private final Resource resource;

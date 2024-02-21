@@ -51,6 +51,7 @@ import org.springframework.util.Assert;
  * @see GenericBeanDefinition
  * @see ChildBeanDefinition
  */
+//根BeanDefinition，表示在运行时期的spring BeanFactory中一个合并的BeanDefinition
 @SuppressWarnings("serial")
 public class RootBeanDefinition extends AbstractBeanDefinition {
 

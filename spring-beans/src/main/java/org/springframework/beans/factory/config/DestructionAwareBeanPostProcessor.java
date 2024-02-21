@@ -27,6 +27,7 @@ import org.springframework.beans.BeansException;
  * @author Juergen Hoeller
  * @since 1.0.1
  */
+//BeanPostProcessor的子接口，它增加了一个销毁前回调方法。
 public interface DestructionAwareBeanPostProcessor extends BeanPostProcessor {
 
 	/**

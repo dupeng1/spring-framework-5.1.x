@@ -74,6 +74,7 @@ import org.springframework.util.StringUtils;
  * @since 26.11.2003
  * @see DefaultListableBeanFactory
  */
+//简单属性格式的BeanDefinitionReader
 public class PropertiesBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**

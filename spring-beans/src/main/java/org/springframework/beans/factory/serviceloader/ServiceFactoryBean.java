@@ -31,6 +31,7 @@ import org.springframework.lang.Nullable;
  * @since 2.5
  * @see java.util.ServiceLoader
  */
+//暴露指定配置的服务类的基础服务的FactoryBean，通过JDK1.6 serviceLoader基础类来获取这些服务
 public class ServiceFactoryBean extends AbstractServiceLoaderBasedFactoryBean implements BeanClassLoaderAware {
 
 	@Override

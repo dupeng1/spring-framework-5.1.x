@@ -47,6 +47,7 @@ import org.springframework.util.ClassUtils;
  * @see #setBeanWiringInfoResolver
  * @see ClassNameBeanWiringInfoResolver
  */
+//配置bean的便利基类，它可以对对象进行依赖注入。典型应用就是作为切面的子类使用
 public class BeanConfigurerSupport implements BeanFactoryAware, InitializingBean, DisposableBean {
 
 	/** Logger available to subclasses. */

@@ -54,6 +54,7 @@ import org.springframework.util.StringUtils;
  * @see RootBeanDefinition
  * @see ChildBeanDefinition
  */
+//具体、成熟BeanDefinition类的基类，构造出RootBeanDefinition和ChildBeanDefinition的通用属性
 @SuppressWarnings("serial")
 public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccessor
 		implements BeanDefinition, Cloneable {

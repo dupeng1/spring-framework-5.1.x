@@ -42,6 +42,7 @@ import org.springframework.beans.BeansException;
  * @see BeanPostProcessor
  * @see PropertyResourceConfigurer
  */
+//允许对一个applicationContext中的bean definition进行定制修改的工厂钩子，修改context内含的bean factory中bean的属性值
 @FunctionalInterface
 public interface BeanFactoryPostProcessor {
 

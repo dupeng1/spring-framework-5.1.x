@@ -47,6 +47,7 @@ import org.springframework.util.ClassUtils;
  * @since 2.5
  * @see org.springframework.beans.factory.annotation.Qualifier
  */
+//继承了BeanFactoryPostProcessor，它使自定义的自动绑定qualifier类型的注册更便利
 public class CustomAutowireConfigurer implements BeanFactoryPostProcessor, BeanClassLoaderAware, Ordered {
 
 	private int order = Ordered.LOWEST_PRECEDENCE;  // default: same as non-Ordered

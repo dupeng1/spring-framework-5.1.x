@@ -60,6 +60,7 @@ import org.springframework.util.ReflectionUtils;
  * @see BeanWrapper
  * @see PropertyEditorRegistrySupport
  */
+//BeanWrapper的默认实现。可以根据需求，将集合与数组的值转换到对应目标对象的集合和数组。自定义属性编辑器通过属性编辑器的setValue，setAsText方法实现这些转换功能
 public class BeanWrapperImpl extends AbstractNestablePropertyAccessor implements BeanWrapper {
 
 	/**

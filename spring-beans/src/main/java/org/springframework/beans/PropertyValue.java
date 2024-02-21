@@ -39,6 +39,7 @@ import org.springframework.util.ObjectUtils;
  * @see PropertyValues
  * @see BeanWrapper
  */
+//用来保存一个bean单独属性值信息，用对象来保存PropertyValue（name, value）信息，相对于map保存可以提供更大的灵活性。
 @SuppressWarnings("serial")
 public class PropertyValue extends BeanMetadataAttributeAccessor implements Serializable {
 

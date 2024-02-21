@@ -78,6 +78,7 @@ import org.springframework.util.StringUtils;
  * @see #instantiateUsingFactoryMethod
  * @see AbstractAutowireCapableBeanFactory
  */
+//解析构造函数和工程方法的代理。对构造函数的解析主要通过参数匹配来实现
 class ConstructorResolver {
 
 	private static final Object[] EMPTY_ARGS = new Object[0];

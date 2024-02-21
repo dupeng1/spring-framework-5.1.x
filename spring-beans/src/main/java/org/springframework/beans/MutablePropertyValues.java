@@ -41,6 +41,7 @@ import org.springframework.util.StringUtils;
  * @author Rob Harrop
  * @since 13 May 2001
  */
+//PropertyValues接口的默认实现，提供了对属性的一些简单操作，比如get、add、set、merge、remove方法等
 @SuppressWarnings("serial")
 public class MutablePropertyValues implements PropertyValues, Serializable {
 

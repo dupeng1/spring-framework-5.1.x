@@ -30,6 +30,7 @@ import org.springframework.util.ObjectUtils;
  * @author Chris Beams
  * @author Juergen Hoeller
  */
+//抽象类，PropertyDescriptor内部使用。PropertyDescriptor(属性描述器)在软件包 java.beans中，用来表示JavaBean 通过存储器方法导出的一个属性。
 abstract class PropertyDescriptorUtils {
 
 	/**

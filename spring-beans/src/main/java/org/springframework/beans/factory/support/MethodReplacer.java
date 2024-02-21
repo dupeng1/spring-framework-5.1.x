@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
  * @author Rod Johnson
  * @since 1.1
  */
+//一个可以重新定义IOC容器对象的所有方法的接口：方法注入是依赖注入的一种形式
 public interface MethodReplacer {
 
 	/**

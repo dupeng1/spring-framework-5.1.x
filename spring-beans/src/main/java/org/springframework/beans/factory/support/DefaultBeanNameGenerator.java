@@ -25,6 +25,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
  * @author Juergen Hoeller
  * @since 2.0.3
  */
+//BeanNameGenerator接口的默认实现，代理BeanDefinitionReaderUtils.generateBeanName(BeanDefinition, BeanDefinitionRegistry)方法。
 public class DefaultBeanNameGenerator implements BeanNameGenerator {
 
 	@Override

@@ -26,6 +26,7 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//代表了构造参数
 public class ConstructorArgumentEntry implements ParseState.Entry {
 
 	private final int index;

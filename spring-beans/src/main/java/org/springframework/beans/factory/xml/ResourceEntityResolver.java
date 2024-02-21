@@ -51,6 +51,7 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.core.io.ResourceLoader
  * @see org.springframework.context.ApplicationContext
  */
+//继承自EntityResolver，通过ResourceLoader来解析实体的引用
 public class ResourceEntityResolver extends DelegatingEntityResolver {
 
 	private static final Log logger = LogFactory.getLog(ResourceEntityResolver.class);

@@ -24,6 +24,7 @@ package org.springframework.beans.factory.config;
  * @since 5.0
  * @see org.springframework.beans.factory.support.BeanDefinitionBuilder#applyCustomizers
  */
+//定制一个给定的bean definition的回调函数，用在Lambda 表达式或者方法引用中
 @FunctionalInterface
 public interface BeanDefinitionCustomizer {
 

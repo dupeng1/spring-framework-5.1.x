@@ -39,6 +39,7 @@ import org.springframework.lang.Nullable;
  * @since 03.11.2003
  * @see org.springframework.context.support.AbstractApplicationContext#getBeanFactory()
  */
+//将会被大部分ListablebeanFactory实现的配置接口。除了ConfigurableBeanFactory，该接口也提供分析和修改bean definitions的功能函数，也能预实例化单例对象
 public interface ConfigurableListableBeanFactory
 		extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {
 

@@ -25,6 +25,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0
  */
+//传送配置源对象的超级接口
 public interface BeanMetadataElement {
 
 	/**

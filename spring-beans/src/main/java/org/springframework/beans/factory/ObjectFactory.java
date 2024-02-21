@@ -36,6 +36,7 @@ import org.springframework.beans.BeansException;
  * @param <T> the object type
  * @see FactoryBean
  */
+//一个对象工厂，当触发时会返回所有对象的实例（可以是共享的或者独立的）
 @FunctionalInterface
 public interface ObjectFactory<T> {
 

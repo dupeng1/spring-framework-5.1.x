@@ -24,6 +24,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
  * @author Juergen Hoeller
  * @since 2.0.3
  */
+//对beanDefinition产生bean名称的策略接口
 public interface BeanNameGenerator {
 
 	/**

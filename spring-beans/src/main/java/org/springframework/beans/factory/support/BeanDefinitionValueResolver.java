@@ -55,6 +55,7 @@ import org.springframework.util.StringUtils;
  * @since 1.2
  * @see AbstractAutowireCapableBeanFactory
  */
+//主要用在bean工厂实施中，解析bean definition对象中的value，根据目标bean实例转换成真正的值
 class BeanDefinitionValueResolver {
 
 	private final AbstractBeanFactory beanFactory;

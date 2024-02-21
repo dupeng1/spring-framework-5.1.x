@@ -31,6 +31,7 @@ import org.springframework.lang.Nullable;
  *
  * @author Juergen Hoeller
  */
+//beanfactory在试图通过bean definition创建一个bean时遇到错误而抛出的异常
 @SuppressWarnings("serial")
 public class BeanCreationException extends FatalBeanException {
 

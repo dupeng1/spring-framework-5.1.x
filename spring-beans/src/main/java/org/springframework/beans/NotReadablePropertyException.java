@@ -23,6 +23,7 @@ package org.springframework.beans;
  * @author Juergen Hoeller
  * @since 1.0.2
  */
+//当试图获取一个不可读属性的属性值时抛出的异常，典型场景bean属性没有get方法
 @SuppressWarnings("serial")
 public class NotReadablePropertyException extends InvalidPropertyException {
 

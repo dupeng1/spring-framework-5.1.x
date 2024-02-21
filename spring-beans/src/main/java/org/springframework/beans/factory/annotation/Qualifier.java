@@ -33,6 +33,7 @@ import java.lang.annotation.Target;
  * @since 2.5
  * @see Autowired
  */
+//限定描述符，用于细粒度选择候选者。@Qualifier限定描述符除了能根据名字进行注入，但能进行更细粒度的控制如何选择候选者。@Qualifier(value = "限定标识符")
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited

@@ -35,6 +35,7 @@ import org.springframework.util.ObjectUtils;
  * @author Sam Brannen
  * @since 1.1
  */
+//表示重写对象，它针对IOC容器所管理对象的方法的重写
 public abstract class MethodOverride implements BeanMetadataElement {
 
 	private final String methodName;
