@@ -1,0 +1,6 @@
+org.springframework.beans：包含了操作Java bean的接口和类
+org.springframework.beans.annotation：提供对Java注解处理
+org.springframework.beans.propertyeditors：属性编辑器，用来将string类型的值转换为object类型
+org.springframework.beans.support：org.springframework.beans的支持包，比如一组bean的排序和保存工具类
+org.springframework.beans.factory：实现spring轻量级IOC容器的核心包
+org.springframework.beans.factory.annotation：配置基于注解的bean
