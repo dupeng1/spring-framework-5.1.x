@@ -32,7 +32,7 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.factory.support.DefaultSingletonBeanRegistry
  * @see org.springframework.beans.factory.support.AbstractBeanFactory
  */
-//定义了共享bean实例的注册接口。
+//定义了单例bean实例的注册及获取。
 public interface SingletonBeanRegistry {
 
 	/**
@@ -56,6 +56,7 @@ public interface SingletonBeanRegistry {
 	 * @see org.springframework.beans.factory.DisposableBean#destroy
 	 * @see org.springframework.beans.factory.support.BeanDefinitionRegistry#registerBeanDefinition
 	 */
+	//注册单例对象
 	void registerSingleton(String beanName, Object singletonObject);
 
 	/**

@@ -139,6 +139,8 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @return the new bean instance
 	 * @throws BeansException if instantiation or wiring failed
 	 */
+	//完整地创建一个给定类的新的实例，为这个实例执行所有的初始化操作，包括所有可以使用的BeanPostProcessor
+	//也会为bean内部的注解字段和方法调用所有标准的bean初始化回调
 	<T> T createBean(Class<T> beanClass) throws BeansException;
 
 	/**
@@ -151,6 +153,8 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @param existingBean the existing bean instance
 	 * @throws BeansException if wiring failed
 	 */
+	//通过应用初始化之后(after-instantiation)的回调以及bean属性的后置处理(post-processing)来对给定Bean内部的属性进行装配
+	//这个基本上是为了内部的注解字段和方法,也是为了新实例或反序列化实例而扩展的
 	void autowireBean(Object existingBean) throws BeansException;
 
 	/**
@@ -170,6 +174,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @throws BeansException if the initialization failed
 	 * @see #initializeBean
 	 */
+	//配置给定名字的Bean,包括注入Bean的属性,应用Bean的属性值,应用像setBeanName,setBeanFactory这类的factory回调,也会为Bean应用所有的BeanPostProcessors
 	Object configureBean(Object existingBean, String beanName) throws BeansException;
 
 
@@ -222,6 +227,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @see #applyBeanPostProcessorsBeforeInitialization
 	 * @see #applyBeanPostProcessorsAfterInitialization
 	 */
+	//使用指定的装配策略来为指定的类型实例化一个新的Bean实例
 	Object autowire(Class<?> beanClass, int autowireMode, boolean dependencyCheck) throws BeansException;
 
 	/**

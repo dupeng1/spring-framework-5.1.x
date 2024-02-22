@@ -31,6 +31,12 @@ import org.springframework.lang.Nullable;
  * @since 07.07.2003
  * @see org.springframework.beans.factory.config.ConfigurableBeanFactory#setParentBeanFactory
  */
+
+/**
+ * 它表示具有层次结构的BeanFactory，允许将多个BeanFactory组成层次结构，其中包括一个父级BeanFactory和零个或多个子级BeanFactory
+ * 通过HierarchicalBeanFactory，可以构建更具灵活性的BeanFactory层次结构，每个级别可以自定义其特定的bean配置，使得整个容器更好地满足不同层级的组件需求
+ */
+
 //子接口，实现此接口的bean factory具有层次结构即可以获取父BeanFactory
 //方法getParentBeanFactory()获取父BeanFactory；方法containsLocalBean()判断本地bean factory是否含有指定名字的bean，不考虑在父BeanFactory中的情况
 public interface HierarchicalBeanFactory extends BeanFactory {
@@ -38,6 +44,7 @@ public interface HierarchicalBeanFactory extends BeanFactory {
 	/**
 	 * Return the parent bean factory, or {@code null} if there is none.
 	 */
+	//获取当前BeanFactory的父级BeanFactory
 	@Nullable
 	BeanFactory getParentBeanFactory();
 
@@ -50,6 +57,7 @@ public interface HierarchicalBeanFactory extends BeanFactory {
 	 * @return whether a bean with the given name is defined in the local factory
 	 * @see BeanFactory#containsBean
 	 */
+	//判断当前BeanFactory中是否包含指定名称的本地Bean
 	boolean containsLocalBean(String name);
 
 }

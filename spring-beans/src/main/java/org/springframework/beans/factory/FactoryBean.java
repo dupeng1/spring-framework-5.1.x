@@ -56,7 +56,12 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.aop.framework.ProxyFactoryBean
  * @see org.springframework.jndi.JndiObjectFactoryBean
  */
-//实现了此接口的bean不能看做一个通常意义上的bean，一个FactoryBean虽然以bean的形式来定义，但它暴露的对象通常是它创建的对象，而不是作为一个bean实例暴露自己。
+/**
+ * 实现了此接口的bean不能看做一个通常意义上的bean，一个FactoryBean虽然以bean的形式来定义，但它暴露的对象通常是它创建的对象，而不是作为一个bean实例暴露自己。
+ * 在调用BeanFactory的getBean方法的时候，在传入的参数bean id前面加一个“&”符号，就可以做到这一点，例如getBean("myBean")将会返回FactoryBean的产品，
+ * 而调用getBean("&myBean")将会返回这个FactoryBean实例本身
+ * @param <T>
+ */
 public interface FactoryBean<T> {
 
 	/**

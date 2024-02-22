@@ -55,7 +55,9 @@ import org.springframework.lang.Nullable;
  * @see HierarchicalBeanFactory
  * @see BeanFactoryUtils
  */
-//beanFactory接口的实现，实现此接口的beanFactory能遍历他们内部的所有bean实例，而不用根据客户请求通过名字一个一个的去搜索bean
+/**
+ * 扩展了一些对工厂内的bean进行汇总统计和迭代的一些接口，实现此接口的beanFactory能遍历他们内部的所有bean实例，而不用根据客户请求通过名字一个一个的去搜索bean
+ */
 public interface ListableBeanFactory extends BeanFactory {
 
 	/**
