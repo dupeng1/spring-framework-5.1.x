@@ -263,7 +263,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 						singletonObject = singletonFactory.getObject();
 						// singletonFactories产生的对象放入earlySingletonObjects中
 						this.earlySingletonObjects.put(beanName, singletonObject);
-						// 已经产生过一次对象了，所以就不能再用了，后面直接用earlySingletonObjects获取
+						// 因为单例bean只会被创建一次，所有两者是互斥的，已经产生过一次对象了，所以就不能再用了，后面直接用earlySingletonObjects获取
 						this.singletonFactories.remove(beanName);
 					}
 				}
@@ -284,7 +284,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(beanName, "Bean name must not be null");
 		synchronized (this.singletonObjects) {
-			//完全实例化的bean缓存有直接返回
+			// 从缓存中检查一遍
+			// 因为 singleton 模式其实就是复用已经创建的 bean 所以这步骤必须检查
+			// 完全实例化的bean缓存有直接返回
 			Object singletonObject = this.singletonObjects.get(beanName);
 			if (singletonObject == null) {
 				// 当前是否处于Bean销毁状态，若处于，则抛出异常，此时不能获得Bean
@@ -296,7 +298,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				if (logger.isDebugEnabled()) {
 					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
 				}
-				//单例被创建前
+				// 加载前置处理，记录加载单例 bean 之前的加载状态
 				beforeSingletonCreation(beanName);
 				boolean newSingleton = false;
 				// 如果当前没有异常，初始化异常集合
@@ -330,7 +332,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					if (recordSuppressedExceptions) {
 						this.suppressedExceptions = null;
 					}
-					//执行单例创建后操作
+					// 后置处理
 					afterSingletonCreation(beanName);
 				}
 				//如果创建一个单例，将单例加到单例对象集中
@@ -554,18 +556,19 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	private boolean isDependent(String beanName, String dependentBeanName, @Nullable Set<String> alreadySeen) {
+		// alreadySeen 已经检测的依赖 bean
 		if (alreadySeen != null && alreadySeen.contains(beanName)) {
 			return false;
 		}
-		//将bean的别名解析为规范名称
+		//将bean的别名解析为规范名称，获取原始 beanName
 		String canonicalName = canonicalName(beanName);
-		//获取bean依赖的beanName集合
+		//获取当前beanName的依赖集合
 		Set<String> dependentBeans = this.dependentBeanMap.get(canonicalName);
-		//如果给定的bean没有依赖的bean,则返回false
+		//不存在，则返回false
 		if (dependentBeans == null) {
 			return false;
 		}
-		//如果指定的bean所依赖的bean集合包含指定的依赖bean，则返回true
+		//如果依赖集合包含指定的依赖bean，则返回true
 		if (dependentBeans.contains(dependentBeanName)) {
 			return true;
 		}
