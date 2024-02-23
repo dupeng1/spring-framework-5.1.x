@@ -28,7 +28,7 @@ import org.springframework.lang.Nullable;
  * @author Mark Fisher
  * @since 2.5
  */
-//是一个策略接口，由它来决定特定的bean definition对特定的依赖是否可以作为一个自动绑定的候选项
+//判断 DependencyDescriptor 是否是可注入对象，默认实现为 ContextAnnotationAutowireCandidateResolver
 public interface AutowireCandidateResolver {
 
 	/**
