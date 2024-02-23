@@ -60,6 +60,16 @@ import org.springframework.util.PatternMatchUtils;
  * @see org.springframework.stereotype.Service
  * @see org.springframework.stereotype.Controller
  */
+
+/**
+ * 首先，通过ResourcePatternResolver获得指定包路径下的所有.class文件（Spring源码中将此文件包装成了Resource对象）
+ * 遍历每个Resource对象
+ * 利用MetadataReaderFactory解析Resource对象得到MetadataReader（在Spring源码中MetadataReaderFactory具体的实现类为CachingMetadataReaderFactory，MetadataReader的具体实现类为SimpleMetadataReader）
+ * 利用MetadataReader进行excludeFilters和includeFilters，以及条件注解@Conditional的筛选（条件注解并不难理解：某个类上是否存在@Conditional注解，如果存在则调用注解中所指定的类的match方法进行匹配，匹配成功则通过筛选，匹配失败则pass掉。）
+ * 筛选通过后，基于metadataReader生成ScannedGenericBeanDefinition
+ * 再基于metadataReader判断是不是对应的类是不是接口或抽象类
+ * 如果筛选通过，那么就表示扫描到了一个Bean，将ScannedGenericBeanDefinition加入结果集
+ */
 public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateComponentProvider {
 
 	private final BeanDefinitionRegistry registry;
@@ -248,15 +258,17 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * @return number of beans registered
 	 */
 	public int scan(String... basePackages) {
+		//其中这个registry，在运行的时候其实就是DefaultListableBeanFactory，DefaultListableBeanFactory实现了这个接口
+		//查看当前容器里存在多少个Bean
 		int beanCountAtScanStart = this.registry.getBeanDefinitionCount();
-
+		//扫描，核心看这里
 		doScan(basePackages);
 
 		// Register annotation config processors, if necessary.
 		if (this.includeAnnotationConfig) {
 			AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
 		}
-
+		// 返回本次扫描出多少个BeanDefinition
 		return (this.registry.getBeanDefinitionCount() - beanCountAtScanStart);
 	}
 
@@ -272,22 +284,35 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 		for (String basePackage : basePackages) {
+			//1. 核心扫描逻辑在这个方法，会走到父类去
+			//注意返回结果BeanDefinition里，只设置了部分属性：
+			//	只在Object beanClass属性上设置了String className
+			//	以及class对应的Resource资源文件、元数据注解信息
+			//  其他信息都还没处理
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
 			for (BeanDefinition candidate : candidates) {
+				//解析Scope注解
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
 				candidate.setScope(scopeMetadata.getScopeName());
+				//2. 生成Bean的名字
 				String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
 				if (candidate instanceof AbstractBeanDefinition) {
+					//3. 给BeanDefinition设置一些默认的值
 					postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
 				}
 				if (candidate instanceof AnnotatedBeanDefinition) {
+					//4. 解析@Lazy、@Primary、@DependsOn、@Role、@Description，并给BeanDefinition赋值
 					AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
 				}
+				//5. 检查Spring容器中是否已经存在该beanName
 				if (checkCandidate(beanName, candidate)) {
+					//将BeanDefinition和beanName封装成一个Holder对象
+					//所以其实BeanDefinition里是没有beanName属性的，另外应该也是考虑到实现别名功能吧
 					BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(candidate, beanName);
 					definitionHolder =
 							AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 					beanDefinitions.add(definitionHolder);
+					//6. 注册
 					registerBeanDefinition(definitionHolder, this.registry);
 				}
 			}
@@ -340,9 +365,11 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		if (originatingDef != null) {
 			existingDef = originatingDef;
 		}
+		//是否可兼容，如果兼容返回false表示不会重新注册到Spring容器中
 		if (isCompatible(beanDefinition, existingDef)) {
 			return false;
 		}
+		//如果冲突则会抛出异常
 		throw new ConflictingBeanDefinitionException("Annotation-specified bean name '" + beanName +
 				"' for bean class [" + beanDefinition.getBeanClassName() + "] conflicts with existing, " +
 				"non-compatible bean definition of same name and class [" + existingDef.getBeanClassName() + "]");
@@ -360,6 +387,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * new definition to be skipped in favor of the existing definition
 	 */
 	protected boolean isCompatible(BeanDefinition newDefinition, BeanDefinition existingDefinition) {
+		//主要针对扫描的情况!!!
+		//	判断BeanDefinition的source是否相同、或者BeanDefinition本身是否相同
 		return (!(existingDefinition instanceof ScannedGenericBeanDefinition) ||  // explicitly registered overriding bean
 				(newDefinition.getSource() != null && newDefinition.getSource().equals(existingDefinition.getSource())) ||  // scanned same file twice
 				newDefinition.equals(existingDefinition));  // scanned equivalent class twice

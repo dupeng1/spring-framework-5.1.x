@@ -175,6 +175,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 
 	@Override
 	public boolean requiresDestruction(Object bean) {
+		//判断当前Bean中是否有销毁方法，即被@PreDestroy标记的方法
 		return findLifecycleMetadata(bean.getClass()).hasDestroyMethods();
 	}
 
@@ -182,6 +183,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 	private LifecycleMetadata findLifecycleMetadata(Class<?> clazz) {
 		if (this.lifecycleMetadataCache == null) {
 			// Happens after deserialization, during destruction...
+			// 这里 构建生命周期的元数据
 			return buildLifecycleMetadata(clazz);
 		}
 		// Quick check on the concurrent map first, with minimal locking.
@@ -190,6 +192,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 			synchronized (this.lifecycleMetadataCache) {
 				metadata = this.lifecycleMetadataCache.get(clazz);
 				if (metadata == null) {
+					// 这里 构建生命周期的元数据
 					metadata = buildLifecycleMetadata(clazz);
 					this.lifecycleMetadataCache.put(clazz, metadata);
 				}
@@ -199,6 +202,8 @@ public class InitDestroyAnnotationBeanPostProcessor
 		return metadata;
 	}
 
+	//此方法会收集@PostConstruct（初始化前）、@PreDestroy（销毁前）标记的方法
+	//initAnnotationType和destroyAnnotationType的注解类型是在子类CommonAnnotationBeanPostProcessor
 	private LifecycleMetadata buildLifecycleMetadata(final Class<?> clazz) {
 		List<LifecycleElement> initMethods = new ArrayList<>();
 		List<LifecycleElement> destroyMethods = new ArrayList<>();
@@ -207,8 +212,9 @@ public class InitDestroyAnnotationBeanPostProcessor
 		do {
 			final List<LifecycleElement> currInitMethods = new ArrayList<>();
 			final List<LifecycleElement> currDestroyMethods = new ArrayList<>();
-
+			//遍历当前类中的所有方法
 			ReflectionUtils.doWithLocalMethods(targetClass, method -> {
+				//initAnnotationType就是初始化前方法对应的注解类型
 				if (this.initAnnotationType != null && method.isAnnotationPresent(this.initAnnotationType)) {
 					LifecycleElement element = new LifecycleElement(method);
 					currInitMethods.add(element);
@@ -216,6 +222,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 						logger.trace("Found init method on class [" + clazz.getName() + "]: " + method);
 					}
 				}
+				//destroyAnnotationType是销毁前方法对应的注解类型
 				if (this.destroyAnnotationType != null && method.isAnnotationPresent(this.destroyAnnotationType)) {
 					currDestroyMethods.add(new LifecycleElement(method));
 					if (logger.isTraceEnabled()) {
@@ -223,11 +230,12 @@ public class InitDestroyAnnotationBeanPostProcessor
 					}
 				}
 			});
-
+			//父类的初始化方法在前面（即先执行父类的初始化方法，再执行子类的）
 			initMethods.addAll(0, currInitMethods);
 			destroyMethods.addAll(currDestroyMethods);
 			targetClass = targetClass.getSuperclass();
 		}
+		//注意这里有do while，是为了遍历父类
 		while (targetClass != null && targetClass != Object.class);
 
 		return new LifecycleMetadata(clazz, initMethods, destroyMethods);

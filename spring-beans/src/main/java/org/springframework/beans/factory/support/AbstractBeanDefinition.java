@@ -433,6 +433,8 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * @see #resolveBeanClass(ClassLoader)
 	 */
 	public boolean hasBeanClass() {
+		//之前说过一开始扫描生成的BeanDefinition这里beanClass其实是class的类名，String格式
+		//加载之后才会重新赋值为Class
 		return (this.beanClass instanceof Class);
 	}
 
@@ -451,6 +453,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 			return null;
 		}
 		Class<?> resolvedClass = ClassUtils.forName(className, classLoader);
+		//这里重新覆盖设置了beanClass属性
 		this.beanClass = resolvedClass;
 		return resolvedClass;
 	}

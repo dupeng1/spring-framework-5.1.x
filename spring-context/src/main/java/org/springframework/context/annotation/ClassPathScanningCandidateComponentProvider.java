@@ -308,11 +308,28 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * @param basePackage the package to check for annotated classes
 	 * @return a corresponding Set of autodetected bean definitions
 	 */
+	/**
+	 * 背景：项目里有很多类需要被Spring扫描，按照正常逻辑Spring可能需要扫描很久。
+	 * 如果想要提高扫描性能，Spring提供了一个解决方案：
+	 *
+	 * 直接在一个文件里面配置，告诉Spring当前项目里我们有哪些Component，Spring就不用自己扫描了，直接读文件。
+	 * 操作：
+	 * 在resources -> META-INF 下创建spring.components文件
+	 * 直接定义当前项目里哪些类是Component
+	 * 即配置了spring.components文件，Spring就不会真的扫描了，直接从spring.components文件里找当前所能匹配的Bean。
+	 * @param basePackage
+	 * @return
+	 */
 	public Set<BeanDefinition> findCandidateComponents(String basePackage) {
 		if (this.componentsIndex != null && indexSupportsIncludeFilters()) {
 			return addCandidateComponentsFromIndex(this.componentsIndex, basePackage);
 		}
 		else {
+			//大部分走这里
+			//注意此方法返回的BeanDefinition
+			//	只在Object beanClass属性上设置了String className
+			//  以及class对应的Resource资源文件、元数据注解信息
+			//	其他属性都还没有处理
 			return scanCandidateComponents(basePackage);
 		}
 	}
@@ -374,15 +391,19 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		Set<BeanDefinition> candidates = new LinkedHashSet<>();
 		try {
 			Set<String> types = new HashSet<>();
+			//遍历过滤器
 			for (TypeFilter filter : this.includeFilters) {
+				//过滤器对应的"索引类型"
 				String stereotype = extractStereotype(filter);
 				if (stereotype == null) {
 					throw new IllegalArgumentException("Failed to extract stereotype from " + filter);
 				}
+				//主要看这
 				types.addAll(index.getCandidateTypes(basePackage, stereotype));
 			}
 			boolean traceEnabled = logger.isTraceEnabled();
 			boolean debugEnabled = logger.isDebugEnabled();
+			//这里后面的逻辑和正常扫描是一样的
 			for (String type : types) {
 				MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(type);
 				if (isCandidateComponent(metadataReader)) {
@@ -414,24 +435,36 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	private Set<BeanDefinition> scanCandidateComponents(String basePackage) {
+		//basePackage包路径，格式比如：com.yth.service
 		Set<BeanDefinition> candidates = new LinkedHashSet<>();
 		try {
+			//packageSearchPath = classpath*:com/yth/service/**/*.class
+			//因此只会找当前包路径下的class文件
 			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
 			boolean traceEnabled = logger.isTraceEnabled();
 			boolean debugEnabled = logger.isDebugEnabled();
+			//遍历每一个class文件
 			for (Resource resource : resources) {
 				if (traceEnabled) {
 					logger.trace("Scanning " + resource);
 				}
 				if (resource.isReadable()) {
 					try {
+						//元数据读取器，利用asm技术读取类的信息（上一章提过）
+						//在Spring源码中MetadataReaderFactory具体的实现类为CachingMetadataReaderFactory，
+						// MetadataReader的具体实现类为SimpleMetadataReader
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
+						//1.1 通过元数据读取器，判断是否是候选Bean
+						//这里判断主要包含：excluteFilters、includeFilters、@Conditional
 						if (isCandidateComponent(metadataReader)) {
+							//1.2 构造ScannedGenericBeanDefinition
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setResource(resource);
 							sbd.setSource(resource);
+							//1.3 判断当前BeanDefinition是否是候选Bean
+							//主要判断类是否是独立的、是否是具体类..
 							if (isCandidateComponent(sbd)) {
 								if (debugEnabled) {
 									logger.debug("Identified candidate component class: " + resource);
@@ -488,13 +521,18 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * @return whether the class qualifies as a candidate component
 	 */
 	protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOException {
+		//排除过滤器，判断
 		for (TypeFilter tf : this.excludeFilters) {
 			if (tf.match(metadataReader, getMetadataReaderFactory())) {
 				return false;
 			}
 		}
+		//包含过滤器判断
+		//符合includeFilters的会进行条件匹配，通过了才是Bean，includeFilters包含AnnotationTypeFilter
 		for (TypeFilter tf : this.includeFilters) {
+			//默认的includeFilter会看有没有@Component注解
 			if (tf.match(metadataReader, getMetadataReaderFactory())) {
+				//另外会看是否符合@Conditional的条件
 				return isConditionMatch(metadataReader);
 			}
 		}
@@ -525,6 +563,13 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 */
 	protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
 		AnnotationMetadata metadata = beanDefinition.getMetadata();
+		//要求类是独立的，且
+		//	是具体类
+		//	或抽象类，但是有@Lookup注解标记的方法
+		//isIndependent：是否独立，内部类Member，就不属于独立的，Member2是静态内部类，是独立的
+		//isConcrete：是否是具体的，即不是接口、也不是抽象类
+		//isAbstract：是否是抽象类
+		//hasAnnotatedMethods(Lookup.class.getName())：判断是否有@LookUp注解
 		return (metadata.isIndependent() && (metadata.isConcrete() ||
 				(metadata.isAbstract() && metadata.hasAnnotatedMethods(Lookup.class.getName()))));
 	}

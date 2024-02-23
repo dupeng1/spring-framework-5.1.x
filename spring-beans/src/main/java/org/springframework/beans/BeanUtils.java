@@ -581,7 +581,12 @@ public abstract class BeanUtils {
 	 * @see #isSimpleProperty(Class)
 	 */
 	public static boolean isSimpleValueType(Class<?> type) {
+		//isPrimitiveOrWrapper方法中，void/Void也会返回true，所以这里一开始就单独判断了一下。
 		return (type != void.class && type != Void.class &&
+		//以下这些都属于简单类型
+		//isPrimitiveOrWrapper：检查给定的类是否代表
+		//		一个原语(即boolean、byte、char、short、int、long、float或double)、void
+		//		或这些类型的包装器(即Boolean、Byte, Character, Short, Integer, Long, Float, Double, or Void)。
 				(ClassUtils.isPrimitiveOrWrapper(type) ||
 				Enum.class.isAssignableFrom(type) ||
 				CharSequence.class.isAssignableFrom(type) ||

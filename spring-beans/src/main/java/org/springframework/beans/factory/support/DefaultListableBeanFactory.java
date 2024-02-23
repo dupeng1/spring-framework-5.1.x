@@ -887,9 +887,14 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		// Trigger initialization of all non-lazy singleton beans...
 		for (String beanName : beanNames) {
+			//1. 合并BeanDefinition
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
+			//判断BeanDefinition，非抽象，是单例，非懒加载
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
+				//2. FactoryBean逻辑
 				if (isFactoryBean(beanName)) {
+					//FACTORY_BEAN_PREFIX="&"
+					//这里创建的是FactoryBean本身的对象
 					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
 					if (bean instanceof FactoryBean) {
 						final FactoryBean<?> factory = (FactoryBean<?>) bean;
@@ -900,23 +905,32 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 									getAccessControlContext());
 						}
 						else {
+							//如果我们FactoryBean实现的是SmartFactoryBean接口
+							//并重写了isEagerInit方法，返回true
+							//那么Spring容器启动的时候，就会把改FactoryBean对应的getObject()方法的对象生成，否则只有getBean的时候才会生成。
 							isEagerInit = (factory instanceof SmartFactoryBean &&
 									((SmartFactoryBean<?>) factory).isEagerInit());
 						}
 						if (isEagerInit) {
+							//创建真正的Bean对象（这里是FactoryBean.getObject()对象）
 							getBean(beanName);
 						}
 					}
 				}
 				else {
+					//3. 创建Bean对象
 					getBean(beanName);
 				}
 			}
 		}
 
 		// Trigger post-initialization callback for all applicable beans...
+		// 4. 所有非懒加载单例Bean都创建完成后
 		for (String beanName : beanNames) {
+			// 从单例池里拿beanName对应的单例Bean
 			Object singletonInstance = getSingleton(beanName);
+			// 判断单例Bean是否实现了SmartInitializingSingleton接口
+			// 这个接口也属于Spring生命周期里的一种接口
 			if (singletonInstance instanceof SmartInitializingSingleton) {
 				final SmartInitializingSingleton smartSingleton = (SmartInitializingSingleton) singletonInstance;
 				if (System.getSecurityManager() != null) {
@@ -926,6 +940,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					}, getAccessControlContext());
 				}
 				else {
+					//触发afterSingletonsInstantiated方法
 					smartSingleton.afterSingletonsInstantiated();
 				}
 			}
@@ -1115,6 +1130,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	@Override
 	public void destroySingletons() {
+		//调用父类
 		super.destroySingletons();
 		updateManualSingletonNames(Set::clear, set -> !set.isEmpty());
 		clearByTypeCache();

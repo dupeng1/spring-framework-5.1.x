@@ -27,6 +27,7 @@ import org.springframework.core.type.ClassMetadata;
  * @author Juergen Hoeller
  * @since 2.5
  */
+//类的元数据读取器，主要包含了一个AnnotationMetadata
 public interface MetadataReader {
 
 	/**

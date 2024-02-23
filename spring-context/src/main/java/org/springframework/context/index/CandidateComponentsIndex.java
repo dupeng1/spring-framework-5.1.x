@@ -66,10 +66,14 @@ public class CandidateComponentsIndex {
 	 * or an empty set if none has been found for the specified {@code basePackage}
 	 */
 	public Set<String> getCandidateTypes(String basePackage, String stereotype) {
+		//这里index其实就是spring.components文件的内容
+		//  文件里左边是类型，右边是stereotype，可以理解为“索引类型”
 		List<Entry> candidates = this.index.get(stereotype);
 		if (candidates != null) {
 			return candidates.parallelStream()
+					//匹配包路径
 					.filter(t -> t.match(basePackage))
+					//返回type，就是类名
 					.map(t -> t.type)
 					.collect(Collectors.toSet());
 		}

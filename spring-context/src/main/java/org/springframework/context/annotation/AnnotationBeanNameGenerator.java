@@ -69,8 +69,9 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	@Override
 	public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
 		if (definition instanceof AnnotatedBeanDefinition) {
-			// 根据注解生成beanName
+			// 获取注解@Component value属性所指定的BeanName，根据注解生成beanName
 			String beanName = determineBeanNameFromAnnotation((AnnotatedBeanDefinition) definition);
+			//有可能没配，返回空
 			if (StringUtils.hasText(beanName)) {
 				// Explicit bean name found.
 				return beanName;
@@ -156,6 +157,8 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	 * @param definition the bean definition to build a bean name for
 	 * @return the default bean name (never {@code null})
 	 */
+	//默认的BeanName，核心方法就是Introspector.decapitalize（JDK提供的）
+	//默认beanName：前两个字母都是大写直接返回，否则首字母小写
 	protected String buildDefaultBeanName(BeanDefinition definition) {
 		// 获取全限定类名
 		String beanClassName = definition.getBeanClassName();

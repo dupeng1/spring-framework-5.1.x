@@ -176,10 +176,21 @@ public abstract class ClassUtils {
 	 * @see Thread#getContextClassLoader()
 	 * @see ClassLoader#getSystemClassLoader()
 	 */
+	/**
+	 * 1、优先返回当前线程中的ClassLoader
+	 * 2、线程中类加载器为null的情况下，返回ClassUtils类的类加载器
+	 * 3、如果ClassUtils类的类加载器为空，那么则表示是Bootstrap类加载器加载的ClassUtils类，那么则返回系统类加载器
+	 */
 	@Nullable
 	public static ClassLoader getDefaultClassLoader() {
 		ClassLoader cl = null;
 		try {
+			//优先获取线程中的类加载器
+			/**
+			 * 而对于部署在tomcat里的应用程序，每个应用程序都会有一个对应的自定义的类加载器，这个类加载器是tomcat写的（目的是隔离每个应用程序），
+			 * 并且tomcat会把这个类加载器设置到线程的上下文里去，而Spring这里就可以通过Thread.currentThread().getContextClassLoader()
+			 * 获取到tomcat设置的自定义类加载器。
+			 */
 			cl = Thread.currentThread().getContextClassLoader();
 		}
 		catch (Throwable ex) {
@@ -187,10 +198,15 @@ public abstract class ClassUtils {
 		}
 		if (cl == null) {
 			// No thread context class loader -> use class loader of this class.
+			//线程中类加载器为null的情况下，获取加载ClassUtils类的类加载器
+			//	ClassUtils.class是放在spring-core这个包里的
+			//	如果spring-core这个包放到了jre/lib里，那getClassLoader就会为null
+			//	因为ClassUtils是被Bootstrap类加载器加载的
 			cl = ClassUtils.class.getClassLoader();
 			if (cl == null) {
 				// getClassLoader() returning null indicates the bootstrap ClassLoader
 				try {
+					//假如ClassUtils是被Bootstrap类加载器加载的，则获取系统类加载器
 					cl = ClassLoader.getSystemClassLoader();
 				}
 				catch (Throwable ex) {

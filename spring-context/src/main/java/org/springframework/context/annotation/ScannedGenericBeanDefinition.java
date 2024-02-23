@@ -45,6 +45,7 @@ import org.springframework.util.Assert;
  * @see org.springframework.core.type.classreading.MetadataReaderFactory
  * @see AnnotatedGenericBeanDefinition
  */
+//目前只是把当前类的名字设置到了BeanDefinition的beanClass属性！BeanDefinition的其他属性还都没有处理。
 @SuppressWarnings("serial")
 public class ScannedGenericBeanDefinition extends GenericBeanDefinition implements AnnotatedBeanDefinition {
 
@@ -59,6 +60,8 @@ public class ScannedGenericBeanDefinition extends GenericBeanDefinition implemen
 	public ScannedGenericBeanDefinition(MetadataReader metadataReader) {
 		Assert.notNull(metadataReader, "MetadataReader must not be null");
 		this.metadata = metadataReader.getAnnotationMetadata();
+		//此时赋值的类型是String，不是Class对象
+		//当真正需要创建这个类实例的时候，才会去加载类的Class对象
 		setBeanClassName(this.metadata.getClassName());
 	}
 

@@ -679,7 +679,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	//销毁指定的实例对象
 	public void destroySingleton(String beanName) {
 		// Remove a registered singleton of the given name, if any.
-		//删除注册表中指定beanName的单实例对象
+		// 先从单例池中移除掉
 		removeSingleton(beanName);
 
 		// Destroy the corresponding DisposableBean instance.
@@ -688,6 +688,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 			//删除注册表中销毁单实例对象
 			disposableBean = (DisposableBean) this.disposableBeans.remove(beanName);
 		}
+		//执行销毁逻辑
 		destroyBean(beanName, disposableBean);
 	}
 
@@ -721,7 +722,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		// 真正的销毁bean
 		if (bean != null) {
 			try {
-				//调用销毁回调
+				//执行destroy方法
+				//这个bean就是DisposableBeanAdapter
 				bean.destroy();
 			}
 			catch (Throwable ex) {
