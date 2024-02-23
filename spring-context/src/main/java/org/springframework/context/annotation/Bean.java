@@ -213,6 +213,17 @@ import org.springframework.core.annotation.AliasFor;
  * @see org.springframework.beans.factory.annotation.Autowired
  * @see org.springframework.beans.factory.annotation.Value
  */
+
+/**
+ * 1、Spring框架的核心注解，用于标记一个方法，表名这个方法返回值应该被注册为Spring容器中的一个对象
+ * 与传统的 XML 配置方式相比，它提供了一种更加简洁和直观的方式来定义 Bean
+ * 2、通常，@Bean 与 @Configuration 注解一起使用，后者标记一个类为 Spring 的配置类
+ * 3、方法名默认作为 Bean 的 ID，但也可以通过 @Bean 的 name 属性自定义
+ * 4、@Bean注解用于标记一个方法，该方法返回的对象会被 Spring 容器管理。这意味着当应用上下文启动时，
+ * 该方法会被调用，并且它的返回值会被添加到容器中作为一个 bean
+ *
+ *
+ */
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -236,6 +247,7 @@ public @interface Bean {
 	 * attribute if no other attributes are declared.
 	 * @see #value
 	 */
+	//这个bean的名称，如果未指定，bean的名称是注解方法的名称
 	@AliasFor("value")
 	String[] name() default {};
 
@@ -251,6 +263,7 @@ public @interface Bean {
 	 * @deprecated as of 5.1, since {@code @Bean} factory method argument resolution and
 	 * {@code @Autowired} processing supersede name/type-based bean property injection
 	 */
+	//是否通过按名称或类型进行自动装配
 	@Deprecated
 	Autowire autowire() default Autowire.NO;
 
@@ -260,6 +273,7 @@ public @interface Bean {
 	 * that are not meant to get in the way of beans of the same type in other places.
 	 * @since 5.1
 	 */
+	//这个bean是否可以作为其他bean的自动注入候选者
 	boolean autowireCandidate() default true;
 
 	/**
@@ -270,6 +284,7 @@ public @interface Bean {
 	 * @see org.springframework.beans.factory.InitializingBean
 	 * @see org.springframework.context.ConfigurableApplicationContext#refresh()
 	 */
+	//在初始化时调用bean实例上的方法，通常，可以在带有@Bean注解的方法的主体中直接以编程方式调用该方法。
 	String initMethod() default "";
 
 	/**
@@ -299,6 +314,7 @@ public @interface Bean {
 	 * @see org.springframework.beans.factory.DisposableBean
 	 * @see org.springframework.context.ConfigurableApplicationContext#close()
 	 */
+	//在关闭应用程序上下文时调用bean实例上的方法的可选名称
 	String destroyMethod() default AbstractBeanDefinition.INFER_METHOD;
 
 }

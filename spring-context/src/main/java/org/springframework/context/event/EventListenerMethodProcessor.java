@@ -59,6 +59,11 @@ import org.springframework.util.CollectionUtils;
  * @see EventListenerFactory
  * @see DefaultEventListenerFactory
  */
+
+/**
+ * 这个类实现了BeanFactoryPostProcessor接口，代表是针对BeanFactory的扩展点。
+ * 它主要用来支持@EventListener注解，将EventListener方法注册为单个ApplicationListener实例。
+ */
 public class EventListenerMethodProcessor
 		implements SmartInitializingSingleton, ApplicationContextAware, BeanFactoryPostProcessor {
 

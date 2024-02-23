@@ -30,6 +30,11 @@ import org.springframework.core.Ordered;
  * @author Stephane Nicoll
  * @since 4.2
  */
+
+/**
+ * 这个类没有实现任何PostProcessor，它不算是一个扩展点，主要是配合EventListenerMethodProcessor一起使用，它是一个工厂，
+ * 用来将EventListener方法生成单个ApplicationListener实例。
+ */
 public class DefaultEventListenerFactory implements EventListenerFactory, Ordered {
 
 	private int order = LOWEST_PRECEDENCE;

@@ -83,6 +83,13 @@ import static org.springframework.context.annotation.AnnotationConfigUtils.CONFI
  * @author Phillip Webb
  * @since 3.0
  */
+
+/**
+ * 1、这个类实现了BeanFactoryPostProcessor接口，用来对BeanFactory进行扩展用的，
+ * 在AnnotationConfigApplicationContext的refresh()方法中，会调用invokeBeanFactoryPostProcessors()方法调用所有的BeanFactoryPostProcessor扩展，
+ * 其中就包含这里的ConfigurationClassPostProcessor
+ * 2、它会完成对@ComponentScan路径下Bean的扫描和注册过程，也就是说，我们自定义的Bean将由这个类完成扫描并注册到BeanFactory中
+ */
 public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPostProcessor,
 		PriorityOrdered, ResourceLoaderAware, BeanClassLoaderAware, EnvironmentAware {
 

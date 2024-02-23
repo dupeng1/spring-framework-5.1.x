@@ -952,7 +952,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			// 这个beanName已经被注册了，下面根据不同的规则 进行处理
 			// 是否允许覆盖bean，用这个新的bean替换已经注册的旧的bean
 			if (!isAllowBeanDefinitionOverriding()) {
-				// 不允许覆盖，抛出异常，beanName冲突
+				// 如果Spring容器不允许重载BeanDefinition，抛出异常，beanName冲突
 				throw new BeanDefinitionOverrideException(beanName, beanDefinition, existingDefinition);
 			}
 			else if (existingDefinition.getRole() < beanDefinition.getRole()) {

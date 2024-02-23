@@ -40,9 +40,13 @@ import org.springframework.util.Assert;
  * @see AnnotatedBeanDefinition#getMetadata()
  * @see org.springframework.core.type.StandardAnnotationMetadata
  */
+
+/**
+ * AnnotatedGenericBeanDefinition是GenericBeanDefinition的子类。
+ */
 @SuppressWarnings("serial")
 public class AnnotatedGenericBeanDefinition extends GenericBeanDefinition implements AnnotatedBeanDefinition {
-
+	//类的注解信息
 	private final AnnotationMetadata metadata;
 
 	@Nullable

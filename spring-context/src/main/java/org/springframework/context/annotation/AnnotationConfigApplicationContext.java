@@ -53,8 +53,10 @@ import org.springframework.util.Assert;
  */
 public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry {
 
+	//主要提供了Bean的读取，以及各种处理器的提前注入，包括了自动注入的处理器（AutowiredAnnotationBeanPostProcessor）
 	private final AnnotatedBeanDefinitionReader reader;
 
+	//主要提供了查询Classpath路径下面的Bean对象，并且转换为BeanDefinition后注册到容器当中
 	private final ClassPathBeanDefinitionScanner scanner;
 
 
@@ -63,7 +65,16 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigApplicationContext() {
+		/**
+		 * 基于注解的BeanClass读取器，读取完是为了注册到容器中
+		 * 1.将BeanClass 解析成 AnnotatedGenericBeanDefinition
+		 * 2.注册BeanDefinition 到 BeanFactory
+		 */
 		this.reader = new AnnotatedBeanDefinitionReader(this);
+		/**
+		 * BeanDefinition扫描器
+		 * 扫描包路径，得到BeanDefinition Set集合
+		 */
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 
@@ -72,6 +83,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * @param beanFactory the DefaultListableBeanFactory instance to use for this context
 	 */
 	public AnnotationConfigApplicationContext(DefaultListableBeanFactory beanFactory) {
+		// 父类方法
 		super(beanFactory);
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
@@ -84,8 +96,25 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * {@link Configuration @Configuration} classes
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
+		/**
+		 * 先调用父类 GenericApplicationContext() 构造方法创建出工厂类 DefaultListableBeanFactory
+		 * DefaultListableBeanFactory 中 又调用父类 AbstractAutowireCapableBeanFactory() 构造方法
+		 * 设置 三个 ignoredDependencyInterfaces 忽略依赖检查和自动装配
+		 * 	BeanNameAware
+		 * 	BeanFactoryAware
+		 * 	BeanClassLoaderAware
+		 */
 		this();
+		/**
+		 * 将传进来的配置类 转换成BeanDefinition 并且put到map中  this.aliasMap.put(alias, name);
+		 * 使用 register() 进行注册的bean定义是使用的 AnnotatedGenericBeanDefinition 类
+		 * 使用 scan() 方法进行扫描的bean定义是使用的 ScannedGenericBeanDefinition 类进行包装
+		 * 默认spring自身的bean定义是使用的 RootBeanDefinition 类进行包装
+		 */
 		register(componentClasses);
+		/**
+		 * 最重要的方法，其中调用12个方法，执行Bean注入以及处理
+		 */
 		refresh();
 	}
 
@@ -157,6 +186,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	@Override
 	public void register(Class<?>... componentClasses) {
 		Assert.notEmpty(componentClasses, "At least one component class must be specified");
+		//调用 AnnotatedBeanDefinitionReader 中的 register() 方法，将传入的Class，包装成BeanDefinition对象注册到容器当中
 		this.reader.register(componentClasses);
 	}
 

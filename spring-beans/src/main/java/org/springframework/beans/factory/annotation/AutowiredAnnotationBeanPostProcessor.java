@@ -115,9 +115,13 @@ import org.springframework.util.StringUtils;
  * @see Autowired
  * @see Value
  */
-//@Autowired注解实现类
-//实现了BeanPostProcessor接口，它自动绑定注解的field，setter方法和任意配置方法。AutowiredAnnotationBeanPostProcessor
-// 间接继承了BeanPostProcessor，它自动绑定注解的field，setter方法和任意的配置方法。当检测到5个java注解时这些成员被注入其中
+/**
+ * 1、@Autowired注解实现类
+ * 实现了BeanPostProcessor接口，它自动绑定注解的field，setter方法和任意配置方法。AutowiredAnnotationBeanPostProcessor
+ * 间接继承了BeanPostProcessor，它自动绑定注解的field，setter方法和任意的配置方法。当检测到5个java注解时这些成员被注入其中
+ * 2、Spring的IOC容器，我们只需要声明Bean，Spring会自动帮我们进行依赖注入，这个活就是AutowiredAnnotationBeanPostProcessor干的。
+ * 它实现了BeanPostProcessor接口，代表要针对Bean进行扩展，依赖注入也属于是针对Bean的一个扩展。
+ */
 public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBeanPostProcessorAdapter
 		implements MergedBeanDefinitionPostProcessor, PriorityOrdered, BeanFactoryAware {
 

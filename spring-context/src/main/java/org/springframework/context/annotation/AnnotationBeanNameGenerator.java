@@ -69,6 +69,7 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	@Override
 	public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
 		if (definition instanceof AnnotatedBeanDefinition) {
+			// 根据注解生成beanName
 			String beanName = determineBeanNameFromAnnotation((AnnotatedBeanDefinition) definition);
 			if (StringUtils.hasText(beanName)) {
 				// Explicit bean name found.
@@ -76,6 +77,7 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 			}
 		}
 		// Fallback: generate a unique default bean name.
+		// 根据默认规则生成beanName
 		return buildDefaultBeanName(definition, registry);
 	}
 
@@ -84,14 +86,20 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	 * @param annotatedDef the annotation-aware bean definition
 	 * @return the bean name, or {@code null} if none is found
 	 */
+	//获取@Component及其子注解、@ManagedBean和@Named注解的value值作为beanName
 	@Nullable
 	protected String determineBeanNameFromAnnotation(AnnotatedBeanDefinition annotatedDef) {
+		// 获取注解类型
 		AnnotationMetadata amd = annotatedDef.getMetadata();
 		Set<String> types = amd.getAnnotationTypes();
+		// 遍历注解类型，设置beanName
 		String beanName = null;
 		for (String type : types) {
+			// 获取注解信息
 			AnnotationAttributes attributes = AnnotationConfigUtils.attributesFor(amd, type);
+			// 校验元注解是否是@Component、注解是否是@Component、@ManagedBean或@Named
 			if (attributes != null && isStereotypeWithNameValue(type, amd.getMetaAnnotationTypes(type), attributes)) {
+				// 获取value属性作为beanName
 				Object value = attributes.get("value");
 				if (value instanceof String) {
 					String strVal = (String) value;
@@ -149,9 +157,12 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 	 * @return the default bean name (never {@code null})
 	 */
 	protected String buildDefaultBeanName(BeanDefinition definition) {
+		// 获取全限定类名
 		String beanClassName = definition.getBeanClassName();
+		// 获取类名：根据包名分隔符（.)、CGLIB代理类分隔符（$$）和内部类分隔符（$）进行字符串处理
 		Assert.state(beanClassName != null, "No bean class name set");
 		String shortClassName = ClassUtils.getShortName(beanClassName);
+		// 类名处理：如果长度大于1且第一二个字母都是大写（或类名为空），直接返回，否则首字母小写返回
 		return Introspector.decapitalize(shortClassName);
 	}
 

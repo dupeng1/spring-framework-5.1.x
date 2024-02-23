@@ -167,6 +167,7 @@ import org.springframework.util.StringUtils;
  * @see javax.persistence.PersistenceUnit
  * @see javax.persistence.PersistenceContext
  */
+//针对JPA的支持，没太了解，不是很重要，忽略
 @SuppressWarnings("serial")
 public class PersistenceAnnotationBeanPostProcessor
 		implements InstantiationAwareBeanPostProcessor, DestructionAwareBeanPostProcessor,
