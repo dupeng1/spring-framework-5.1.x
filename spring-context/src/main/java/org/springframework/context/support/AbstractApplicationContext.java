@@ -954,6 +954,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.
+		//beanFacotory就是DefaultListableBeanFactory
 		beanFactory.preInstantiateSingletons();
 	}
 
@@ -1086,6 +1087,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			try {
 				// Publish shutdown event.
+				// 发布ContextClosedEvent事件
 				publishEvent(new ContextClosedEvent(this));
 			}
 			catch (Throwable ex) {
@@ -1095,6 +1097,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			// Stop all Lifecycle beans, to avoid delays during individual destruction.
 			if (this.lifecycleProcessor != null) {
 				try {
+					//Spring容器生命周期
 					this.lifecycleProcessor.onClose();
 				}
 				catch (Throwable ex) {
@@ -1103,6 +1106,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			}
 
 			// Destroy all cached singletons in the context's BeanFactory.
+			// 销毁Bean
 			destroyBeans();
 
 			// Close the state of this context itself.
@@ -1134,6 +1138,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see org.springframework.beans.factory.config.ConfigurableBeanFactory#destroySingletons()
 	 */
 	protected void destroyBeans() {
+		//销毁所有单例Bean（不管有没有定义销毁方法）
 		getBeanFactory().destroySingletons();
 	}
 

@@ -50,7 +50,7 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @since 2.5
  */
-//将要注入的特定依赖的描述
+//封装了依赖注入点的详细信息，可以是字段 Field，也可以是方法参数 MethodParameter
 @SuppressWarnings("serial")
 public class DependencyDescriptor extends InjectionPoint implements Serializable {
 

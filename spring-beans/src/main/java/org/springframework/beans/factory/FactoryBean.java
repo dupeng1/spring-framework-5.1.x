@@ -57,9 +57,20 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.jndi.JndiObjectFactoryBean
  */
 /**
- * 实现了此接口的bean不能看做一个通常意义上的bean，一个FactoryBean虽然以bean的形式来定义，但它暴露的对象通常是它创建的对象，而不是作为一个bean实例暴露自己。
+ * 1、用于创建和管理Bean实例对象，底层的工作原理是通过实现FactoryBean接口并实现其中的方法来创建和管理Bean实例
+ * 2、实现了此接口的bean不能看做一个通常意义上的bean，一个FactoryBean虽然以bean的形式来定义，但它暴露的对象通常是它创建的对象，而不是作为一个bean实例暴露自己。
  * 在调用BeanFactory的getBean方法的时候，在传入的参数bean id前面加一个“&”符号，就可以做到这一点，例如getBean("myBean")将会返回FactoryBean的产品，
  * 而调用getBean("&myBean")将会返回这个FactoryBean实例本身
+ * 3、当配置文件中< bean>的 class 属性配置的实现类是 FactoryBean 时，通过 getBean()方法返回的不是 FactoryBean 本身，
+ * 而是 FactoryBean#getObject() 方法所返回的对象。相当于FactoryBean#getObject()代理了 getBean()方法。
+ * 4、getBean(“&car”)返回的是FactoryBean
+ *   getBean(“car”)返回的是FactoryBean生产的bean
+ * 5、actoryBean允许我们在创建Bean实例时编写自定义的逻辑，并且可以通过其返回的实际Bean实例类型来实现更精细的依赖注入
+ * 		动态创建对象：FactoryBean 可以根据配置的参数和条件，动态地创建对象。这样可以根据不同的情况创建不同的对象实例。
+ * 		对象的装配和初始化：FactoryBean 可以对创建的对象进行配置和初始化，可以通过设置不同的属性值或者调用不同的方法来进行装配和初始化。
+ * 		对象的代理和包装：通过 FactoryBean 可以对创建的对象进行代理和包装，可以动态地增加或修改对象的功能。
+ * 		对象的生命周期管理：FactoryBean 可以管理所创建的对象的生命周期，可以在对象创建前后执行一些操作，可以在需要时销毁对象。
+ * 		对象的缓存和复用：FactoryBean 可以实现对象的缓存和复用，可以避免重复创建对象，提高性能。
  * @param <T>
  */
 public interface FactoryBean<T> {
@@ -81,6 +92,7 @@ public interface FactoryBean<T> {
 	 * @throws Exception in case of creation errors
 	 * @see FactoryBeanNotInitializedException
 	 */
+	//返回由 FactoryBean 创建的 bean 实例，如果 isSingleton()返回 true，则该实例会放到 Spring 容器中单实例缓存池中。
 	@Nullable
 	T getObject() throws Exception;
 
@@ -103,6 +115,7 @@ public interface FactoryBean<T> {
 	 * or {@code null} if not known at the time of the call
 	 * @see ListableBeanFactory#getBeansOfType
 	 */
+	//返回 FactoryBean 创建的 bean 类型。
 	@Nullable
 	Class<?> getObjectType();
 
@@ -131,6 +144,7 @@ public interface FactoryBean<T> {
 	 * @see #getObject()
 	 * @see SmartFactoryBean#isPrototype()
 	 */
+	//返回由 FactoryBean 创建的 bean 实例的作用域是 singleton 还是prototype
 	default boolean isSingleton() {
 		return true;
 	}
