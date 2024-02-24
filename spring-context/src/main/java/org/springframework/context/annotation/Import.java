@@ -49,6 +49,17 @@ import java.lang.annotation.Target;
  * @see ImportSelector
  * @see ImportResource
  */
+
+/**
+ * Import 注解提供了类似 @Bean 注解的功能，向Spring容器中注入bean
+ * 1、类型为对象数组，如value={A.class, B.class}，这样就可以把类A和B交给Spring容器管理
+ * 但是这个类对象需要细分为三种对象，也对应着@Import的三种用法如下
+ * 	普通类
+ * 	实现了ImportSelector接口的类（这是重点~Spring Boot的自动配置原理就用到这种方式）
+ * 	实现了ImportBeanDefinitionRegistrar接口的类
+ * 	2、@Import({Student.class})把Student类注入到了Spring容器中，beanName默认为全限定类名com.shepherd.common.config.Student，
+ * 	而@Bean注入的默认为方法名，这也是两者的区别
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

@@ -415,6 +415,13 @@ import org.springframework.stereotype.Component;
  * @see org.springframework.core.env.Environment
  * @see org.springframework.test.context.ContextConfiguration
  */
+/**
+ * @Configuration 注解本质上还是 @Component，因此  @ComponentScan 能扫描到@Configuration 注解的类
+ * 1、@Configuration在Spring中是代表FULL模式的配置注解，这种模式下的类会被Spring所代理，那么在这个类中的@Bean方法的相互调用，就相当于调用了代理方法
+ * ，那么在代理方法中会判断，是否调用getBean方法还是invokeSuper方法
+ * 2、@Component在Spring中是代表LITE模式的配置注解，这种模式下的注解不会被Spring所代理，就是一个标准类，
+ * 如果在这个类中有@Bean标注的方法，那么方法间的相互调用，其实就是普通Java类的方法的调用。
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

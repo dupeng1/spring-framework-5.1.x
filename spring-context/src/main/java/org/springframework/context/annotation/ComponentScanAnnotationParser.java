@@ -129,6 +129,7 @@ class ComponentScanAnnotationParser {
 				return declaringClass.equals(className);
 			}
 		});
+		// 经过一些列的scanner的属性设置，进入扫描流程
 		return scanner.doScan(StringUtils.toStringArray(basePackages));
 	}
 

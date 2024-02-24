@@ -52,8 +52,10 @@ public class InjectionMetadata {
 
 	private final Class<?> targetClass;
 
+	//注入的元素
 	private final Collection<InjectedElement> injectedElements;
 
+	//检查过的元素
 	@Nullable
 	private volatile Set<InjectedElement> checkedElements;
 
@@ -64,30 +66,46 @@ public class InjectionMetadata {
 	}
 
 
+	//将所有需要注入的属性和方法添加到集合中，后续依赖注入，只会处理checkedElements集合中的
+	//查询@Autowired @PostConstruct @PreDestroy @Resource注解元数据后都会调用此方法
+	//作用之一是考虑可能存在多个注解同时标注在同一个属性上的情况，避免重复处理
+	//通过将已处理的成员标记为外部管理的配置成员，它确保Spring容器在处理依赖注入时不会重复处理同一个属性
+	//简单理解就是去重，然后将需要处理的数据放入Set<InjectedElement> checkedElements集合中，后续统一处理
 	public void checkConfigMembers(RootBeanDefinition beanDefinition) {
 		Set<InjectedElement> checkedElements = new LinkedHashSet<>(this.injectedElements.size());
+		// 1.遍历检查所有要注入的元素
 		for (InjectedElement element : this.injectedElements) {
 			Member member = element.getMember();
+			// 2.如果beanDefinition的externallyManagedConfigMembers属性不包含该member
+			//通过将已处理的成员标记为外部管理的配置成员，它确保Spring容器在处理依赖注入时不会重复处理同一个属性
 			if (!beanDefinition.isExternallyManagedConfigMember(member)) {
+				// 3.将该member添加到beanDefinition的externallyManagedConfigMembers属性
 				beanDefinition.registerExternallyManagedConfigMember(member);
+				// 4.并将element添加到checkedElements
 				checkedElements.add(element);
 				if (logger.isTraceEnabled()) {
 					logger.trace("Registered injected element on class [" + this.targetClass.getName() + "]: " + element);
 				}
 			}
 		}
+		// 5.赋值给checkedElements（检查过的元素）
 		this.checkedElements = checkedElements;
 	}
 
 	public void inject(Object target, @Nullable String beanName, @Nullable PropertyValues pvs) throws Throwable {
+		// 如果checkedElements存在，则使用checkedElements，否则使用injectedElements
 		Collection<InjectedElement> checkedElements = this.checkedElements;
 		Collection<InjectedElement> elementsToIterate =
 				(checkedElements != null ? checkedElements : this.injectedElements);
 		if (!elementsToIterate.isEmpty()) {
+			//遍历所有元素，调用元素的 inject 方法。先遍历属性元素，再遍历方法元素。
+			// 方法注入的优先级要高于属性注入，因为方法注入在属性注入后，会将属性注入的结果覆盖掉
 			for (InjectedElement element : elementsToIterate) {
 				if (logger.isTraceEnabled()) {
 					logger.trace("Processing injected element of bean '" + beanName + "': " + element);
 				}
+				// 解析@Autowired注解生成的元数据类：AutowiredFieldElement、AutowiredMethodElement，
+				// 这两个类继承InjectionMetadata.InjectedElement，各自重写了inject方法。
 				element.inject(target, beanName, pvs);
 			}
 		}
@@ -174,18 +192,22 @@ public class InjectionMetadata {
 		 */
 		protected void inject(Object target, @Nullable String requestingBeanName, @Nullable PropertyValues pvs)
 				throws Throwable {
-
+			/*********************************属性******************************/
 			if (this.isField) {
 				Field field = (Field) this.member;
+				//不需要set方法，直接强行赋值
 				ReflectionUtils.makeAccessible(field);
+				//getResourceToInject(target, requestingBeanName)重点是这个方法
 				field.set(target, getResourceToInject(target, requestingBeanName));
 			}
+			/*********************************方法******************************/
 			else {
 				if (checkPropertySkipping(pvs)) {
 					return;
 				}
 				try {
 					Method method = (Method) this.member;
+					//不管方法的修饰符，强行执行方法
 					ReflectionUtils.makeAccessible(method);
 					method.invoke(target, getResourceToInject(target, requestingBeanName));
 				}

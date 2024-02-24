@@ -52,9 +52,29 @@ import org.springframework.core.type.filter.TypeFilter;
  * @since 3.1
  * @see Configuration
  */
+
+/**
+ * 该注解告诉Spring扫描哪些包路径下的类，然后判断如果类使用了@Component,@Controller, @Service...等注解，就注入到Spring容器中
+ * 1、@Controller, @Service, @Repository从这些注解的定义上看都声明了@Component，所以都是@Component衍生注解，其作用及属性和
+ * @Component是一样的，只不过提供了更加明确的语义化，是spring框架为我们提供明确的三层使用的注解
+ * 2、@ComponentScan过滤规则说明
+ *	扫描指定类文件
+ *    @ComponentScan(basePackageClasses = Person.class)
+ * 	扫描指定包，使用默认扫描规则，即被@Component, @Repository, @Service, @Controller或者已经声明过@Component自定义注解标记的组件；
+ *    @ComponentScan(value = "com.yibai")
+ *  扫描指定包，加载被@Component注解标记的组件和默认规则的扫描（因为useDefaultFilters默认为true）
+ *    @ComponentScan(value = "com.yibai", includeFilters = { @Filter(type = FilterType.ANNOTATION, value = Component.class) })
+ *  扫描指定包，只加载Person类型的组件
+ *    @ComponentScan(value = "com.yibai", includeFilters = { @Filter(type = FilterType.ASSIGNABLE_TYPE, value = Person.class) }, useDefaultFilters = false)
+ *  扫描指定包，过滤掉被@Component标记的组件
+ *    @ComponentScan(value = "com.yibai", excludeFilters = { @Filter(type = FilterType.ANNOTATION, value = Component.class) })
+ *  扫描指定包，自定义过滤规则
+ *    @ComponentScan(value = "com.yibai", includeFilters = { @Filter(type = FilterType.CUSTOM, value = ColorBeanLoadFilter.class) }, useDefaultFilters = true)
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
+//指定ComponentScan可以被ComponentScans作为数组使用
 @Repeatable(ComponentScans.class)
 public @interface ComponentScan {
 
@@ -64,6 +84,7 @@ public @interface ComponentScan {
 	 * are needed &mdash; for example, {@code @ComponentScan("org.my.pkg")}
 	 * instead of {@code @ComponentScan(basePackages = "org.my.pkg")}.
 	 */
+	//基础包名，等同于basePackages
 	@AliasFor("basePackages")
 	String[] value() default {};
 
@@ -74,6 +95,7 @@ public @interface ComponentScan {
 	 * <p>Use {@link #basePackageClasses} for a type-safe alternative to
 	 * String-based package names.
 	 */
+	////基础包名，value
 	@AliasFor("value")
 	String[] basePackages() default {};
 
@@ -83,6 +105,7 @@ public @interface ComponentScan {
 	 * <p>Consider creating a special no-op marker class or interface in each package
 	 * that serves no purpose other than being referenced by this attribute.
 	 */
+	//扫描的类，会扫描该类所在包及其子包的组件。
 	Class<?>[] basePackageClasses() default {};
 
 	/**
@@ -95,11 +118,13 @@ public @interface ComponentScan {
 	 * application context at bootstrap time.
 	 * @see AnnotationConfigApplicationContext#setBeanNameGenerator(BeanNameGenerator)
 	 */
+	//注册为BeanName生成策略 默认BeanNameGenerator，用于给扫描到的Bean生成BeanName
 	Class<? extends BeanNameGenerator> nameGenerator() default BeanNameGenerator.class;
 
 	/**
 	 * The {@link ScopeMetadataResolver} to be used for resolving the scope of detected components.
 	 */
+	//用于解析bean的scope的属性的解析器，默认是AnnotationScopeMetadataResolver
 	Class<? extends ScopeMetadataResolver> scopeResolver() default AnnotationScopeMetadataResolver.class;
 
 	/**
@@ -110,6 +135,7 @@ public @interface ComponentScan {
 	 * <p>Note that setting this attribute overrides any value set for {@link #scopeResolver}.
 	 * @see ClassPathBeanDefinitionScanner#setScopedProxyMode(ScopedProxyMode)
 	 */
+	//scoped-proxy 用来配置代理方式 // no(默认值)：如果有接口就使用JDK代理，如果没有接口就使用CGLib代理 interfaces: 接口代理（JDK代理） targetClass：类代理（CGLib代理）
 	ScopedProxyMode scopedProxy() default ScopedProxyMode.DEFAULT;
 
 	/**
@@ -117,12 +143,15 @@ public @interface ComponentScan {
 	 * <p>Consider use of {@link #includeFilters} and {@link #excludeFilters}
 	 * for a more flexible approach.
 	 */
+	//配置要扫描的资源的正则表达式的，默认是"**/*.class"，即配置类包下的所有class文件。
 	String resourcePattern() default ClassPathScanningCandidateComponentProvider.DEFAULT_RESOURCE_PATTERN;
 
 	/**
 	 * Indicates whether automatic detection of classes annotated with {@code @Component}
 	 * {@code @Repository}, {@code @Service}, or {@code @Controller} should be enabled.
 	 */
+	//useDefaultFilters默认是true，指定是否需要使用Spring默认的扫描规则：被@Component, @Repository, @Service, @Controller或者已经声明过@Component自定义注解标记的组件；
+	//useDefaultFilters = true指定的规则过滤器是 org.springframework.core.type.filter.AnnotationTypeFilter
 	boolean useDefaultFilters() default true;
 
 	/**
@@ -135,12 +164,14 @@ public @interface ComponentScan {
 	 * @see #resourcePattern()
 	 * @see #useDefaultFilters()
 	 */
+	//指定只包含的组件
 	Filter[] includeFilters() default {};
 
 	/**
 	 * Specifies which types are not eligible for component scanning.
 	 * @see #resourcePattern
 	 */
+	//指定需要排除的组件
 	Filter[] excludeFilters() default {};
 
 	/**
@@ -148,6 +179,7 @@ public @interface ComponentScan {
 	 * <p>Default is {@code false}; switch this to {@code true} when desired.
 	 * @since 4.1
 	 */
+	//是否是懒加载
 	boolean lazyInit() default false;
 
 
@@ -157,7 +189,7 @@ public @interface ComponentScan {
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({})
-	@interface Filter {
+	@interface Filter {//过滤器注解
 
 		/**
 		 * The type of filter to use.
@@ -165,12 +197,14 @@ public @interface ComponentScan {
 		 * @see #classes
 		 * @see #pattern
 		 */
+		//过滤判断类型
 		FilterType type() default FilterType.ANNOTATION;
 
 		/**
 		 * Alias for {@link #classes}.
 		 * @see #classes
 		 */
+		//要过滤的类，等同于classes
 		@AliasFor("classes")
 		Class<?>[] value() default {};
 
@@ -204,6 +238,7 @@ public @interface ComponentScan {
 		 * @see #value
 		 * @see #type
 		 */
+		//要过滤的类，等同于value
 		@AliasFor("value")
 		Class<?>[] classes() default {};
 
@@ -217,6 +252,7 @@ public @interface ComponentScan {
 		 * @see #type
 		 * @see #classes
 		 */
+		// 正则化匹配过滤
 		String[] pattern() default {};
 
 	}

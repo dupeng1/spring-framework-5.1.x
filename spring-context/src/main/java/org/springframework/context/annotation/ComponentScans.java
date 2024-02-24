@@ -34,6 +34,15 @@ import java.lang.annotation.Target;
  * @since 4.3
  * @see ComponentScan
  */
+
+/**
+ * 可以一次声明多个@ComponentScan
+ * 1、@ComponentScans过滤规则说明
+ * 	@ComponentScans(value = {
+ * 		@ComponentScan(value = "com.yibai.spring.annotation"),
+ *      @ComponentScan(value = "com.yibai.spring.annotation", includeFilters = {
+ *                @Filter(type = FilterType.CUSTOM, value = ColorBeanLoadFilter.class) }) })
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented

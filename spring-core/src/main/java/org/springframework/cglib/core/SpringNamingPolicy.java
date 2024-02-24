@@ -27,6 +27,7 @@ package org.springframework.cglib.core;
  * @author Juergen Hoeller
  * @since 3.2.8
  */
+//使用CGLIB生成字节码类名名称生成策略 -> 名称中会有BySpringCGLIB字样
 public class SpringNamingPolicy extends DefaultNamingPolicy {
 
 	public static final SpringNamingPolicy INSTANCE = new SpringNamingPolicy();

@@ -45,6 +45,11 @@ import org.springframework.stereotype.Component;
  * @author Juergen Hoeller
  * @since 3.1
  */
+
+/**
+ * 内部工具类。用于判断组件是否是配置类，又或是Full模式/Lite模式，然后在bd元数据里打上标记
+ * 获取@Configuration配置类上标注的@Order排序值并放进bd里
+ */
 abstract class ConfigurationClassUtils {
 
 	private static final String CONFIGURATION_CLASS_FULL = "full";
@@ -59,7 +64,7 @@ abstract class ConfigurationClassUtils {
 
 
 	private static final Log logger = LogFactory.getLog(ConfigurationClassUtils.class);
-
+	// candidateIndicators  的定义
 	private static final Set<String> candidateIndicators = new HashSet<>(8);
 
 	static {
@@ -78,15 +83,20 @@ abstract class ConfigurationClassUtils {
 	 * @param metadataReaderFactory the current factory in use by the caller
 	 * @return whether the candidate qualifies as (any kind of) configuration class
 	 */
+	//判断当前是不是配置类，是配置类还分FULL模式还是LITE模式，即完整的配置类和精简的配置类
+	//Full : 即类被 @Configuration 注解修饰 && proxyBeanMethods属性为true (默认为 true)，Full 配置类就是我们常规使用的配置类
+	//Lite : 被 @Component、@ComponentScan、@Import、@ImportResource 修饰的类 或者 类中有被@Bean修饰的方法，Lite 配置类就是一些需要其他操作引入一些bean 的类
 	public static boolean checkConfigurationClassCandidate(
 			BeanDefinition beanDef, MetadataReaderFactory metadataReaderFactory) {
-
+		// metadataReaderFactory：元数据读取工厂
+		// 获取className
 		String className = beanDef.getBeanClassName();
 		if (className == null || beanDef.getFactoryMethodName() != null) {
 			return false;
 		}
-
+		// 解析关于当前被解析类的 注解元数据
 		AnnotationMetadata metadata;
+		// 如果当前BeanDefinition是AnnotatedBeanDefinition直接获取注解元数据即可
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
@@ -96,9 +106,12 @@ abstract class ConfigurationClassUtils {
 			// Check already loaded Class if present...
 			// since we possibly can't even load the class file for this Class.
 			Class<?> beanClass = ((AbstractBeanDefinition) beanDef).getBeanClass();
+			// 如果当前类是 BeanFactoryPostProcessor、BeanPostProcessor
+			// AopInfrastructureBean、EventListenerFactory 类型不当做配置类处理，返回false
 			metadata = new StandardAnnotationMetadata(beanClass, true);
 		}
 		else {
+			// 按照默认规则解析
 			try {
 				MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(className);
 				metadata = metadataReader.getAnnotationMetadata();
@@ -112,10 +125,15 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
+		// 如果被 @Configuration 修饰 &&  proxyBeanMethods 属性为 true
+		// @Configuration 的 proxyBeanMethods  属性默认值即为 true。
 		if (isFullConfigurationCandidate(metadata)) {
+			// 设置 CONFIGURATION_CLASS_ATTRIBUTE 为 full
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
+		// 如果被 @Configuration 修饰 &&  isLiteConfigurationCandidate(metadata) = true
 		else if (isLiteConfigurationCandidate(metadata)) {
+			// 设置 CONFIGURATION_CLASS_ATTRIBUTE 为 lite
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
 		else {
@@ -123,6 +141,7 @@ abstract class ConfigurationClassUtils {
 		}
 
 		// It's a full or lite configuration candidate... Let's determine the order value, if any.
+		// 按照@Order注解设置bean定义的排序属性值
 		Integer order = getOrder(metadata);
 		if (order != null) {
 			beanDef.setAttribute(ORDER_ATTRIBUTE, order);
@@ -138,6 +157,7 @@ abstract class ConfigurationClassUtils {
 	 * @return {@code true} if the given class is to be registered as a
 	 * reflection-detected bean definition; {@code false} otherwise
 	 */
+	//Lite配置类筛选
 	public static boolean isConfigurationCandidate(AnnotationMetadata metadata) {
 		return (isFullConfigurationCandidate(metadata) || isLiteConfigurationCandidate(metadata));
 	}
@@ -163,11 +183,13 @@ abstract class ConfigurationClassUtils {
 	 */
 	public static boolean isLiteConfigurationCandidate(AnnotationMetadata metadata) {
 		// Do not consider an interface or an annotation...
+		// 不能是接口
 		if (metadata.isInterface()) {
 			return false;
 		}
 
 		// Any of the typical annotations found?
+		// 被 candidateIndicators 中的注解修饰。其中 candidateIndicators  注解在静态代码块中加载了
 		for (String indicator : candidateIndicators) {
 			if (metadata.isAnnotated(indicator)) {
 				return true;
@@ -176,6 +198,7 @@ abstract class ConfigurationClassUtils {
 
 		// Finally, let's look for @Bean methods...
 		try {
+			// 类中包含被 @Bean 注解修饰的方法
 			return metadata.hasAnnotatedMethods(Bean.class.getName());
 		}
 		catch (Throwable ex) {

@@ -70,11 +70,17 @@ import org.springframework.util.ReflectionUtils;
  * @see #enhance
  * @see ConfigurationClassPostProcessor
  */
+
+/**
+ * 内部使用的类。配置类增强器，用于对@Configuration类（Full模式）使用CGLIB增强，生成一个代理子类字节码Class对象
+ */
 class ConfigurationClassEnhancer {
 
 	// The callbacks to use. Note that these callbacks must be stateless.
 	private static final Callback[] CALLBACKS = new Callback[] {
+			// 拦截@Bean方法的调用，以确保正确处理@Bean语义
 			new BeanMethodInterceptor(),
+			// BeanFactoryAware#setBeanFactory的调用，用于获取BeanFactory对象
 			new BeanFactoryAwareMethodInterceptor(),
 			NoOp.INSTANCE
 	};
@@ -94,7 +100,9 @@ class ConfigurationClassEnhancer {
 	 * container-aware callbacks capable of respecting scoping and other bean semantics.
 	 * @return the enhanced subclass
 	 */
+	// 加载指定的类并为其生成一个CGLIB子类，该子类配备了能够识别作用域和其他bean语义的容器感知回调。
 	public Class<?> enhance(Class<?> configClass, @Nullable ClassLoader classLoader) {
+		// 如果是 EnhancedConfiguration子类，则说明已经被增强(代理),直接返回
 		if (EnhancedConfiguration.class.isAssignableFrom(configClass)) {
 			if (logger.isDebugEnabled()) {
 				logger.debug(String.format("Ignoring request to enhance %s as it has " +
@@ -106,6 +114,7 @@ class ConfigurationClassEnhancer {
 			}
 			return configClass;
 		}
+		// 创建代理类
 		Class<?> enhancedClass = createClass(newEnhancer(configClass, classLoader));
 		if (logger.isTraceEnabled()) {
 			logger.trace(String.format("Successfully enhanced %s; enhanced class name is: %s",
@@ -137,6 +146,7 @@ class ConfigurationClassEnhancer {
 		Class<?> subclass = enhancer.createClass();
 		// Registering callbacks statically (as opposed to thread-local)
 		// is critical for usage in an OSGi environment (SPR-5932)...
+		// 指定代理回调 为 CALLBACKS
 		Enhancer.registerStaticCallbacks(subclass, CALLBACKS);
 		return subclass;
 	}
@@ -153,6 +163,7 @@ class ConfigurationClassEnhancer {
 	 * must remain public in order to allow access to subclasses generated from other
 	 * packages (i.e. user code).
 	 */
+	//被增强器增强过的配置类，都会自动的让实现此接口（实际是个BeanFactoryAware）接口
 	public interface EnhancedConfiguration extends BeanFactoryAware {
 	}
 
@@ -266,6 +277,7 @@ class ConfigurationClassEnhancer {
 	 * {@code @Configuration} class instances for the purpose of recording the {@link BeanFactory}.
 	 * @see EnhancedConfiguration
 	 */
+	//CGLIB代理对象拦截器。作用：拦截代理类的setBeanFactory()方法，给对应属性赋值
 	private static class BeanFactoryAwareMethodInterceptor implements MethodInterceptor, ConditionalCallback {
 
 		@Override
@@ -303,6 +315,8 @@ class ConfigurationClassEnhancer {
 	 * @see Bean
 	 * @see ConfigurationClassEnhancer
 	 */
+	//主要作用是：拦截@Bean方法的调用，以确保正确处理@Bean语义
+	//当调用@Bean方法时，就会被以下代码所拦截
 	private static class BeanMethodInterceptor implements MethodInterceptor, ConditionalCallback {
 
 		/**
@@ -315,11 +329,15 @@ class ConfigurationClassEnhancer {
 		@Nullable
 		public Object intercept(Object enhancedConfigInstance, Method beanMethod, Object[] beanMethodArgs,
 					MethodProxy cglibMethodProxy) throws Throwable {
-
+			// enhancedConfigInstance 已经是配置类的增强对象了,在增强对象中,有beanFactory字段的
+			// 获取增强对象中的beanFactory
 			ConfigurableBeanFactory beanFactory = getBeanFactory(enhancedConfigInstance);
+			// 获取beanName
 			String beanName = BeanAnnotationHelper.determineBeanNameFor(beanMethod);
 
 			// Determine whether this bean is a scoped-proxy
+			// 检查容器中是否存在对应的 FactoryBean 如果存在,则创建一个增强类
+			// 通过创建增强类来代理拦截 getObject（）的调用 , 以确保了FactoryBean的语义
 			if (BeanAnnotationHelper.isScopedProxy(beanMethod)) {
 				String scopedBeanName = ScopedProxyCreator.getTargetBeanName(beanName);
 				if (beanFactory.isCurrentlyInCreation(scopedBeanName)) {
@@ -342,10 +360,23 @@ class ConfigurationClassEnhancer {
 				}
 				else {
 					// It is a candidate FactoryBean - go ahead with enhancement
+					// 创建增强类,来代理 getObject（）的调用
+					// 有两种可选代理方式,cglib 和 jdk
+					// Proxy.newProxyInstance(
+					//                    factoryBean.getClass().getClassLoader(), new Class<?>[]{interfaceType},
+					//                    (proxy, method, args) -> {
+					//                        if (method.getName().equals("getObject") && args == null) {
+					//                            return beanFactory.getBean(beanName);
+					//                        }
+					//                        return ReflectionUtils.invokeMethod(method, factoryBean, args);
+					//                    });
 					return enhanceFactoryBean(factoryBean, beanMethod.getReturnType(), beanFactory, beanName);
 				}
 			}
 
+			// 判断当时执行的方法是否为@Bean方法本身
+			// 举个例子 : 如果是直接调用@Bean方法,也就是Spring来调用我们的@Bean方法,则返回true
+			// 如果是在别的方法内部,我们自己的程序调用 @Bean方法,则返回false
 			if (isCurrentlyInvokedFactoryMethod(beanMethod)) {
 				// The factory is calling the bean method in order to instantiate and register the bean
 				// (i.e. via a getBean() call) -> invoke the super implementation of the method to actually
@@ -360,9 +391,12 @@ class ConfigurationClassEnhancer {
 									"these container lifecycle issues; see @Bean javadoc for complete details.",
 							beanMethod.getDeclaringClass().getSimpleName(), beanMethod.getName()));
 				}
+				// 如果返回true,也就是Spring在调用这个方法,那么就去真正执行该方法
 				return cglibMethodProxy.invokeSuper(enhancedConfigInstance, beanMethodArgs);
 			}
-
+			//否则,则尝试从容器中获取该 Bean 对象
+			// 怎么获取呢? 通过调用 beanFactory.getBean 方法
+			// 而这个getBean 方法,如果对象已经创建则直接返回,如果还没有创建,则创建,然后放入容器中,然后返回
 			return resolveBeanReference(beanMethod, beanMethodArgs, beanFactory, beanName);
 		}
 

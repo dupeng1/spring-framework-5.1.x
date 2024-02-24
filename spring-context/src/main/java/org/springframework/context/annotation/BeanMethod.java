@@ -31,6 +31,10 @@ import org.springframework.core.type.MethodMetadata;
  * @see ConfigurationClassParser
  * @see ConfigurationClassBeanDefinitionReader
  */
+
+/**
+ * 内部使用的类。用于封装标注有@Bean注解的方法
+ */
 final class BeanMethod extends ConfigurationMethod {
 
 	public BeanMethod(MethodMetadata metadata, ConfigurationClass configurationClass) {

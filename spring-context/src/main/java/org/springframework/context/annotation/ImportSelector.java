@@ -45,12 +45,30 @@ import org.springframework.core.type.AnnotationMetadata;
  * @see ImportBeanDefinitionRegistrar
  * @see Configuration
  */
+/**
+ * 1、例如：@Import({Student.class})
+ * 把Student类注入到了Spring容器中，beanName默认为全限定类名com.shepherd.common.config.Student
+ *
+ * 2、例如：@Import({MyImportSelector.class})
+ *
+ * public class MyImportSelector implements ImportSelector {
+ *     @Override
+ *     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
+ *         return new String[]{"com.shepherd.common.config.Student",
+ *         "com.shepherd.common.config.Person"};
+ *     }
+ * }
+ *
+ * Spring没有把MyImportSelector当初一个普通类进行处理，而是根据selectImports( )返回的全限定类名数组批量注入到Spring容器中
+ *
+ */
 public interface ImportSelector {
 
 	/**
 	 * Select and return the names of which class(es) should be imported based on
 	 * the {@link AnnotationMetadata} of the importing @{@link Configuration} class.
 	 */
+	//返回一个包含了类全限定名的数组，这些类会注入到Spring容器当中。注意如果为null，要返回空数组，不然后续处理会报错空指针
 	String[] selectImports(AnnotationMetadata importingClassMetadata);
 
 }

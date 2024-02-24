@@ -85,6 +85,19 @@ import org.springframework.util.ClassUtils;
  * @see ScannedGenericBeanDefinition
  * @see CandidateComponentsIndex
  */
+
+/**
+ * 是Spring提供的工具，可以帮助我们从包路径中获取到所需的 BeanDefinition 集合，
+ * 然后动态注册 BeanDefinition 到 BeanDefinitionRegistry，到达在容器中动态生成 Bean 的目的
+ *
+ * 1.创建ClassPathScanningCandidateComponentProvider对象
+ * ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
+ * 2.设置扫描条件
+ * scanner.addIncludeFilter(new AnnotationTypeFilter(Component.class));
+ * 3.执行扫描
+ * Set<BeanDefinition> beanDefinitions = scanner.findCandidateComponents("com.example");
+ * 上面的代码表示扫描com.example包下的所有标注了@Component注解的类，并将其转换为Spring的BeanDefinition对象。
+ */
 public class ClassPathScanningCandidateComponentProvider implements EnvironmentCapable, ResourceLoaderAware {
 
 	static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
@@ -94,8 +107,16 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 	private String resourcePattern = DEFAULT_RESOURCE_PATTERN;
 
+	/**
+	 * 过滤器列表。过滤后的类被认为是候选组件
+	 * 这里提前往includeFilters里面添加需要扫描的特定注解
+	 * 1.添加元注解@Component，需要注意的是@Repository、@Service、@Controller里面都标注了@Component。
+	 * 很好理解，扫描的时候用includeFilters 去过滤时，会找到并处理这4个注解的类。
+	 * 2.下面两个注解@ManagedBean、@Named需要有对应的jar包，否则（也就是说把这个方法走完），includeFilters里面只会有一个元素
+	 */
 	private final List<TypeFilter> includeFilters = new LinkedList<>();
 
+	//过滤器列表。排除在候选组件之外
 	private final List<TypeFilter> excludeFilters = new LinkedList<>();
 
 	@Nullable
@@ -193,6 +214,9 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	/**
+	 * 注册过滤器
+	 * 带有@Component、@Repository、@Service、@Controller、@ManagedBean、@Named
+	 * 注解的类会被spring扫描到
 	 * Register the default filter for {@link Component @Component}.
 	 * <p>This will implicitly register all annotations that have the
 	 * {@link Component @Component} meta-annotation including the
@@ -204,8 +228,12 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 */
 	@SuppressWarnings("unchecked")
 	protected void registerDefaultFilters() {
+		//类上面是否加了component注解
+		//这里直接用的是Component.class
+		//给这个扫描器里加入过滤规则，可以看到这里加的过滤规则也就是includefilter里加的就是扫描带有Component注解的类，也是咱们最常见的
 		this.includeFilters.add(new AnnotationTypeFilter(Component.class));
 		ClassLoader cl = ClassPathScanningCandidateComponentProvider.class.getClassLoader();
+		//下面两个都可能是第三方的jar包的调用，使用这种方式是为了不把代码放到spring里面
 		try {
 			this.includeFilters.add(new AnnotationTypeFilter(
 					((Class<? extends Annotation>) ClassUtils.forName("javax.annotation.ManagedBean", cl)), false));
@@ -308,6 +336,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * @param basePackage the package to check for annotated classes
 	 * @return a corresponding Set of autodetected bean definitions
 	 */
+	//扫描指定的包路径，获取相应的BeanDefinition。扫描后的类可以通过过滤器进行排除。
 	public Set<BeanDefinition> findCandidateComponents(String basePackage) {
 		if (this.componentsIndex != null && indexSupportsIncludeFilters()) {
 			return addCandidateComponentsFromIndex(this.componentsIndex, basePackage);
@@ -416,8 +445,18 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	private Set<BeanDefinition> scanCandidateComponents(String basePackage) {
 		Set<BeanDefinition> candidates = new LinkedHashSet<>();
 		try {
+			/**
+			 * 扫描classpath*:下的.class文件
+			 * 将class文件转换为resources
+			 *
+			 * 循环resource，转换为ScannedGenericBeanDefinition
+			 *
+			 */
 			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
+			/**
+			 * asm读取class文件
+			 */
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
 			boolean traceEnabled = logger.isTraceEnabled();
 			boolean debugEnabled = logger.isDebugEnabled();
@@ -427,15 +466,23 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				}
 				if (resource.isReadable()) {
 					try {
+						//获取.class对应的元信息，例如注解信息等
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
+						/**
+						 * 判断excludeFilters与includeFilters
+						 * includeFilters在new ClassPathBeanDefinitionScanner时就默认添加了@Component等元注解
+						 * 根据注解元信息判断是不是符合条件的.class
+						 */
 						if (isCandidateComponent(metadataReader)) {
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setResource(resource);
 							sbd.setSource(resource);
+							//判断能否实例化
 							if (isCandidateComponent(sbd)) {
 								if (debugEnabled) {
 									logger.debug("Identified candidate component class: " + resource);
 								}
+								//添加到候选BeanDefinition
 								candidates.add(sbd);
 							}
 							else {
@@ -487,14 +534,21 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * @param metadataReader the ASM ClassReader for the class
 	 * @return whether the class qualifies as a candidate component
 	 */
+	//判断通过filter筛选后的class是否是候选组件，默认实现是一个具体类
+	//这是一个 protected 的方法，可以通过子类重写它
+	//有些框架只需要扫描接口，并注册FactoryBean到bd，然后通过动态代理实现该接口得到目标bean，比如feign
 	protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOException {
+		//是否满足排除的条件
 		for (TypeFilter tf : this.excludeFilters) {
 			if (tf.match(metadataReader, getMetadataReaderFactory())) {
 				return false;
 			}
 		}
+		// 是否满足包含的条件
 		for (TypeFilter tf : this.includeFilters) {
+			//判断是否过滤器满足
 			if (tf.match(metadataReader, getMetadataReaderFactory())) {
+				// 判断是否条件满足
 				return isConditionMatch(metadataReader);
 			}
 		}

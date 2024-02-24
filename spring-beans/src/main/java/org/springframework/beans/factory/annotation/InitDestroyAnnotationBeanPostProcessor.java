@@ -133,6 +133,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 		metadata.checkConfigMembers(beanDefinition);
 	}
 
+	//初始化前执行解析@PostConstruct注解的初始化方法
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		LifecycleMetadata metadata = findLifecycleMetadata(bean.getClass());
@@ -153,6 +154,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 		return bean;
 	}
 
+	//销毁前执行解析@PreDestroy主键的销毁方法
 	@Override
 	public void postProcessBeforeDestruction(Object bean, String beanName) throws BeansException {
 		LifecycleMetadata metadata = findLifecycleMetadata(bean.getClass());
@@ -180,8 +182,12 @@ public class InitDestroyAnnotationBeanPostProcessor
 
 
 	private LifecycleMetadata findLifecycleMetadata(Class<?> clazz) {
+		// 先查缓存中有没有初始化销毁方法元数据
+		// lifecycleMetadataCache是一个map集合，它的key就是当前类的clazz
+		// value是当前类初始化销毁方法元数据
 		if (this.lifecycleMetadataCache == null) {
 			// Happens after deserialization, during destruction...
+			// 如果缓存中没有，则去查询注解构建对应元数据
 			return buildLifecycleMetadata(clazz);
 		}
 		// Quick check on the concurrent map first, with minimal locking.
@@ -190,7 +196,9 @@ public class InitDestroyAnnotationBeanPostProcessor
 			synchronized (this.lifecycleMetadataCache) {
 				metadata = this.lifecycleMetadataCache.get(clazz);
 				if (metadata == null) {
+					// 如果缓存中没有，则去查询注解构建对应元数据
 					metadata = buildLifecycleMetadata(clazz);
+					//放入缓存，key就是当前类的clazz
 					this.lifecycleMetadataCache.put(clazz, metadata);
 				}
 				return metadata;
@@ -207,15 +215,22 @@ public class InitDestroyAnnotationBeanPostProcessor
 		do {
 			final List<LifecycleElement> currInitMethods = new ArrayList<>();
 			final List<LifecycleElement> currDestroyMethods = new ArrayList<>();
-
+			//遍历targetClass所有的方法，将它作为参数回调接口方法
 			ReflectionUtils.doWithLocalMethods(targetClass, method -> {
+				/****************************处理@PostConstruct注解******************************/
+				//method.isAnnotationPresent()判断方法上有没有指定的注解（反射的知识）
+				//initAnnotationType是@PostConstruct注解
 				if (this.initAnnotationType != null && method.isAnnotationPresent(this.initAnnotationType)) {
+					//(1)构建LifecycleElement
 					LifecycleElement element = new LifecycleElement(method);
+					//加入到初始化方法集合中
 					currInitMethods.add(element);
 					if (logger.isTraceEnabled()) {
 						logger.trace("Found init method on class [" + clazz.getName() + "]: " + method);
 					}
 				}
+				/****************************处理@PreDestroy注解******************************/
+				//destroyAnnotationType是@PreDestroy注解
 				if (this.destroyAnnotationType != null && method.isAnnotationPresent(this.destroyAnnotationType)) {
 					currDestroyMethods.add(new LifecycleElement(method));
 					if (logger.isTraceEnabled()) {
@@ -226,10 +241,12 @@ public class InitDestroyAnnotationBeanPostProcessor
 
 			initMethods.addAll(0, currInitMethods);
 			destroyMethods.addAll(currDestroyMethods);
+			//获取父类，因为父类中也有可能指定了生命周期方法
 			targetClass = targetClass.getSuperclass();
 		}
+		//返回声明周期元数据
 		while (targetClass != null && targetClass != Object.class);
-
+		//(2)构建LifecycleMetadata
 		return new LifecycleMetadata(clazz, initMethods, destroyMethods);
 	}
 

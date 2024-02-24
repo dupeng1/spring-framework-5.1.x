@@ -47,6 +47,10 @@ import org.springframework.util.ClassUtils;
  * @see BeanMethod
  * @see ConfigurationClassParser
  */
+
+/**
+ * 内部使用的类。每一个@Configuration配置类都会被封装为它，内部会包含多个@Bean方法（BeanMethod）
+ */
 final class ConfigurationClass {
 
 	private final AnnotationMetadata metadata;
