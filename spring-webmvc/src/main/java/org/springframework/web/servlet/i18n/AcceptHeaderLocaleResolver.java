@@ -41,6 +41,12 @@ import org.springframework.web.servlet.LocaleResolver;
  * @since 27.02.2003
  * @see javax.servlet.http.HttpServletRequest#getLocale()
  */
+
+/**
+ * 通过获取http请求头里边的“accept-language”来设置区域信息，因为我们无法通过改变客户端传入的header的头信息来改变区域设置，
+ * 所以这个类不支持修改Locale（即使这次能修改成功，下次传过来的header也还是原来的，
+ * 所以spring在这个类里的resolveLocale方法做了抛出异常的操作）
+ */
 public class AcceptHeaderLocaleResolver implements LocaleResolver {
 
 	private final List<Locale> supportedLocales = new ArrayList<>(4);

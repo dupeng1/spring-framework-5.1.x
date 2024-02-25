@@ -54,6 +54,15 @@ import org.springframework.web.util.WebUtils;
  * @see #setDefaultLocale
  * @see #setDefaultTimeZone
  */
+
+/**
+ * 这个类继承了LocaleContextResolver接口，这个接口对顶级接口做了一些扩展，
+ * 支持设置/返回Locale的context上下文，上下文中保存更多的信息例如：
+ * 当前的locale或者timeZone（典型的实现为TimeZoneAwareLocaleConext同时包含当前locale和timeZone）
+ *
+ * 接下来继续说这个CookieLocaleResolver类，简单来说，我们可以通过修改cookie里边的区域值然后返回给客户端,
+ * 下次客户端传过来的时候就是我们上次修改后的区域值，这样来达到动态改变locale的目的。
+ */
 public class CookieLocaleResolver extends CookieGenerator implements LocaleContextResolver {
 
 	/**

@@ -37,18 +37,37 @@ import org.springframework.util.ObjectUtils;
  * @since 20.06.2003
  * @see HandlerInterceptor
  */
+
+/**
+ * 处理器执行链，包含处理器（handler）和拦截器们（interceptors）
+ */
 public class HandlerExecutionChain {
 
 	private static final Log logger = LogFactory.getLog(HandlerExecutionChain.class);
-
+	/**
+	 * 处理器，可以先理解为 HandlerMethod 对象（例如我们常用的 @RequestMapping 注解对应的方法会解析成该对象），
+	 * 也就是我们的某个 Method 的所有信息，可以被执行
+	 */
 	private final Object handler;
 
+	/**
+	 * 拦截器数组
+	 */
 	@Nullable
 	private HandlerInterceptor[] interceptors;
-
+	/**
+	 * 拦截器数组。
+	 *
+	 * 在实际使用时，会调用 {@link #getInterceptors()} 方法，初始化到 {@link #interceptors} 中
+	 */
 	@Nullable
 	private List<HandlerInterceptor> interceptorList;
-
+	/**
+	 * 已成功执行 {@link HandlerInterceptor#preHandle(HttpServletRequest, HttpServletResponse, Object)} 的位置
+	 *
+	 * 在 {@link #applyPostHandle} 和 {@link #triggerAfterCompletion} 方法中需要用到，用于倒序执行拦截器的方法
+	 * 记录已成功执行前置处理的拦截器位置，因为已完成处理只会执行前置处理成功的拦截器，且倒序执行
+	 */
 	private int interceptorIndex = -1;
 
 
@@ -71,7 +90,9 @@ public class HandlerExecutionChain {
 			HandlerExecutionChain originalChain = (HandlerExecutionChain) handler;
 			this.handler = originalChain.getHandler();
 			this.interceptorList = new ArrayList<>();
+			// 将原始的 HandlerExecutionChain 的 interceptors 复制到 this.interceptorList 中
 			CollectionUtils.mergeArrayIntoCollection(originalChain.getInterceptors(), this.interceptorList);
+			// 将入参的 interceptors 合并到 this.interceptorList 中
 			CollectionUtils.mergeArrayIntoCollection(interceptors, this.interceptorList);
 		}
 		else {
@@ -99,13 +120,16 @@ public class HandlerExecutionChain {
 	}
 
 	private List<HandlerInterceptor> initInterceptorList() {
+		// 如果 interceptorList 为空，则初始化为 ArrayList
 		if (this.interceptorList == null) {
 			this.interceptorList = new ArrayList<>();
+			// 如果 interceptors 非空，则添加到 interceptorList 中
 			if (this.interceptors != null) {
 				// An interceptor array specified through the constructor
 				CollectionUtils.mergeArrayIntoCollection(this.interceptors, this.interceptorList);
 			}
 		}
+		// 置空 interceptors
 		this.interceptors = null;
 		return this.interceptorList;
 	}
@@ -114,11 +138,14 @@ public class HandlerExecutionChain {
 	 * Return the array of interceptors to apply (in the given order).
 	 * @return the array of HandlerInterceptors instances (may be {@code null})
 	 */
+	//获得 interceptors 数组
 	@Nullable
 	public HandlerInterceptor[] getInterceptors() {
+		// 将 interceptorList 初始化到 interceptors 中
 		if (this.interceptors == null && this.interceptorList != null) {
 			this.interceptors = this.interceptorList.toArray(new HandlerInterceptor[0]);
 		}
+		// 返回 interceptors 数组
 		return this.interceptors;
 	}
 
@@ -129,31 +156,42 @@ public class HandlerExecutionChain {
 	 * next interceptor or the handler itself. Else, DispatcherServlet assumes
 	 * that this interceptor has already dealt with the response itself.
 	 */
+	//执行请求匹配的拦截器的前置处理
 	boolean applyPreHandle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// <1> 获得拦截器数组
 		HandlerInterceptor[] interceptors = getInterceptors();
 		if (!ObjectUtils.isEmpty(interceptors)) {
+			// <2> 遍历拦截器数组
 			for (int i = 0; i < interceptors.length; i++) {
 				HandlerInterceptor interceptor = interceptors[i];
+				// <3> 前置处理
 				if (!interceptor.preHandle(request, response, this.handler)) {
+					// <3.1> 触发拦截器们的已完成处理
 					triggerAfterCompletion(request, response, null);
+					// 返回 false ，前置处理失败
 					return false;
 				}
+				// <3.2> 标记 interceptorIndex 位置
 				this.interceptorIndex = i;
 			}
 		}
+		// <4> 返回 true ，前置处理成功
 		return true;
 	}
 
 	/**
 	 * Apply postHandle methods of registered interceptors.
 	 */
+	//执行请求匹配的拦截器的后置处理
 	void applyPostHandle(HttpServletRequest request, HttpServletResponse response, @Nullable ModelAndView mv)
 			throws Exception {
-
+		// 获得拦截器数组
 		HandlerInterceptor[] interceptors = getInterceptors();
 		if (!ObjectUtils.isEmpty(interceptors)) {
+			// 遍历拦截器数组
 			for (int i = interceptors.length - 1; i >= 0; i--) {
 				HandlerInterceptor interceptor = interceptors[i];
+				// 后置处理
 				interceptor.postHandle(request, response, this.handler, mv);
 			}
 		}
@@ -164,14 +202,18 @@ public class HandlerExecutionChain {
 	 * Will just invoke afterCompletion for all interceptors whose preHandle invocation
 	 * has successfully completed and returned true.
 	 */
+	//执行请求匹配的拦截器的已完成处理
 	void triggerAfterCompletion(HttpServletRequest request, HttpServletResponse response, @Nullable Exception ex)
 			throws Exception {
-
+		// 获得拦截器数组
 		HandlerInterceptor[] interceptors = getInterceptors();
 		if (!ObjectUtils.isEmpty(interceptors)) {
+			// 遍历拦截器数组
+			//通过interceptorIndex属性，只会执行前置处理成功的拦截器们，因为该属性定义了成功执行前置处理的拦截器的位置
 			for (int i = this.interceptorIndex; i >= 0; i--) {
 				HandlerInterceptor interceptor = interceptors[i];
 				try {
+					// 已完成处理 拦截器
 					interceptor.afterCompletion(request, response, this.handler, ex);
 				}
 				catch (Throwable ex2) {

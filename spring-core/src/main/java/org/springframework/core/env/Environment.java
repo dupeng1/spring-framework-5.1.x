@@ -83,6 +83,9 @@ public interface Environment extends PropertyResolver {
 	 * @see ConfigurableEnvironment#setActiveProfiles
 	 * @see AbstractEnvironment#ACTIVE_PROFILES_PROPERTY_NAME
 	 */
+	/**
+	 * 返回这个环境明确激活的profiles集合
+	 */
 	String[] getActiveProfiles();
 
 	/**
@@ -91,6 +94,9 @@ public interface Environment extends PropertyResolver {
 	 * @see #getActiveProfiles
 	 * @see ConfigurableEnvironment#setDefaultProfiles
 	 * @see AbstractEnvironment#DEFAULT_PROFILES_PROPERTY_NAME
+	 */
+	/**
+	 * 当没有明确设置激活profiles时，返回默认激活的profiles集合
 	 */
 	String[] getDefaultProfiles();
 
@@ -107,6 +113,12 @@ public interface Environment extends PropertyResolver {
 	 * @see #getDefaultProfiles
 	 * @see #acceptsProfiles(Profiles)
 	 * @deprecated as of 5.1 in favor of {@link #acceptsProfiles(Profiles)}
+	 */
+	/**
+	 * 返回一个或者多个给定的profiles是否被激活，即便是没有明确的激活profiles。
+	 * 或者一个或者多个给定的profiles被包含在默认的profiles里。
+	 * 如果一个profile以!开头，那么这个方法会返回true
+	 * 如果参数p1是激活的，而参数p2没有激活，那么也会返回true
 	 */
 	@Deprecated
 	boolean acceptsProfiles(String... profiles);

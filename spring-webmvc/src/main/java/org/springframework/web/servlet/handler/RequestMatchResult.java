@@ -29,12 +29,23 @@ import org.springframework.util.PathMatcher;
  * @author Rossen Stoyanchev
  * @since 4.3.1
  */
+
+/**
+ * 判断请求和指定 pattern 路径是否匹配时，返回的匹配结果
+ * 实现 MatchableHandlerMapping 接口的类，有 RequestMappingHandlerMapping 类和 AbstractUrlHandlerMapping 抽象类
+ */
 public class RequestMatchResult {
-
+	/**
+	 * 匹配到的路径
+	 */
 	private final String matchingPattern;
-
+	/**
+	 * 被匹配的路径
+	 */
 	private final String lookupPath;
-
+	/**
+	 * 路径匹配器
+	 */
 	private final PathMatcher pathMatcher;
 
 

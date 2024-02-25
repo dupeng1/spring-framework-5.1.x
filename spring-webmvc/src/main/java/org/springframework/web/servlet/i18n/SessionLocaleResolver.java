@@ -58,6 +58,11 @@ import org.springframework.web.util.WebUtils;
  * @see #setDefaultLocale
  * @see #setDefaultTimeZone
  */
+
+/**
+ * 这个类是我们比较常用的类，它比较灵活，因为它支持我们从session里边去设置/获取locale，
+ * 同时它也实现了AbstractLocaleResolver和AbstractLocaleContextResolver接口，拥有获取locale上下文的能力
+ */
 public class SessionLocaleResolver extends AbstractLocaleContextResolver {
 
 	/**

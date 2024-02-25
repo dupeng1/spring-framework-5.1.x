@@ -84,12 +84,18 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * @see org.springframework.context.annotation.Profile
 	 * @see AbstractEnvironment#ACTIVE_PROFILES_PROPERTY_NAME
 	 */
+	/**
+	 * 设置激活profiles集合。Profiles是在容器引导期间,用来评估bean definitions是否用容器注册
+	 */
 	void setActiveProfiles(String... profiles);
 
 	/**
 	 * Add a profile to the current set of active profiles.
 	 * @throws IllegalArgumentException if the profile is null, empty or whitespace-only
 	 * @see #setActiveProfiles
+	 */
+	/**
+	 * 添加激活的profile
 	 */
 	void addActiveProfile(String profile);
 
@@ -98,6 +104,9 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * are explicitly made active through {@link #setActiveProfiles}.
 	 * @throws IllegalArgumentException if any profile is null, empty or whitespace-only
 	 * @see AbstractEnvironment#DEFAULT_PROFILES_PROPERTY_NAME
+	 */
+	/**
+	 * 设置默认的profiles集合
 	 */
 	void setDefaultProfiles(String... profiles);
 
@@ -115,6 +124,9 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * sources such as the set of system properties or the set of system environment
 	 * variables.
 	 * @see AbstractEnvironment#customizePropertySources
+	 */
+	/**
+	 * 返回这个环境的可变形式的PropertySources
 	 */
 	MutablePropertySources getPropertySources();
 

@@ -44,13 +44,19 @@ import org.springframework.util.CollectionUtils;
  * @see HandlerAdapter#handle
  * @see org.springframework.web.servlet.mvc.Controller#handleRequest
  */
+
+/**
+ * SpringMVC中用于封装视图和模型数据的类，其构造方法有多个重载形式
+ */
 public class ModelAndView {
 
 	/** View instance or view name String. */
+	//视图名称
 	@Nullable
 	private Object view;
 
 	/** Model Map. */
+	//模型数据的map对象
 	@Nullable
 	private ModelMap model;
 
@@ -100,6 +106,7 @@ public class ModelAndView {
 	 * (Objects). Model entries may not be {@code null}, but the
 	 * model Map may be {@code null} if there is no model data.
 	 */
+	//用于将模型数据和视图名称封装到ModelAndView对象中
 	public ModelAndView(String viewName, @Nullable Map<String, ?> model) {
 		this.view = viewName;
 		if (model != null) {
@@ -163,6 +170,7 @@ public class ModelAndView {
 	 * @param modelName name of the single entry in the model
 	 * @param modelObject the single model object
 	 */
+	//接收一个视图名称、一个模型数据的名称和一个模型数据对象，用于将模型数据和视图名称封装到ModelAndView对象中
 	public ModelAndView(String viewName, String modelName, Object modelObject) {
 		this.view = viewName;
 		addObject(modelName, modelObject);
@@ -185,6 +193,7 @@ public class ModelAndView {
 	 * DispatcherServlet via a ViewResolver. Will override any
 	 * pre-existing view name or View.
 	 */
+	//设置视图名称
 	public void setViewName(@Nullable String viewName) {
 		this.view = viewName;
 	}
@@ -193,6 +202,7 @@ public class ModelAndView {
 	 * Return the view name to be resolved by the DispatcherServlet
 	 * via a ViewResolver, or {@code null} if we are using a View object.
 	 */
+	//获取视图名称
 	@Nullable
 	public String getViewName() {
 		return (this.view instanceof String ? (String) this.view : null);
@@ -255,6 +265,7 @@ public class ModelAndView {
 	 * Return the model map. Never returns {@code null}.
 	 * To be called by application code for modifying the model.
 	 */
+	//获取模型数据的Map对象
 	public Map<String, Object> getModel() {
 		return getModelMap();
 	}
@@ -285,6 +296,7 @@ public class ModelAndView {
 	 * @see ModelMap#addAttribute(String, Object)
 	 * @see #getModelMap()
 	 */
+	//向模型数据中添加一个属性
 	public ModelAndView addObject(String attributeName, @Nullable Object attributeValue) {
 		getModelMap().addAttribute(attributeName, attributeValue);
 		return this;
@@ -307,6 +319,7 @@ public class ModelAndView {
 	 * @see ModelMap#addAllAttributes(Map)
 	 * @see #getModelMap()
 	 */
+	//向模型数据中添加多个属性
 	public ModelAndView addAllObjects(@Nullable Map<String, ?> modelMap) {
 		getModelMap().addAllAttributes(modelMap);
 		return this;

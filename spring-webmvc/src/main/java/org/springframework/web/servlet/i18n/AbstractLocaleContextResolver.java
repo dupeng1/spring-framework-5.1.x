@@ -38,6 +38,10 @@ import org.springframework.web.servlet.LocaleContextResolver;
  * @see #setDefaultLocale
  * @see #setDefaultTimeZone
  */
+
+/**
+ * 在AbstractLocaleResolver的基础上提供了设置默认时区的能力；
+ */
 public abstract class AbstractLocaleContextResolver extends AbstractLocaleResolver implements LocaleContextResolver {
 
 	@Nullable

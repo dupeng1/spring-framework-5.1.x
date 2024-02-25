@@ -64,6 +64,7 @@ public abstract class AbstractHandlerMethodAdapter extends WebContentGenerator i
 	 * @param handler the handler instance to check
 	 * @return whether or not this adapter can adapt the given handler
 	 */
+	//调用supportsInternal模板方法；
 	@Override
 	public final boolean supports(Object handler) {
 		return (handler instanceof HandlerMethod && supportsInternal((HandlerMethod) handler));
@@ -79,6 +80,7 @@ public abstract class AbstractHandlerMethodAdapter extends WebContentGenerator i
 	/**
 	 * This implementation expects the handler to be an {@link HandlerMethod}.
 	 */
+	//调用了handleInternal模板方法；
 	@Override
 	@Nullable
 	public final ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -104,6 +106,7 @@ public abstract class AbstractHandlerMethodAdapter extends WebContentGenerator i
 	/**
 	 * This implementation expects the handler to be an {@link HandlerMethod}.
 	 */
+	//调用了getLastModifiedInternal模板方法；
 	@Override
 	public final long getLastModified(HttpServletRequest request, Object handler) {
 		return getLastModifiedInternal(request, (HandlerMethod) handler);

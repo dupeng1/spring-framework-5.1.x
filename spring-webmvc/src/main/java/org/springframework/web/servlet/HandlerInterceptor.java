@@ -73,6 +73,11 @@ import org.springframework.web.method.HandlerMethod;
  * @see org.springframework.web.servlet.theme.ThemeChangeInterceptor
  * @see javax.servlet.Filter
  */
+
+/**
+ * 拦截器是相对于spring来说的，它和过滤器不一样，过滤器的范围更广一些，是相对于tomcat容器来说的。拦截器可以对用户进行拦截过滤处理
+ * 自定义拦截器
+ */
 public interface HandlerInterceptor {
 
 	/**
@@ -93,6 +98,11 @@ public interface HandlerInterceptor {
 	 * next interceptor or the handler itself. Else, DispatcherServlet assumes
 	 * that this interceptor has already dealt with the response itself.
 	 * @throws Exception in case of errors
+	 */
+	/**
+	 * 前置处理，在 {@link HandlerAdapter#handle(HttpServletRequest, HttpServletResponse, Object)} 执行之前
+	 * 此方法的作用是在请求进入到Controller进行拦截，有返回值。（返回true则将请求放行进入Controller控制层，false则请求结束返回错误信息）
+	 * 用法：登录验证（判断用户是否登录）权限验证：判断用户是否有权访问资源（校验token）
 	 */
 	default boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -120,6 +130,11 @@ public interface HandlerInterceptor {
 	 * (can also be {@code null})
 	 * @throws Exception in case of errors
 	 */
+	/**
+	 * 后置处理，在 {@link HandlerAdapter#handle(HttpServletRequest, HttpServletResponse, Object)} 执行成功之后
+	 * 该方法是在Controller控制器执行完成但是还没有返回模板进行渲染拦截。没有返回值。就是Controller----->拦截------>ModelAndView
+	 * 用法：因此我们可以将Controller层返回来的参数进行一些修改，它就包含在ModelAndView中，所以该方法多了一个ModelAndView参数
+	 */
 	default void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			@Nullable ModelAndView modelAndView) throws Exception {
 	}
@@ -143,6 +158,12 @@ public interface HandlerInterceptor {
 	 * execution, for type and/or instance examination
 	 * @param ex exception thrown on handler execution, if any
 	 * @throws Exception in case of errors
+	 */
+	/**
+	 * 完成处理，在 {@link HandlerAdapter#handle(HttpServletRequest, HttpServletResponse, Object)} 执行之后（无论成功还是失败）
+	 * 条件：执行 {@link #preHandle(HttpServletRequest, HttpServletResponse, Object)} 成功的拦截器才会执行该方法
+	 * 该方法是在ModelAndView返回给前端渲染后执行
+	 * 用法：例如登录的时候，我们经常把用户信息放到ThreadLocal中，为了防止内存泄漏，就需要将其remove掉，该操作就是在这里执行的。
 	 */
 	default void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
 			@Nullable Exception ex) throws Exception {

@@ -51,6 +51,19 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.web.servlet.support.RequestContext#getLocale
  * @see org.springframework.web.servlet.support.RequestContextUtils#getLocale
  */
+
+/**
+ * 是当前的区域解析器，简单来说我们可以通过这个接口来实现国际化
+ * 1）基于web的区域设置解析策略接口
+ *
+ * 2）通过请求进行区域设置解析
+ *
+ * 3）可以使用基于request、session、cookies实现。
+ *
+ * 默认的实现是AcceptHeaderLocaleResolver【通过HTTP头提供的信息进行设置】
+ *
+ * 4）使用RequestContext.getLocale()检索controller或views中的当前区域设置
+ */
 public interface LocaleResolver {
 
 	/**
@@ -59,6 +72,7 @@ public interface LocaleResolver {
 	 * @param request the request to resolve the locale for
 	 * @return the current locale (never {@code null})
 	 */
+	//解析当前区域语言，可以返回当前的Locale
 	Locale resolveLocale(HttpServletRequest request);
 
 	/**
@@ -69,6 +83,7 @@ public interface LocaleResolver {
 	 * @throws UnsupportedOperationException if the LocaleResolver
 	 * implementation does not support dynamic changing of the locale
 	 */
+	//改变当前的Locale
 	void setLocale(HttpServletRequest request, @Nullable HttpServletResponse response, @Nullable Locale locale);
 
 }

@@ -37,6 +37,10 @@ import org.springframework.util.Assert;
  * @see Conventions#getVariableName
  * @see org.springframework.web.servlet.ModelAndView
  */
+
+/**
+ *
+ */
 @SuppressWarnings("serial")
 public class ModelMap extends LinkedHashMap<String, Object> {
 

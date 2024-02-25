@@ -44,6 +44,10 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  * @author David Syer
  * @since 3.1
  */
+
+/**
+ * 添加拦截规则
+ */
 public interface WebMvcConfigurer {
 
 	/**
@@ -100,6 +104,7 @@ public interface WebMvcConfigurer {
 	 * {@link org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
 	 * WebMvcConfigurationSupport} and then override {@code resourceHandlerMapping}.
 	 */
+	//添加拦截器，拦截器需要拦截的路径和需要排除拦截的路径都需要在其中配置
 	default void addInterceptors(InterceptorRegistry registry) {
 	}
 
@@ -108,6 +113,7 @@ public interface WebMvcConfigurer {
 	 * files from specific locations under web application root, the classpath,
 	 * and others.
 	 */
+	//配置静态资源路径，即某些请求需要读取某个路径下的静态资源内容，需要配置该静态资源的路径，通过该方法可以统一给这些请求配置指定静态资源路径
 	default void addResourceHandlers(ResourceHandlerRegistry registry) {
 	}
 

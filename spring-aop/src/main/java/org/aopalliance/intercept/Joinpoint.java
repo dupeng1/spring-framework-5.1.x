@@ -37,6 +37,17 @@ import java.lang.reflect.AccessibleObject;
  * @author Rod Johnson
  * @see Interceptor
  */
+
+/**
+ * 1、连接点（Join Point），在应用执行过程中能够插入切面的一个点
+ * 在 Spring AOP 中, join point 总是方法的执行点, 即只有方法连接点
+ * 2、切点（point cut）：匹配连接点的谓词，一组连接点的总称，用于指定某个增强应该在何时被调用，
+ * 提供一组规则来匹配连接点，给满足规则的连接点添加Advice
+ *
+ *
+ *
+ *
+ */
 public interface Joinpoint {
 
 	/**
