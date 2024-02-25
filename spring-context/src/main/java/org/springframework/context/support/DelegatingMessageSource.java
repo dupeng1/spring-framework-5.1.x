@@ -35,6 +35,12 @@ import org.springframework.lang.Nullable;
  * @since 1.1.5
  * @see AbstractApplicationContext
  */
+
+/**
+ * 消息源解析委派类（用户未指定时，SpringContext默认使用当前类),功能比较简单：将字符串和参数数组格式化为一个消息字符串
+ *
+ * https://blog.csdn.net/lh513828570/article/details/75212207
+ */
 public class DelegatingMessageSource extends MessageSourceSupport implements HierarchicalMessageSource {
 
 	@Nullable

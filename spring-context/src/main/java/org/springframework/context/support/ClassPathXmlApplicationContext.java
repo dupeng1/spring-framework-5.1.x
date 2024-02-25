@@ -49,6 +49,14 @@ import org.springframework.util.Assert;
  * @see #getResourceByPath
  * @see GenericApplicationContext
  */
+
+/**
+ * xml的一种bean配置方式
+ * 例如：ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "applicationContext.xml" });
+ *
+ * 2、
+ * 默认获取的是WEB-INF/classes/下的路径,也就是在myeclipse的src下的路径
+ */
 public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContext {
 
 	@Nullable

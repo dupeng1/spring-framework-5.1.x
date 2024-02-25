@@ -91,6 +91,11 @@ import org.springframework.util.Assert;
  * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
  * @see org.springframework.beans.factory.support.PropertiesBeanDefinitionReader
  */
+
+/**
+ * 通用应用程序上下文实现，基本就是对DefaultListableBeanFactory 做了个简易的封装，
+ * 几乎所有方法都是使用了DefaultListableBeanFactory的方法去实现。
+ */
 public class GenericApplicationContext extends AbstractApplicationContext implements BeanDefinitionRegistry {
 
 	private final DefaultListableBeanFactory beanFactory;

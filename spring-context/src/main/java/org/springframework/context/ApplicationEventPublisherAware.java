@@ -28,6 +28,10 @@ import org.springframework.beans.factory.Aware;
  * @since 1.1.1
  * @see ApplicationContextAware
  */
+
+/**
+ * 用于为 Service 注入 ApplicationEventPublisher 事件发布器的接口，使用这个接口，我们自己的 Service 就拥有了发布事件的能力。
+ */
 public interface ApplicationEventPublisherAware extends Aware {
 
 	/**

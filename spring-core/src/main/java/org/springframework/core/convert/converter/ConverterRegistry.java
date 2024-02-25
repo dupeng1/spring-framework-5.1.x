@@ -23,6 +23,7 @@ package org.springframework.core.convert.converter;
  * @author Juergen Hoeller
  * @since 3.0
  */
+//类型转换器注册支持，可以注册/删除相应的类型转换器
 public interface ConverterRegistry {
 
 	/**

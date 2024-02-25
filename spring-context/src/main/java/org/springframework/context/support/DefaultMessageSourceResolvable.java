@@ -32,6 +32,11 @@ import org.springframework.util.StringUtils;
  * @since 13.02.2004
  * @see org.springframework.context.MessageSource#getMessage(MessageSourceResolvable, java.util.Locale)
  */
+
+/**
+ * MessageSourceResolvable接口的Spring默认实现类。
+ * 提供了一个简单的方式，用于存储所有需要的值，值经过MessageSource来解析一个消息
+ */
 @SuppressWarnings("serial")
 public class DefaultMessageSourceResolvable implements MessageSourceResolvable, Serializable {
 
@@ -49,6 +54,10 @@ public class DefaultMessageSourceResolvable implements MessageSourceResolvable, 
 	 * Create a new DefaultMessageSourceResolvable.
 	 * @param code the code to be used to resolve this message
 	 */
+	/**
+	 * 创建一个新的DefaultMessageSourceResolvable.
+	 * @param 用来解析消息的码
+	 */
 	public DefaultMessageSourceResolvable(String code) {
 		this(new String[] {code}, null, null);
 	}
@@ -56,6 +65,10 @@ public class DefaultMessageSourceResolvable implements MessageSourceResolvable, 
 	/**
 	 * Create a new DefaultMessageSourceResolvable.
 	 * @param codes the codes to be used to resolve this message
+	 */
+	/**
+	 * 创建一个新的DefaultMessageSourceResolvable.
+	 * @param 用来解析消息的码
 	 */
 	public DefaultMessageSourceResolvable(String[] codes) {
 		this(codes, null, null);
@@ -66,6 +79,11 @@ public class DefaultMessageSourceResolvable implements MessageSourceResolvable, 
 	 * @param codes the codes to be used to resolve this message
 	 * @param defaultMessage the default message to be used to resolve this message
 	 */
+	/**
+	 * 创建一个新的DefaultMessageSourceResolvable.
+	 * @param codes 用来解析消息的码
+	 * @param defaultMessage 用来解析消息的默认消息
+	 */
 	public DefaultMessageSourceResolvable(String[] codes, String defaultMessage) {
 		this(codes, null, defaultMessage);
 	}
@@ -74,6 +92,11 @@ public class DefaultMessageSourceResolvable implements MessageSourceResolvable, 
 	 * Create a new DefaultMessageSourceResolvable.
 	 * @param codes the codes to be used to resolve this message
 	 * @param arguments the array of arguments to be used to resolve this message
+	 */
+	/**
+	 * 创建一个新的DefaultMessageSourceResolvable.
+	 * @param codes 用来解析消息的码
+	 * @param arguments 用来解析消息的参数数组
 	 */
 	public DefaultMessageSourceResolvable(String[] codes, Object[] arguments) {
 		this(codes, arguments, null);
@@ -84,6 +107,12 @@ public class DefaultMessageSourceResolvable implements MessageSourceResolvable, 
 	 * @param codes the codes to be used to resolve this message
 	 * @param arguments the array of arguments to be used to resolve this message
 	 * @param defaultMessage the default message to be used to resolve this message
+	 */
+	/**
+	 * 创建一个新的DefaultMessageSourceResolvable.
+	 * @param codes 用来解析消息的码
+	 * @param arguments 用来解析消息的参数数组
+	 * @param defaultMessage 用来解析消息的默认消息
 	 */
 	public DefaultMessageSourceResolvable(
 			@Nullable String[] codes, @Nullable Object[] arguments, @Nullable String defaultMessage) {
@@ -140,6 +169,14 @@ public class DefaultMessageSourceResolvable implements MessageSourceResolvable, 
 	 * @see #getArguments()
 	 * @see AbstractMessageSource#renderDefaultMessage
 	 */
+	/**
+	 * 表示指定默认的消息是否需要获取，来替换占位符and/or MessageFormat
+	 * return true：如果默认的消息可能包含参数占位符
+	 * return false：如果它明确没有包含占位符或者自定义逃逸并且当前可以被简单暴露
+	 * @see #getDefaultMessage()
+	 * @see #getArguments()
+	 * @see AbstractMessageSource#renderDefaultMessage
+	 */
 	public boolean shouldRenderDefaultMessage() {
 		return true;
 	}
@@ -148,6 +185,9 @@ public class DefaultMessageSourceResolvable implements MessageSourceResolvable, 
 	/**
 	 * Build a default String representation for this MessageSourceResolvable:
 	 * including codes, arguments, and default message.
+	 */
+	/**
+	 * 建造一个MessageSourceResolvable的默认的字符串表示
 	 */
 	protected final String resolvableToString() {
 		StringBuilder result = new StringBuilder(64);

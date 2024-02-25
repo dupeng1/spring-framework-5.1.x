@@ -30,6 +30,12 @@ import org.springframework.lang.Nullable;
  * @param <S> the source type
  * @param <T> the target type
  */
+
+/**
+ * 类型转换器，用于转换S类型到T类型，此接口的实现必须是线程安全的且可以被共享。
+ * @param <S>
+ * @param <T>
+ */
 @FunctionalInterface
 public interface Converter<S, T> {
 

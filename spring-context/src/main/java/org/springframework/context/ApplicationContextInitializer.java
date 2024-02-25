@@ -39,7 +39,49 @@ package org.springframework.context;
  * @see org.springframework.web.servlet.FrameworkServlet#setContextInitializerClasses
  * @see org.springframework.web.servlet.FrameworkServlet#applyInitializers
  */
-//接口用于在 Spring 容器刷新之前执行的一个回调函数，通常用于向 SpringBoot 容器中注入属性
+//
+
+/**
+ * 接口用于在 Spring 容器刷新之前执行的一个回调函数，通常用于向 SpringBoot 容器中注入属性
+ *
+ * 例如：
+ * public class FirstInitializer implements ApplicationContextInitializer {
+ *
+ *     @Override
+ *     public void initialize(ConfigurableApplicationContext applicationContext) {
+ *         ConfigurableEnvironment environment = applicationContext.getEnvironment();
+ *
+ *         Map<String, Object> map = new HashMap<>();
+ *         map.put("key1", "First");
+ *
+ *         MapPropertySource mapPropertySource = new MapPropertySource("firstInitializer", map);
+ *         environment.getPropertySources().addLast(mapPropertySource);
+ *
+ *         System.out.println("run firstInitializer");
+ *     }
+ *
+ * }
+ *
+ * 1、在 resources/META-INF/spring.factories 中配置
+ * org.springframework.context.ApplicationContextInitializer=com.learn.springboot.initializer.FirstInitializer
+ *
+ * 2、在 mian 函数中添加
+ * @SpringBootApplication
+ * public class SpringbootApplication {
+ *
+ *     public static void main(String[] args) {
+ * //        SpringApplication.run(SpringbootApplication.class, args);
+ *         SpringApplication springApplication = new SpringApplication(SpringbootApplication.class);
+ *         springApplication.addInitializers(new SecondInitializer());
+ *         springApplication.run();
+ *     }
+ *
+ * }
+ *
+ * 3、在配置文件中配置
+ * context.initializer.classes=com.learn.springboot.initializer.ThirdInitializer
+ * @param <C>
+ */
 public interface ApplicationContextInitializer<C extends ConfigurableApplicationContext> {
 
 	/**

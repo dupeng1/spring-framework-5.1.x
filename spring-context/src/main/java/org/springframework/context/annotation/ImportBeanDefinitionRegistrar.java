@@ -47,6 +47,24 @@ import org.springframework.core.type.AnnotationMetadata;
  * @see ImportSelector
  * @see Configuration
  */
+//将要注入的类添加到BeanDefinition注册中心，这样Spring 后续会根据bean定义信息将类注入到容器中
+
+/**
+ * 例如：@Import({MyImportBeanDefinitionRegistrar.class})
+ *
+ * public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar {
+ * ​
+ * ​
+ *     //使用 BeanNameGenerator自动生成beanName
+ *     @Override
+ *     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry, BeanNameGenerator importBeanNameGenerator) {
+ *         BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(Person.class);
+ *         AbstractBeanDefinition beanDefinition = beanDefinitionBuilder.getBeanDefinition();
+ *         String beanName = importBeanNameGenerator.generateBeanName(beanDefinition, registry);
+ *         registry.registerBeanDefinition(beanName, beanDefinition);
+ *     }
+ * }
+ */
 public interface ImportBeanDefinitionRegistrar {
 
 	/**

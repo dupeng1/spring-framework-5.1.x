@@ -26,6 +26,7 @@ import org.springframework.lang.Nullable;
  * @author Phillip Webb
  * @since 3.0
  */
+//运行时类型转换服务接口，提供运行期类型转换的支持。这个接口的实现类可以使用类型转换器进行类型转换
 public interface ConversionService {
 
 	/**

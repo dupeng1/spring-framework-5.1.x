@@ -45,13 +45,23 @@ import org.springframework.util.StringUtils;
  * @see FileSystemResourceLoader
  * @see org.springframework.context.support.ClassPathXmlApplicationContext
  */
+
+/**
+ * 1、资源加载器, 根据路径获取Resource对象
+ * 2、注册一些资源的解析协议
+ * 	并且通过默认的类加载器或者指定的类加器加载相应的资源
+ * 	为AbstractApplicationContext提供了加载资源的方法
+ */
 public class DefaultResourceLoader implements ResourceLoader {
 
+	//加载资源的类加载器
 	@Nullable
 	private ClassLoader classLoader;
 
+	//用于存储注册协议解析器
 	private final Set<ProtocolResolver> protocolResolvers = new LinkedHashSet<>(4);
 
+	//缓存已经加载的资源
 	private final Map<Class<?>, Map<Resource, ?>> resourceCaches = new ConcurrentHashMap<>(4);
 
 
@@ -81,6 +91,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * <p>The default is that ClassLoader access will happen using the thread context
 	 * class loader at the time of this ResourceLoader's initialization.
 	 */
+	//设置与获取ClassLoader 类加载器
 	public void setClassLoader(@Nullable ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
@@ -91,6 +102,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * ClassPathResource objects created by this resource loader.
 	 * @see ClassPathResource
 	 */
+	//设置与获取ClassLoader 类加载器
 	@Override
 	@Nullable
 	public ClassLoader getClassLoader() {
@@ -105,6 +117,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * @since 4.3
 	 * @see #getProtocolResolvers()
 	 */
+	//注册协议解析器，允许处理额外的协议。这些注册的协议会在标准的解析规则之前调用
 	public void addProtocolResolver(ProtocolResolver resolver) {
 		Assert.notNull(resolver, "ProtocolResolver must not be null");
 		this.protocolResolvers.add(resolver);
@@ -115,6 +128,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * allowing for introspection as well as modification.
 	 * @since 4.3
 	 */
+	//获取当前已经注册的协议解析器
 	public Collection<ProtocolResolver> getProtocolResolvers() {
 		return this.protocolResolvers;
 	}
@@ -125,6 +139,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * @return the cache {@link Map}, shared at the {@code ResourceLoader} level
 	 * @since 5.0
 	 */
+	//根据类型获得资源缓存中的数据
 	@SuppressWarnings("unchecked")
 	public <T> Map<Resource, T> getResourceCache(Class<T> valueType) {
 		return (Map<Resource, T>) this.resourceCaches.computeIfAbsent(valueType, key -> new ConcurrentHashMap<>());
@@ -135,28 +150,32 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * @since 5.0
 	 * @see #getResourceCache
 	 */
+	//清空缓存的资源
 	public void clearResourceCaches() {
 		this.resourceCaches.clear();
 	}
 
-
+	//根据路径得到Resource资源对象
 	@Override
 	public Resource getResource(String location) {
 		Assert.notNull(location, "Location must not be null");
-
+		//首先通过我们注册的协议解析器解析给定location资源，如果能够解析出来就直接返回
 		for (ProtocolResolver protocolResolver : getProtocolResolvers()) {
 			Resource resource = protocolResolver.resolve(location, this);
 			if (resource != null) {
 				return resource;
 			}
 		}
-
+		// 如果注册的协议解析器无法解析资源，就判断loaction的路径是否以"/"开头
+		// 如果是的话就调用getResourceByPath方法按照路径进行解析，
 		if (location.startsWith("/")) {
 			return getResourceByPath(location);
 		}
+		// 判断location是否以"classpath:"开头，如果是的话就通过类加载器去加载给定的资源
 		else if (location.startsWith(CLASSPATH_URL_PREFIX)) {
 			return new ClassPathResource(location.substring(CLASSPATH_URL_PREFIX.length()), getClassLoader());
 		}
+		// 否则就使用URL协议解析给定路径的资源
 		else {
 			try {
 				// Try to parse the location as a URL...

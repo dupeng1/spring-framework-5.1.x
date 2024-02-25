@@ -62,6 +62,11 @@ import org.springframework.util.StringValueResolver;
  * @see org.springframework.beans.factory.config.PlaceholderConfigurerSupport
  * @see org.springframework.beans.factory.config.PropertyPlaceholderConfigurer
  */
+
+/**
+ * 它用于解析bean定义中的属性值，以及注解@Value的值，使用的属性来源是当前的Spring Environment对象，以及设置给自己的PropertySources对象。
+ * 该bean作为一个BeanFactoryPostProcessor,会在容器启动时容器后置处理阶段执行自己的任务。
+ */
 public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerSupport implements EnvironmentAware {
 
 	/**
@@ -124,9 +129,13 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 	 * ignored</strong>. This method is designed to give the user fine-grained control over property
 	 * sources, and once set, the configurer makes no assumptions about adding additional sources.
 	 */
+	// 这是接口  BeanFactoryPostProcessor 约定的方法，会在容器启动过程中的后置处理阶段被调用
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		if (this.propertySources == null) {
+			// 如果外部指定了 this.propertySources, 则直接使用它，否则
+			// 从当前 Spring 的 Environment 对象和自身的 #mergeProperties 方法调用返回的 Properties 对象构建属性源
+			// 对象 this.propertySources
 			this.propertySources = new MutablePropertySources();
 			if (this.environment != null) {
 				this.propertySources.addLast(
@@ -154,6 +163,9 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 			}
 		}
 
+		// 构造一个基于特定属性源 this.propertySources 对属性值进行解析的属性值解析器
+		// PropertySourcesPropertyResolver, 对容器中所有的 bean 定义中的属性值，构造函数参数值，
+		// @Value 注解值进行属性占位符解析和替换
 		processProperties(beanFactory, new PropertySourcesPropertyResolver(this.propertySources));
 		this.appliedPropertySources = this.propertySources;
 	}
@@ -164,11 +176,15 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 	 */
 	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess,
 			final ConfigurablePropertyResolver propertyResolver) throws BeansException {
-
+		// 设置属性值解析器所使用的占位符格式参数，缺省为:
+		// 占位符前缀 ${
+		// 占位符后缀 }
+		// 缺省值分隔符 :
 		propertyResolver.setPlaceholderPrefix(this.placeholderPrefix);
 		propertyResolver.setPlaceholderSuffix(this.placeholderSuffix);
 		propertyResolver.setValueSeparator(this.valueSeparator);
-
+		// 结合属性 this. ignoreUnresolvablePlaceholders 对 propertyResolver 作进一步封装，
+		// 封装出来一个 StringValueResolver valueResolver,这是最终要应用的属性值解析器
 		StringValueResolver valueResolver = strVal -> {
 			String resolved = (this.ignoreUnresolvablePlaceholders ?
 					propertyResolver.resolvePlaceholders(strVal) :
@@ -178,11 +194,14 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 			}
 			return (resolved.equals(this.nullValue) ? null : resolved);
 		};
-
+		// 调用基类  PlaceholderConfigurerSupport 实现的对容器中所有 bean定义进行遍历处理属性值中占位符解析
+		// 的逻辑
 		doProcessProperties(beanFactoryToProcess, valueResolver);
 	}
 
 	/**
+	 * 该方法是基类定义的方法，这里的实现直接抛出了异常，因为该实现类实际上使用了另外一个 processProperties
+	 * 方法实现
 	 * Implemented for compatibility with
 	 * {@link org.springframework.beans.factory.config.PlaceholderConfigurerSupport}.
 	 * @deprecated in favor of

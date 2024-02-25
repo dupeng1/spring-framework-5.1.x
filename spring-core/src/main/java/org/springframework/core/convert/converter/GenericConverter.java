@@ -45,6 +45,7 @@ import org.springframework.util.Assert;
  * @see ConverterFactory
  * @see ConditionalConverter
  */
+//定义了能在多种类型之间进行转换
 public interface GenericConverter {
 
 	/**

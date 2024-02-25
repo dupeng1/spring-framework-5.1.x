@@ -40,6 +40,12 @@ import org.springframework.lang.Nullable;
  * @author Chris Beams
  * @since 03.11.2003
  */
+/*
+这个接口是被大多数但并非全部应用程序上下文实现的服务提供接口。除了ApplicationContext接口中的应用程序上下文客户端方法以外，
+还提供了配置应用程序上下文的工具。
+这里封装了配置和生命周期方法，使ApplicationContext客户端对它们不可见，目前的方法只能由启动和关闭代码使用。
+*/
+
 public interface ConfigurableApplicationContext extends ApplicationContext, Lifecycle, Closeable {
 
 	/**
@@ -49,6 +55,9 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * @see org.springframework.web.context.ContextLoader#CONFIG_LOCATION_PARAM
 	 * @see org.springframework.web.servlet.FrameworkServlet#setContextConfigLocation
 	 */
+	/*
+    这个字符串中的任意字符都可以作为单个字符串值中多个上下文配置路径之间的分隔符
+    */
 	String CONFIG_LOCATION_DELIMITERS = ",; \t\n";
 
 	/**
@@ -57,6 +66,9 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * @since 3.0
 	 * @see org.springframework.core.convert.ConversionService
 	 */
+	 /*
+    factory中ConversionService bean的名称，如果没有提供将才有默认的转换规则
+    */
 	String CONVERSION_SERVICE_BEAN_NAME = "conversionService";
 
 	/**
@@ -66,24 +78,37 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * @since 2.5
 	 * @see org.springframework.instrument.classloading.LoadTimeWeaver
 	 */
+	 /*
+    factory中LoadTimeWeaver bean的名称，如果提供了这样的bean，
+    context将使用一个临时类加载器进行类型匹配，以允许LoadTimeWeaver处理所有实际的bean类
+    */
 	String LOAD_TIME_WEAVER_BEAN_NAME = "loadTimeWeaver";
 
 	/**
 	 * Name of the {@link Environment} bean in the factory.
 	 * @since 3.1
 	 */
+	/*
+    factory中Environment bean的名称
+    */
 	String ENVIRONMENT_BEAN_NAME = "environment";
 
 	/**
 	 * Name of the System properties bean in the factory.
 	 * @see java.lang.System#getProperties()
 	 */
+	/*
+    系统属性bean的名称
+    */
 	String SYSTEM_PROPERTIES_BEAN_NAME = "systemProperties";
 
 	/**
 	 * Name of the System environment bean in the factory.
 	 * @see java.lang.System#getenv()
 	 */
+	 /*
+    系统环境bean的名称
+    */
 	String SYSTEM_ENVIRONMENT_BEAN_NAME = "systemEnvironment";
 
 
@@ -91,6 +116,9 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * Set the unique id of this application context.
 	 * @since 3.0
 	 */
+	 /*
+    设置应用程序上下文的唯一ID
+    */
 	void setId(String id);
 
 	/**
@@ -101,6 +129,10 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * @param parent the parent context
 	 * @see org.springframework.web.context.ConfigurableWebApplicationContext
 	 */
+	/*
+    设置应用程序上下文的父Context
+    请注意，父类不应该被修改，只有在创建此类的对象时父级不可用时，才应在构造函数外部设置父级
+    */
 	void setParent(@Nullable ApplicationContext parent);
 
 	/**
@@ -108,6 +140,9 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * @param environment the new environment
 	 * @since 3.1
 	 */
+	/*
+    设置应用程序上下文的环境
+    */
 	void setEnvironment(ConfigurableEnvironment environment);
 
 	/**
@@ -115,6 +150,9 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * form, allowing for further customization.
 	 * @since 3.1
 	 */
+	/*
+    获得应用程序上下文的环境
+    */
 	@Override
 	ConfigurableEnvironment getEnvironment();
 
@@ -124,6 +162,12 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * bean definitions get evaluated. To be invoked during context configuration.
 	 * @param postProcessor the factory processor to register
 	 */
+	/*
+    增加一个新的BeanFactoryPostProcessor，在任何bean definition被检查之前，
+    它将会在当前应用程序上下文刷新的时候将会应用于内部的bean工厂
+
+    在进行context配置期间调用
+    */
 	void addBeanFactoryPostProcessor(BeanFactoryPostProcessor postProcessor);
 
 	/**
@@ -136,6 +180,12 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * @see org.springframework.context.event.ContextRefreshedEvent
 	 * @see org.springframework.context.event.ContextClosedEvent
 	 */
+	/*
+    添加一个ApplicationListener，它将会被通知上下文事件
+    例如context刷新和关闭事件
+    注意，即使上下文没有启动，注册在这里的ApplicationListener也会被应用与刷新事件
+    或者在上下文已经激活的情况下，使用当前事件多播进行实时处理
+    */
 	void addApplicationListener(ApplicationListener<?> listener);
 
 	/**
@@ -145,6 +195,12 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * resolution rules. It may therefore also override any default rules.
 	 * @since 4.3
 	 */
+	/*
+    注册应用程序上下文中给定的协议解析器
+    允许额外的资源协议被处理
+    任何这样的解析器都将在这个上下文的标准解析规则之前被调用。
+    因此，它也可以覆盖任何默认规则
+    */
 	void addProtocolResolver(ProtocolResolver resolver);
 
 	/**
@@ -157,6 +213,10 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * @throws IllegalStateException if already initialized and multiple refresh
 	 * attempts are not supported
 	 */
+	/*
+    加载或者刷新配置，这些配置可能来自基于Java注解的配置，或者xml文件，或者属性文件，或者关联的数据库等等
+	在应用上下文关闭的情况下调用refresh即可启动应用上下文，在已经启动的状态下条用refresh则可清除缓存并重新装载配置信息
+    */
 	void refresh() throws BeansException, IllegalStateException;
 
 	/**
@@ -167,6 +227,10 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * @see java.lang.Runtime#addShutdownHook
 	 * @see #close()
 	 */
+	/*
+    注册JVM运行时的关闭钩子，在JVM关闭时关闭应用程序上下文，除非它已经关闭
+    这个方法可以多次调用，每个context实例仅注册一个关闭钩子
+    */
 	void registerShutdownHook();
 
 	/**
@@ -177,6 +241,9 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * <p>This method can be called multiple times without side effects: Subsequent
 	 * {@code close} calls on an already closed context will be ignored.
 	 */
+	/*
+    关闭应用程序上下文，释放所有的资源，同时会销毁单例池中的所有bean
+    */
 	@Override
 	void close();
 
@@ -188,6 +255,10 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * @see #close()
 	 * @see #getBeanFactory()
 	 */
+	/*
+    判断当前应用程序上下文是否在使用
+    判断它是否至少被刷新一次并且没有被关闭
+    */
 	boolean isActive();
 
 	/**
@@ -209,6 +280,11 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * @see #close()
 	 * @see #addBeanFactoryPostProcessor
 	 */
+	/*
+    返回当前应用程序上下文的内部bean工厂，可以用于访问指定的功能
+    不要用它来对bean工厂进行后期处理；单例之前已经实例化过了。
+    使用BeanFactoryPostProcessor在接触Bean之前拦截BeanFactory启动过程
+    */
 	ConfigurableListableBeanFactory getBeanFactory() throws IllegalStateException;
 
 }

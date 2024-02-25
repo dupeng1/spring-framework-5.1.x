@@ -40,6 +40,7 @@ import org.springframework.core.convert.TypeDescriptor;
  * @see ConverterFactory
  * @see ConditionalGenericConverter
  */
+//接口定义了有条件的类型之间进行转换。
 public interface ConditionalConverter {
 
 	/**

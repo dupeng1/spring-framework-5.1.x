@@ -46,6 +46,23 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 4.0
  */
+
+/**
+ * 是AbstractApplicationContext委托执行post processors任务的工具类
+ * 	1、这里的postProcessor包括两类 :
+ * 		BeanFactoryPostProcessor
+ * 		BeanPostProcessor
+ * 	2、实际上BeanFactoryPostProcessor又细分为两类:
+ * 		BeanDefinitionRegistryPostProcessor–BeanDefinitionRegistry后置处理器
+ * 		BeanFactoryPostProcessor–BeanFactory后置处理器
+ * 	3、BeanDefinitionRegistryPostProcessor设计目的是在常规BeanFactoryPostProcessor处理BeanFactory（也就是容器）前先对bean注册
+ * 	做处理，比如注册更多的bean，实现此目的是通过BeanDefinitionRegistryPostProcessor定义的方法postProcessBeanDefinitionRegistry
+ * 	4、如果一个实现类是BeanDefinitionRegistryPostProcessor,那么它的postProcessBeanDefinitionRegistry
+ * 	方法总是要早与它的postProcessBeanFactory方法被调用
+ *
+ * 	https://blog.csdn.net/andy_zhang2007/article/details/78530137
+ *
+ */
 final class PostProcessorRegistrationDelegate {
 
 	private PostProcessorRegistrationDelegate() {

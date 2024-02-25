@@ -36,9 +36,18 @@ import org.springframework.util.StringUtils;
  * @see #setConfigLocations
  * @see #getDefaultConfigLocations
  */
+
+/**
+ * 用于添加对指定配置位置的通用处理，加载容器刷新是配置文件的通用操作
+ * 主要作用就是根据传入的配置文件名解析占位符（如果有），主要作用如下：
+ * 1、解析配置文件名中的占位符为相应属性值，保存到configLocations
+ * 2、实现接口BeanNameAware–ApplicationContext本身当做一个实例bean，把id设置为beanName
+ * 3、实现接口InitializingBean–在afterPropertiesSet，如果容器未刷新，则触发容器的refresh（）
+ */
 public abstract class AbstractRefreshableConfigApplicationContext extends AbstractRefreshableApplicationContext
 		implements BeanNameAware, InitializingBean {
 
+	//配置文件路径集合
 	@Nullable
 	private String[] configLocations;
 
@@ -65,6 +74,7 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
 	 * i.e. with distinct locations separated by commas, semicolons or whitespace.
 	 * <p>If not set, the implementation may use a default as appropriate.
 	 */
+	//  为这个应用程序上下文设置配置位置。
 	public void setConfigLocation(String location) {
 		setConfigLocations(StringUtils.tokenizeToStringArray(location, CONFIG_LOCATION_DELIMITERS));
 	}
@@ -77,6 +87,7 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
 		if (locations != null) {
 			Assert.noNullElements(locations, "Config locations must not be null");
 			this.configLocations = new String[locations.length];
+			//逐一处理文件名
 			for (int i = 0; i < locations.length; i++) {
 				this.configLocations[i] = resolvePath(locations[i]).trim();
 			}
@@ -96,6 +107,7 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
 	 * @see #getResources
 	 * @see #getResourcePatternResolver
 	 */
+	// 获取配置位置
 	@Nullable
 	protected String[] getConfigLocations() {
 		return (this.configLocations != null ? this.configLocations : getDefaultConfigLocations());
@@ -122,6 +134,7 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
 	 * @see org.springframework.core.env.Environment#resolveRequiredPlaceholders(String)
 	 */
 	protected String resolvePath(String path) {
+		//把path中的$｛…｝占位符替换为从属性文件中解析出的相应属性值。
 		return getEnvironment().resolveRequiredPlaceholders(path);
 	}
 

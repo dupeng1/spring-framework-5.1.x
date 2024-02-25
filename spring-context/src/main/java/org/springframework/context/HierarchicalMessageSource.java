@@ -25,6 +25,10 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 分层的消息源接口，可获取父消息源
+ */
 public interface HierarchicalMessageSource extends MessageSource {
 
 	/**

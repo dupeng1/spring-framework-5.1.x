@@ -37,6 +37,15 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.context.support.ResourceBundleMessageSource
  * @see org.springframework.context.support.ReloadableResourceBundleMessageSource
  */
+
+/**
+ * 解析消息的策略接口，支持于消息的参数话和国际化
+ * Spring提供了两种开箱即用的实现类:
+ * {@link org.springframework.context.support.ResourceBundleMessageSource}:
+ * 建立在{@link java.util.ResourceBundle}上面, 共享它的限制.
+ * {@link org.springframework.context.support.ReloadableResourceBundleMessageSource}:
+ * 高可配，尤其是在重新加载消息定义方面
+ */
 public interface MessageSource {
 
 	/**
@@ -53,6 +62,9 @@ public interface MessageSource {
 	 * the default message passed as a parameter (which may be {@code null})
 	 * @see #getMessage(MessageSourceResolvable, Locale)
 	 * @see java.text.MessageFormat
+	 */
+	/**
+	 * 尝试解析消息。如果消息不能找到，就返回默认消息。
 	 */
 	@Nullable
 	String getMessage(String code, @Nullable Object[] args, @Nullable String defaultMessage, Locale locale);
@@ -90,6 +102,11 @@ public interface MessageSource {
 	 * @see MessageSourceResolvable#getArguments()
 	 * @see MessageSourceResolvable#getDefaultMessage()
 	 * @see java.text.MessageFormat
+	 */
+	/**
+	 * 尝试使用MessageSourceResolable参数的所有属性来解析消息
+	 * 注意：我们必须抛出一个NoSuchMessageException。因为在调用这个方法的时候，我们不能决定resolvable对象的defaultMessage
+	 * 和resolvable对象是否为空
 	 */
 	String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException;
 

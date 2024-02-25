@@ -39,6 +39,10 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @since 2.5.5
  */
+
+/**
+ * 帮助消息源解析的抽象类,通过指定“消息格式化组件MessageFormat”格式化消息。
+ */
 public abstract class MessageSourceSupport {
 
 	private static final MessageFormat INVALID_MESSAGE_FORMAT = new MessageFormat("");

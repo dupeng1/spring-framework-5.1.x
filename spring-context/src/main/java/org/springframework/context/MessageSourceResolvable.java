@@ -29,6 +29,10 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.validation.ObjectError
  * @see org.springframework.validation.FieldError
  */
+
+/**
+ * 用于适配MessageSource中的消息解决
+ *
 @FunctionalInterface
 public interface MessageSourceResolvable {
 
@@ -36,6 +40,10 @@ public interface MessageSourceResolvable {
 	 * Return the codes to be used to resolve this message, in the order that
 	 * they should get tried. The last code will therefore be the default one.
 	 * @return a String array of codes which are associated with this message
+	 */
+	/**
+	 * 返回用于解析这个消息的码
+	 * @return 返回跟这个消息相关的字符串数组码
 	 */
 	@Nullable
 	String[] getCodes();
@@ -46,6 +54,10 @@ public interface MessageSourceResolvable {
 	 * @return an array of objects to be used as parameters to replace
 	 * placeholders within the message text
 	 * @see java.text.MessageFormat
+	 */
+	/**
+	 * 返回用于解析这个消息的参数数组
+	 * @return 返回用于作为替换消息文本范围的占位符的参数的对象数组
 	 */
 	@Nullable
 	default Object[] getArguments() {
@@ -60,6 +72,10 @@ public interface MessageSourceResolvable {
 	 * {@link org.springframework.context.support.AbstractMessageSource#setUseCodeAsDefaultMessage}
 	 * for this particular message.
 	 * @return the default message, or {@code null} if no default
+	 */
+	/**
+	 * 返回用于解析这个消息的默认消息
+	 * @return 默认消息或者是null
 	 */
 	@Nullable
 	default String getDefaultMessage() {

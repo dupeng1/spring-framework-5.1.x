@@ -48,6 +48,10 @@ import org.springframework.lang.Nullable;
  * @author Chris Beams
  * @since 3.0
  */
+
+/**
+ * 为了方便配置ConversionService的converters属性
+ */
 public class ConversionServiceFactoryBean implements FactoryBean<ConversionService>, InitializingBean {
 
 	@Nullable
@@ -85,7 +89,7 @@ public class ConversionServiceFactoryBean implements FactoryBean<ConversionServi
 
 
 	// implementing FactoryBean
-
+	//FactoryBean接口表示这个类用于生厂一个Bean，也就是某个对象实例，需要实现最重要的getObject方法，返回的是生厂对象的实例。
 	@Override
 	@Nullable
 	public ConversionService getObject() {
