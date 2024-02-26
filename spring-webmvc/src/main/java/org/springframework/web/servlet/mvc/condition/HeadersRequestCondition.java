@@ -40,11 +40,16 @@ import org.springframework.web.cors.CorsUtils;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * 用于存储@requestMapping中的headers属性
+ *     @RequestMapping(value = "/testApi",headers = {"Api-Version=0.2"})
+ */
 public final class HeadersRequestCondition extends AbstractRequestCondition<HeadersRequestCondition> {
 
 	private static final HeadersRequestCondition PRE_FLIGHT_MATCH = new HeadersRequestCondition();
 
-
+	//String数组类型也会被转成HeaderExpression的Set类型。
 	private final Set<HeaderExpression> expressions;
 
 

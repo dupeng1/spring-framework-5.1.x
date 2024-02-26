@@ -38,6 +38,12 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * uri构造器对象解析器
+ * 支持的参数类型：UriComponentsBuilder。
+ * 参数值来源：根据request.getServletPath()创建UriComponentsBuilder对象，至于UriComponentsBuilder对象有何用处，我没搞明白。
+ */
 public class UriComponentsBuilderMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
 	@Override

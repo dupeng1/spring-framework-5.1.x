@@ -32,7 +32,6 @@ import org.springframework.util.PathMatcher;
 
 /**
  * 判断请求和指定 pattern 路径是否匹配时，返回的匹配结果
- * 实现 MatchableHandlerMapping 接口的类，有 RequestMappingHandlerMapping 类和 AbstractUrlHandlerMapping 抽象类
  */
 public class RequestMatchResult {
 	/**

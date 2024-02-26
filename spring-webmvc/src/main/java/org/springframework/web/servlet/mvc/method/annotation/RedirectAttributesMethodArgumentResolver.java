@@ -44,6 +44,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * 重定向对象解析器
+ * 支持的参数类型：RedirectAttributes。
+ * 参数值来源：参数解析器会创建全新的RedirectAttributesModelMap对象赋值给参数，并同时把它赋值给ModelAndViewContainer。
+ */
 public class RedirectAttributesMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
 	@Override

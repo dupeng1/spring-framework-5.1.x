@@ -34,6 +34,12 @@ import org.springframework.lang.Nullable;
  * @param <T> the type of objects that this RequestCondition can be combined
  * with and compared to
  */
+
+/**
+ * RequestCondition的泛型是可以完成合并和比较方法
+ * 完成的功能是合并mapping对象，匹配mapping对象，以及比较mapping对象。
+ * @param <T>
+ */
 public interface RequestCondition<T> {
 
 	/**
@@ -42,6 +48,11 @@ public interface RequestCondition<T> {
 	 * @param other the condition to combine with.
 	 * @return a request condition instance that is the result of combining
 	 * the two condition instances.
+	 */
+	/**
+	 * （合并方法）与另外一个条件合并，具体逻辑由子类提供
+	 * 该方法在Handler注册的时候被调用，作用就是将类上的@RequestMapping注解
+	 * 和方法上的@RequestMapping注解属性进行合并。
 	 */
 	T combine(T other);
 
@@ -57,6 +68,11 @@ public interface RequestCondition<T> {
 	 * empty content thus not causing a failure to match.
 	 * @return a condition instance in case of a match or {@code null} otherwise.
 	 */
+	/**
+	 * （筛选方法）检查http属性与给定的属性是否匹配
+	 * 若不匹配返回null；
+	 * 若匹配返回当前对象(this)
+	 */
 	@Nullable
 	T getMatchingCondition(HttpServletRequest request);
 
@@ -65,6 +81,10 @@ public interface RequestCondition<T> {
 	 * a specific request. This method assumes both instances have
 	 * been obtained via {@link #getMatchingCondition(HttpServletRequest)}
 	 * to ensure they have content relevant to current request only.
+	 */
+	/**
+	 * （择优方法）最终用来确定两个匹配条件谁更匹配。
+	 * 需要使用other-this(降序排列)。后续会取第一位。
 	 */
 	int compareTo(T other, HttpServletRequest request);
 

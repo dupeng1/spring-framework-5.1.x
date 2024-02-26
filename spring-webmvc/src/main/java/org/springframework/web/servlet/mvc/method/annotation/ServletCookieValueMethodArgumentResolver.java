@@ -35,6 +35,14 @@ import org.springframework.web.util.WebUtils;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * 基于servlet的cookievalue解析器
+ * 支持的参数类型：参数被@CookieValue注解了。
+ * 参数值来源：从request对象获取cookie值，如果被@CookieValue注解的参数类型是CookieValue，则直接把cookie对象赋值给参数；
+ * 如果被@CookieValue注解的参数类型是字符串，则把cookie值赋值给参数。@CookieValue注解可以配置是否必须，默认值等。
+ * 如果配置成了必须，但是从request获取不到cookie值，则返回默认值，如果未设置默认值，则spring抛出异常。
+ */
 public class ServletCookieValueMethodArgumentResolver extends AbstractCookieValueMethodArgumentResolver {
 
 	private UrlPathHelper urlPathHelper = new UrlPathHelper();

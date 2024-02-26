@@ -54,8 +54,28 @@ import org.springframework.util.CollectionUtils;
  * @see #setUrlMap
  * @see BeanNameUrlHandlerMapping
  */
-public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
 
+/**
+ * 继承 AbstractUrlHandlerMapping 抽象类，简单的就 URL 匹配的 HandlerMapping 实现类
+ *
+ * <bean id="helloController" class="com.tiger.study.controller.HelloController"/>
+ *
+ * <!-- 定义请求处理映射 HandlerMapping -->
+ * <bean class="org.springframework.web.servlet.handler. SimpleUrlHandlerMapping">
+ *     <property name="mappings" ref="urlMappings" />
+ * </bean>
+ *
+ * <!-- 定义请求映射表 map -->
+ * <util:properties id="urlMappings">
+ *     <prop key="/hello.form">helloController</prop>
+ * </util:properties>
+ */
+public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
+	/**
+	 * 配置的 URL 与处理器的映射
+	 *
+	 * 最终，会调用 {@link #registerHandlers(Map)} 进行注册到 {@link AbstractUrlHandlerMapping#handlerMap} 中
+	 */
 	private final Map<String, Object> urlMap = new LinkedHashMap<>();
 
 
@@ -67,6 +87,7 @@ public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
 	 * @param mappings properties with URLs as keys and bean names as values
 	 * @see #setUrlMap
 	 */
+	//将 /hello.form 与 HelloController 设置到 urlMap，所以说处理器也可能是一个 Controller 接口
 	public void setMappings(Properties mappings) {
 		CollectionUtils.mergePropertiesIntoMap(mappings, this.urlMap);
 	}

@@ -36,6 +36,13 @@ import org.springframework.web.servlet.support.RequestContextUtils;
  * @author Keith Donald
  * @author Rossen Stoyanchev
  */
+
+/**
+ * 1、参数化视图控制器，不进行功能处理（即静态视图），根据参数的逻辑视图名直接选择需要展示的视图。
+ * 2、该控制器接收到请求后直接选择参数化的视图，这样的好处是在配置文件中配置，从而避免程序的硬编码，
+ * 比如像帮助页面等不需要进行功能处理，因此直接使用该控制器映射到视图
+ * 根据指定的View名称，返回View
+ */
 public class ParameterizableViewController extends AbstractController {
 
 	@Nullable

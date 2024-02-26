@@ -59,33 +59,58 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Sam Brannen
  * @since 3.1
  */
+
+/**
+ * 处理器对象，也就是某个方法的封装对象（Method+所在类的 Bean 对象）
+ */
 public class HandlerMethod {
 
 	/** Logger that is available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
-
+	/**
+	 * Bean 对象
+	 */
 	private final Object bean;
 
 	@Nullable
 	private final BeanFactory beanFactory;
-
+	/**
+	 * Bean 的类型
+	 */
 	private final Class<?> beanType;
-
+	/**
+	 * 方法对象
+	 */
 	private final Method method;
-
+	/**
+	 * {@link #method} 的桥接方法
+	 * 存在泛型类型，编译器则会自动生成一个桥接方法（java1.5向后兼容）
+	 */
 	private final Method bridgedMethod;
-
+	/**
+	 * 方法的参数类型数组
+	 */
 	private final MethodParameter[] parameters;
-
+	/**
+	 * 响应的状态码，即 {@link ResponseStatus#code()}
+	 */
 	@Nullable
 	private HttpStatus responseStatus;
-
+	/**
+	 * 响应的状态码原因，即 {@link ResponseStatus#reason()}
+	 */
 	@Nullable
 	private String responseStatusReason;
-
+	/**
+	 * 解析自哪个 HandlerMethod 对象
+	 *
+	 * 仅构造方法中传入 HandlerMethod 类型的参数适用，例如 {@link #HandlerMethod(HandlerMethod)}
+	 */
 	@Nullable
 	private HandlerMethod resolvedFromHandlerMethod;
-
+	/**
+	 * 父接口的方法的参数注解数组
+	 */
 	@Nullable
 	private volatile List<Annotation[][]> interfaceParameterAnnotations;
 
@@ -96,12 +121,18 @@ public class HandlerMethod {
 	public HandlerMethod(Object bean, Method method) {
 		Assert.notNull(bean, "Bean is required");
 		Assert.notNull(method, "Method is required");
+		// <1> 将 beanName 赋值给 bean 属性，说明 beanFactory + bean 的方式，获得 handler 对象
 		this.bean = bean;
 		this.beanFactory = null;
+		// <2> 初始化 beanType 属性
 		this.beanType = ClassUtils.getUserClass(bean);
+		// <3> 初始化 method、bridgedMethod 属性
 		this.method = method;
+		// 如果不是桥接方法则直接为该方法
 		this.bridgedMethod = BridgeMethodResolver.findBridgedMethod(method);
+		// <4> 初始化 parameters 属性，解析该方法（或者桥接方法）的参数类型
 		this.parameters = initMethodParameters();
+		// <5> 初始化 responseStatus、responseStatusReason 属性，通过 @ResponseStatus 注解
 		evaluateResponseStatus();
 	}
 
@@ -178,7 +209,9 @@ public class HandlerMethod {
 
 	private MethodParameter[] initMethodParameters() {
 		int count = this.bridgedMethod.getParameterCount();
+		// 创建 MethodParameter 数组
 		MethodParameter[] result = new MethodParameter[count];
+		// 遍历 bridgedMethod 方法的参数，逐个解析它的参数类型
 		for (int i = 0; i < count; i++) {
 			HandlerMethodParameter parameter = new HandlerMethodParameter(i);
 			GenericTypeResolver.resolveParameterType(parameter, this.beanType);
@@ -186,7 +219,7 @@ public class HandlerMethod {
 		}
 		return result;
 	}
-
+	//初始化 responseStatus、responseStatusReason 属性，通过 @ResponseStatus 注解
 	private void evaluateResponseStatus() {
 		ResponseStatus annotation = getMethodAnnotation(ResponseStatus.class);
 		if (annotation == null) {
@@ -317,6 +350,7 @@ public class HandlerMethod {
 	 */
 	public HandlerMethod createWithResolvedBean() {
 		Object handler = this.bean;
+		// 如果是 bean 是 String 类型，则获取对应的 Bean，因为创建该对象时 bean 可能是对应的 beanName
 		if (this.bean instanceof String) {
 			Assert.state(this.beanFactory != null, "Cannot resolve bean name without BeanFactory");
 			String beanName = (String) this.bean;

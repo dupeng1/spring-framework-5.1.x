@@ -37,6 +37,9 @@ import org.springframework.lang.Nullable;
  * @since 4.1
  * @param <T> the body type
  */
+/**
+ * 对响应前后进行处理（本质上就是AOP）
+ */
 public interface ResponseBodyAdvice<T> {
 
 	/**

@@ -74,11 +74,29 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @since 3.1
  * @see RequestParamMapMethodArgumentResolver
  */
+
+/**
+ * 处理@RequestParam注解
+ * 支持的参数类型：参数被@RequestParam注解了，如@RequestParam Stirng，@RequestParam String[]。
+ * 参数值来源：从request请求对象获取参数。
+ * 1、参数解析器 HandlerMethodArgumentResolver 的实现类，处理header的请求参数
+ * 2、继承 AbstractNamedValueMethodArgumentResolver 抽象类
+ * 3、解析用@RequestHeader注释的Map类型方法参数.对于 RequestParamMethodArgumentResolver 类，它的效果是，将指定名字的参数添加到 Map 集合中
+ *      @RequestMapping("/hello")
+ * 		public String hello5(@RequestParam(name = "map") Map<String, Object> map) {
+ *     		return "666";
+ * 		}
+ * 	发送请求 GET /hello?name=yyy&age=20，name 参数，会添加到 map 中
+ */
 public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethodArgumentResolver
 		implements UriComponentsContributor {
 
 	private static final TypeDescriptor STRING_TYPE_DESCRIPTOR = TypeDescriptor.valueOf(String.class);
-
+	/**
+	 * 是否使用默认解决
+	 *
+	 * 这个变量有点绕，见 {@link #supportsParameter(MethodParameter)} 方法
+	 */
 	private final boolean useDefaultResolution;
 
 
@@ -124,41 +142,56 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethod
 	 */
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
+		// <3> 有 @RequestParam 注解的情况
 		if (parameter.hasParameterAnnotation(RequestParam.class)) {
+			// <3.1> 如果是 Map 类型，则 @RequestParam 注解必须要有 name 属性
 			if (Map.class.isAssignableFrom(parameter.nestedIfOptional().getNestedParameterType())) {
 				RequestParam requestParam = parameter.getParameterAnnotation(RequestParam.class);
 				return (requestParam != null && StringUtils.hasText(requestParam.name()));
 			}
 			else {
+				// <3.2> 否则返回 true
 				return true;
 			}
 		}
 		else {
+			// 如果有 @RequestPart 注解，返回 false 。即 @RequestPart 的优先级 > @RequestParam
 			if (parameter.hasParameterAnnotation(RequestPart.class)) {
 				return false;
 			}
+			// 获得参数，如果存在内嵌的情况
 			parameter = parameter.nestedIfOptional();
+			// <1> 如果 Multipart 参数。则返回 true ，表示支持
+			//上传文件相关类型
 			if (MultipartResolutionDelegate.isMultipartArgument(parameter)) {
 				return true;
 			}
+			// <2> 如果开启 useDefaultResolution 功能，则判断是否为普通类型
 			else if (this.useDefaultResolution) {
 				return BeanUtils.isSimpleProperty(parameter.getNestedParameterType());
 			}
+			// 其它，不支持
 			else {
 				return false;
 			}
 		}
 	}
 
+	//创建 NamedValueInfo 对象
 	@Override
 	protected NamedValueInfo createNamedValueInfo(MethodParameter parameter) {
+		//如果方法参数有 @RequestParam 注解，则根据注解创建一个 RequestParamNamedValueInfo 对象，
+		// 获取注解中的 name、required和 defaultValue配置
+		//否则，就创建一个空的 RequestParamNamedValueInfo 对象，三个属性分别为，空字符串、false 和 ValueConstants.DEFAULT_NONE
 		RequestParam ann = parameter.getParameterAnnotation(RequestParam.class);
 		return (ann != null ? new RequestParamNamedValueInfo(ann) : new RequestParamNamedValueInfo());
 	}
 
+	//获得参数的值
 	@Override
 	@Nullable
 	protected Object resolveName(String name, MethodParameter parameter, NativeWebRequest request) throws Exception {
+		// 情况一，HttpServletRequest 情况下的 MultipartFile 和 Part 的情况
 		HttpServletRequest servletRequest = request.getNativeRequest(HttpServletRequest.class);
 
 		if (servletRequest != null) {
@@ -167,7 +200,7 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethod
 				return mpArg;
 			}
 		}
-
+		// 情况二，MultipartHttpServletRequest 情况下的 MultipartFile 的情况
 		Object arg = null;
 		MultipartRequest multipartRequest = request.getNativeRequest(MultipartRequest.class);
 		if (multipartRequest != null) {
@@ -176,6 +209,7 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethod
 				arg = (files.size() == 1 ? files.get(0) : files);
 			}
 		}
+		// 情况三，普通参数的获取
 		if (arg == null) {
 			String[] paramValues = request.getParameterValues(name);
 			if (paramValues != null) {

@@ -653,7 +653,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	private void initHandlerAdapters(ApplicationContext context) {
 		this.handlerAdapters = null;
-
+		//如果“开启”探测功能，则扫描已注册的 HandlerAdapter 的 Bean 们，添加到 handlerAdapters 中，默认开启，这里会进行排序，可以通过实现 Order 接口设置排序值
 		if (this.detectAllHandlerAdapters) {
 			// Find all HandlerAdapters in the ApplicationContext, including ancestor contexts.
 			Map<String, HandlerAdapter> matchingBeans =
@@ -664,6 +664,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				AnnotationAwareOrderComparator.sort(this.handlerAdapters);
 			}
 		}
+		//如果“关闭”探测功能，则获得 Bean 名称为 "handlerAdapter" 对应的 Bean ，将其添加至 handlerAdapters
 		else {
 			try {
 				HandlerAdapter ha = context.getBean(HANDLER_ADAPTER_BEAN_NAME, HandlerAdapter.class);
@@ -676,6 +677,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		// Ensure we have at least some HandlerAdapters, by registering
 		// default HandlerAdapters if no other adapters are found.
+		//如果未获得到，则获得默认配置的 HandlerAdapter 类，调用
 		if (this.handlerAdapters == null) {
 			this.handlerAdapters = getDefaultStrategies(context, HandlerAdapter.class);
 			if (logger.isTraceEnabled()) {
@@ -878,6 +880,10 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * @param strategyInterface the strategy interface
 	 * @return the List of corresponding strategy objects
 	 */
+	//就是从 DispatcherServlet.properties 文件中读取 HandlerAdapter 的默认实现类
+	// HttpRequestHandlerAdapter
+	// SimpleControllerHandlerAdapter
+	// RequestMappingHandlerAdapter
 	@SuppressWarnings("unchecked")
 	protected <T> List<T> getDefaultStrategies(ApplicationContext context, Class<T> strategyInterface) {
 		String key = strategyInterface.getName();

@@ -37,6 +37,10 @@ import org.springframework.lang.Nullable;
  * @author Rossen Stoyanchev
  * @since 4.2
  */
+
+/**
+ * 对请求前后进行处理（本质上就是AOP）
+ */
 public interface RequestBodyAdvice {
 
 	/**

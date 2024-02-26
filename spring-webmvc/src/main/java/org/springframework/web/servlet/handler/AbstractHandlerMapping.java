@@ -70,8 +70,8 @@ import org.springframework.web.util.UrlPathHelper;
  */
 
 /**
- * 为请求找到合适的HandlerExecutionChain处理器执行链，暴露 getHandlerInternal(HttpServletRequest request) 抽象方法，交由子类实现
- *	AbstractHandlerMapping 的子类，分成两派，分别是：
+ * 一、为请求找到合适的HandlerExecutionChain处理器执行链，暴露 getHandlerInternal(HttpServletRequest request) 抽象方法，交由子类实现
+ *	二、AbstractHandlerMapping 的子类，分成两派，分别是：
  * 		1、AbstractUrlHandlerMapping ，基于 URL 进行匹配
  * 		<bean   class="org.springframework.web.servlet.handler.
  *        SimpleUrlHandlerMapping">

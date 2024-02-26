@@ -29,6 +29,10 @@ import java.io.OutputStream;
  * @author Arjen Poutsma
  * @since 3.0
  */
+
+/**
+ * 对一次 Http 响应报文的抽象
+ */
 public interface HttpOutputMessage extends HttpMessage {
 
 	/**

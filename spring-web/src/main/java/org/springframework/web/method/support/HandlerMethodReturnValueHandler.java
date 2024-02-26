@@ -28,6 +28,10 @@ import org.springframework.web.context.request.NativeWebRequest;
  * @since 3.1
  * @see HandlerMethodArgumentResolver
  */
+
+/**
+ * 结果处理器
+ */
 public interface HandlerMethodReturnValueHandler {
 
 	/**
@@ -36,6 +40,9 @@ public interface HandlerMethodReturnValueHandler {
 	 * @param returnType the method return type to check
 	 * @return {@code true} if this handler supports the supplied return type;
 	 * {@code false} otherwise
+	 */
+	/**
+	 * 是否支持该类型
 	 */
 	boolean supportsReturnType(MethodParameter returnType);
 
@@ -51,6 +58,9 @@ public interface HandlerMethodReturnValueHandler {
 	 * @param mavContainer the ModelAndViewContainer for the current request
 	 * @param webRequest the current request
 	 * @throws Exception if the return value handling results in an error
+	 */
+	/**
+	 * 处理返回值
 	 */
 	void handleReturnValue(@Nullable Object returnValue, MethodParameter returnType,
 			ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception;

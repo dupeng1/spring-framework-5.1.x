@@ -64,6 +64,12 @@ import org.springframework.web.servlet.support.RequestContextUtils;
  * @author Juergen Hoeller
  * @since 3.1
  */
+
+/**
+ * 请求相关对象解析器
+ * 支持的参数类型：WebRequest, ServletRequest, MultipartRequest, HttpSession, Principal, Locale, InputStream, Reader 。
+ * 参数值来源：源于resolveArgument方法的第三个参数webRequest。
+ */
 public class ServletRequestMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
 	@Nullable

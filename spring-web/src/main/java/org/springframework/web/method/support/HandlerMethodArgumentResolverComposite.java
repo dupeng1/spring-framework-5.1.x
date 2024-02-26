@@ -39,13 +39,22 @@ import org.springframework.web.context.request.NativeWebRequest;
  * @author Juergen Hoeller
  * @since 3.1
  */
+
+/**
+ *  1、组合对象，包含了许多的参数解析器
+ *  2、采用了组合模式来进行处理，如果有某一个参数解析器支持解析该方法参数，则使用它从请求体中获取到该方法参数的值，注意这里有一定的先后顺序
+ */
 public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgumentResolver {
 
 	@Deprecated
 	protected final Log logger = LogFactory.getLog(getClass());
-
+	/**
+	 * HandlerMethodArgumentResolver 数组
+	 */
 	private final List<HandlerMethodArgumentResolver> argumentResolvers = new LinkedList<>();
-
+	/**
+	 * MethodParameter 与 HandlerMethodArgumentResolver 的映射，作为缓存
+	 */
 	private final Map<MethodParameter, HandlerMethodArgumentResolver> argumentResolverCache =
 			new ConcurrentHashMap<>(256);
 
@@ -105,6 +114,7 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 	 */
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
+		//如果能获得到对应的 HandlerMethodArgumentResolver 参数处理器，则说明支持处理该参数
 		return getArgumentResolver(parameter) != null;
 	}
 
@@ -114,16 +124,18 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 	 * and invoke the one that supports it.
 	 * @throws IllegalArgumentException if no suitable argument resolver is found
 	 */
+	//解析出指定参数的值
 	@Override
 	@Nullable
 	public Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
 			NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
-
+		// 获取参数解析器
 		HandlerMethodArgumentResolver resolver = getArgumentResolver(parameter);
 		if (resolver == null) {
 			throw new IllegalArgumentException("Unsupported parameter type [" +
 					parameter.getParameterType().getName() + "]. supportsParameter should be called first.");
 		}
+		//进行解析
 		return resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 	}
 
@@ -131,11 +143,15 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 	 * Find a registered {@link HandlerMethodArgumentResolver} that supports
 	 * the given method parameter.
 	 */
+	//获得方法参数对应的 HandlerMethodArgumentResolver 对象
 	@Nullable
 	private HandlerMethodArgumentResolver getArgumentResolver(MethodParameter parameter) {
+		// 优先从 argumentResolverCache 缓存中，获得 parameter 对应的 HandlerMethodArgumentResolver 对象
 		HandlerMethodArgumentResolver result = this.argumentResolverCache.get(parameter);
 		if (result == null) {
+			// 获得不到，则遍历 argumentResolvers 数组，逐个判断是否支持。
 			for (HandlerMethodArgumentResolver resolver : this.argumentResolvers) {
+				// 如果支持，则添加到 argumentResolverCache 缓存中，并返回
 				if (resolver.supportsParameter(parameter)) {
 					result = resolver;
 					this.argumentResolverCache.put(parameter, result);

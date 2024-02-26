@@ -39,6 +39,12 @@ import org.springframework.web.servlet.View;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * View类型方法返回值解析器
+ * 支持的返回值类型：View接口的实现类。
+ * 如何处理返回值：把view对象赋值给ModelAndViewContainer。
+ */
 public class ViewMethodReturnValueHandler implements HandlerMethodReturnValueHandler {
 
 	@Override

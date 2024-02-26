@@ -48,17 +48,27 @@ import org.springframework.util.StringUtils;
  * @author Juergen Hoeller
  * @see SimpleUrlHandlerMapping
  */
+
+/**
+ * 继承 AbstractDetectingUrlHandlerMapping 抽象类，基于 Bean 的名字来自动探测的 HandlerMapping 实现类
+ * <!-- 定义一个 helloController Bean，实现了 Controller 接口 -->
+ * <bean id="/hello.form" class="com.tiger.study.controller.HelloController"/>
+ * 和 SimpleUrlHandlerMapping 不同，只需要设置它的 beanName 以 / 开头就好了，会被 BeanNameUrlHandlerMapping 探测到
+ */
 public class BeanNameUrlHandlerMapping extends AbstractDetectingUrlHandlerMapping {
 
 	/**
 	 * Checks name and aliases of the given bean for URLs, starting with "/".
 	 */
+	//逻辑很简单，如果 Bean 的名称或者别名是以 / 开头，则会作为一个 url 返回，父类则会将该 Bean 作为一个处理器
 	@Override
 	protected String[] determineUrlsForHandler(String beanName) {
 		List<String> urls = new ArrayList<>();
+		// 如果是以 / 开头，添加到 urls
 		if (beanName.startsWith("/")) {
 			urls.add(beanName);
 		}
+		// 获得 beanName 的别名们，如果以 / 开头，则添加到 urls
 		String[] aliases = obtainApplicationContext().getAliases(beanName);
 		for (String alias : aliases) {
 			if (alias.startsWith("/")) {

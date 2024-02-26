@@ -34,6 +34,10 @@ import org.springframework.web.context.request.NativeWebRequest;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+/**
+ *  1、组合对象，包含了许多的结果处理器
+ *  2、采用了组合模式来进行处理，如果有某一个返回值处理器支持处理该返回值类型，则使用它对返回结果进行处理，例如将返回结果写入响应体中
+ */
 public class HandlerMethodReturnValueHandlerComposite implements HandlerMethodReturnValueHandler {
 
 	protected final Log logger = LogFactory.getLog(getClass());
@@ -52,13 +56,16 @@ public class HandlerMethodReturnValueHandlerComposite implements HandlerMethodRe
 	 * Whether the given {@linkplain MethodParameter method return type} is supported by any registered
 	 * {@link HandlerMethodReturnValueHandler}.
 	 */
+	//判断是否支持该返回类型
 	@Override
 	public boolean supportsReturnType(MethodParameter returnType) {
 		return getReturnValueHandler(returnType) != null;
 	}
 
+	//获得方法返回值对应的 HandlerMethodReturnValueHandler 对象
 	@Nullable
 	private HandlerMethodReturnValueHandler getReturnValueHandler(MethodParameter returnType) {
+		//遍历所有的 HandlerMethodReturnValueHandler 实现类，如果支持这个返回结果，则直接返回
 		for (HandlerMethodReturnValueHandler handler : this.returnValueHandlers) {
 			if (handler.supportsReturnType(returnType)) {
 				return handler;
@@ -71,6 +78,7 @@ public class HandlerMethodReturnValueHandlerComposite implements HandlerMethodRe
 	 * Iterate over registered {@link HandlerMethodReturnValueHandler HandlerMethodReturnValueHandlers} and invoke the one that supports it.
 	 * @throws IllegalStateException if no suitable {@link HandlerMethodReturnValueHandler} is found.
 	 */
+	//处理返回值
 	@Override
 	public void handleReturnValue(@Nullable Object returnValue, MethodParameter returnType,
 			ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
@@ -84,11 +92,14 @@ public class HandlerMethodReturnValueHandlerComposite implements HandlerMethodRe
 
 	@Nullable
 	private HandlerMethodReturnValueHandler selectHandler(@Nullable Object value, MethodParameter returnType) {
+		// 判断是否为异步返回值
 		boolean isAsyncValue = isAsyncReturnValue(value, returnType);
+		// 遍历 HandlerMethodReturnValueHandler 数组，逐个判断是否支持
 		for (HandlerMethodReturnValueHandler handler : this.returnValueHandlers) {
 			if (isAsyncValue && !(handler instanceof AsyncHandlerMethodReturnValueHandler)) {
 				continue;
 			}
+			// 如果支持，则返回
 			if (handler.supportsReturnType(returnType)) {
 				return handler;
 			}

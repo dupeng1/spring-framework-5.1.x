@@ -52,23 +52,47 @@ import org.springframework.web.util.pattern.PathPatternParser;
  * @author Rossen Stoyanchev
  * @since 5.0
  */
-public final class RequestMappingInfo implements RequestCondition<RequestMappingInfo> {
 
+/**
+ * 属性中有各种条件，和 @RequestMapping 注解是一一对应的
+ */
+public final class RequestMappingInfo implements RequestCondition<RequestMappingInfo> {
+	/**
+	 * 名字
+	 */
 	@Nullable
 	private final String name;
-
+	/**
+	 * 请求路径的条件
+	 */
 	private final PatternsRequestCondition patternsCondition;
-
+	/**
+	 * 请求方法的条件
+	 *  @RequestMapping(value = {"/testAll/T1", "/testAll/T2"},
+	 *             method = {RequestMethod.GET, RequestMethod.POST},
+	 *             headers = {"xx=1", "yy=2"},
+	 *             consumes = {"text/plain", "application/*"})
+	 */
 	private final RequestMethodsRequestCondition methodsCondition;
-
+	/**
+	 * 请求参数的条件
+	 */
 	private final ParamsRequestCondition paramsCondition;
-
+	/**
+	 * 请求头的条件
+	 */
 	private final HeadersRequestCondition headersCondition;
-
+	/**
+	 * 可消费的 Content-Type 的条件
+	 */
 	private final ConsumesRequestCondition consumesCondition;
-
+	/**
+	 * 可生产的 Content-Type 的条件
+	 */
 	private final ProducesRequestCondition producesCondition;
-
+	/**
+	 * 自定义的条件
+	 */
 	private final RequestConditionHolder customConditionHolder;
 
 
@@ -177,6 +201,8 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 * <p>Example: combine type- and method-level request mappings.
 	 * @return a new request mapping info instance; never {@code null}
 	 */
+	//请求条件进行合并
+	//在项目启动时，handler注册时执行的。目的是将类级别的@RequestMapping注解和方法级别的@RequestMapping注解属性进行合并。
 	@Override
 	public RequestMappingInfo combine(RequestMappingInfo other) {
 		String name = combineNames(other);
@@ -212,9 +238,14 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 * the current request, sorted with best matching patterns on top.
 	 * @return a new instance in case all conditions match; or {@code null} otherwise
 	 */
+	//获取匹配的条件
+	//在注册Handler时，将@RequestMapping对象解析为RequestMappingInfo对象，之后每一个RequestMappingInfo对象均和request进行匹配。
+	//从当前 RequestMappingInfo 获得匹配的条件。如果匹配，则基于其匹配的条件，创建新的 RequestMappingInfo 对象，如果不匹配，则返回 null
 	@Override
 	@Nullable
 	public RequestMappingInfo getMatchingCondition(ServerWebExchange exchange) {
+		// 匹配 methodsCondition、paramsCondition、headersCondition、consumesCondition、producesCondition
+		// 如果任一为空，则返回 null ，表示匹配失败
 		RequestMethodsRequestCondition methods = this.methodsCondition.getMatchingCondition(exchange);
 		if (methods == null) {
 			return null;
@@ -244,6 +275,13 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 		if (custom == null) {
 			return null;
 		}
+		/*
+		 * 创建匹配的 RequestMappingInfo 对象
+		 * 为什么要创建 RequestMappingInfo 对象呢？
+		 *
+		 * 因为当前 RequestMappingInfo 对象，一个 methodsCondition 可以配置 GET、POST、DELETE 等等条件，
+		 * 但是实际就匹配一个请求类型，此时 methods 只代表其匹配的那个。
+		 */
 		return new RequestMappingInfo(this.name, patterns,
 				methods, params, headers, consumes, produces, custom.getCondition());
 	}
@@ -254,6 +292,9 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 * {@link #getMatchingCondition(ServerWebExchange)} to ensure they have conditions with
 	 * content relevant to current request.
 	 */
+	//选择唯一的mapping
+	//若是请求与多个mapping匹配，但是该接口只会返回一个HandlerMethod对象。
+	// 那么就需要使用Comparator（比较器）来降序排列。获取优先级最高的mapping对象。
 	@Override
 	public int compareTo(RequestMappingInfo other, ServerWebExchange exchange) {
 		int result = this.patternsCondition.compareTo(other.getPatternsCondition(), exchange);

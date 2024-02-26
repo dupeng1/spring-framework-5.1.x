@@ -52,10 +52,16 @@ import org.springframework.web.servlet.ModelAndView;
  * @see SimpleServletPostProcessor
  * @see org.springframework.web.servlet.mvc.ServletWrappingController
  */
+/**
+ * 1、实现 HandlerAdapter 接口，基于 javax.servlet.Servlet 接口的 HandlerAdapter 实现类
+ * 2、如果这个处理器是javax.servlet.Servlet 接口，则使用 SimpleServletHandlerAdapter
+ * 调用该处理器的 handleRequest(HttpServletRequest request, HttpServletResponse response)方法去处理器请求，直接返回处理器执行后返回 ModelAndView
+ */
 public class SimpleServletHandlerAdapter implements HandlerAdapter {
 
 	@Override
 	public boolean supports(Object handler) {
+		// <1> 判断处理器是  javax.servlet.Servlet 对象
 		return (handler instanceof Servlet);
 	}
 
@@ -63,7 +69,7 @@ public class SimpleServletHandlerAdapter implements HandlerAdapter {
 	@Nullable
 	public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
+		// <2> javax.servlet.Servlet 对象的调用
 		((Servlet) handler).service(request, response);
 		return null;
 	}

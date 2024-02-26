@@ -73,6 +73,12 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @author Sebastien Deleuze
  * @since 3.1
  */
+
+/**
+ * @ModelAttribute注解解析器
+ * 支持的参数类型：参数必须被@ModelAttribute注解。@ModelAttribute这个注解并不太容器理解，它既可以注解方法又可以注解方法参数，还可以注解方法返回值。
+ * 参考：https://blog.csdn.net/roberts939299/article/details/74276559
+ */
 public class ModelAttributeMethodProcessor implements HandlerMethodArgumentResolver, HandlerMethodReturnValueHandler {
 
 	private static final ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();

@@ -39,11 +39,16 @@ import org.springframework.web.cors.CorsUtils;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * 它用于存储@ReqestMaping注解中的method
+ */
 public final class RequestMethodsRequestCondition extends AbstractRequestCondition<RequestMethodsRequestCondition> {
 
 	private static final RequestMethodsRequestCondition GET_CONDITION =
 			new RequestMethodsRequestCondition(RequestMethod.GET);
 
+	//@ReqestMaping注解中的method值会被转成一个set集合。
 	private final Set<RequestMethod> methods;
 
 

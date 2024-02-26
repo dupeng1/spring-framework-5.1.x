@@ -37,6 +37,12 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * 模型对象解析器
+ * 支持的参数类型：Model。
+ * 参数值来源：spring会把ModelAndViewContainer持有的BindingAwareModelMap赋值给参数。
+ */
 public class ModelMethodProcessor implements HandlerMethodArgumentResolver, HandlerMethodReturnValueHandler {
 
 	@Override

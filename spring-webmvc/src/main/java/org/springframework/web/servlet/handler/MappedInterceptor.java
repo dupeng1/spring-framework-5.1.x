@@ -44,20 +44,20 @@ import org.springframework.web.servlet.ModelAndView;
  */
 
 /**
- * 支持地址匹配的 HandlerInterceptor 实现类
- * 每一个 <mvc:interceptor /> 标签，将被解析成一个 MappedInterceptor 类型的 Bean 拦截器对象
- * 例如：
- * <mvc:interceptors>
- *     <mvc:interceptor>
- *         <mvc:mapping path="/**" />
- *         <mvc:exclude-mapping path="/error/**" />
- *         <bean class="com.tiger.study.interceptor.JwtInterceptor" />
- *     </mvc:interceptor>
- * </mvc:interceptors>
- * 1、每一个 <mvc:interceptor /> 标签，将被解析成一个 MappedInterceptor 类型的 Bean 拦截器对象
- * 2、然后 MappedInterceptor 类型的拦截器在 AbstractHandlerMapping
- * 的 initApplicationContext() -> detectMappedInterceptors 会被扫描到，
- * 也就是说在初始化 HandlerMapping 组件的时候会扫描到我们自定义的拦截器，并添加到属性中
+ * 1、实现 HandlerInterceptor 接口，支持地址匹配的 HandlerInterceptor 实现类
+ * 2、每一个 <mvc:interceptor /> 标签，将被解析成一个 MappedInterceptor 类型的 Bean 拦截器对象
+ * 	例如：
+ * 	<mvc:interceptors>
+ *     	<mvc:interceptor>
+ *         	<mvc:mapping path="/**" />
+ *         	<mvc:exclude-mapping path="/error/**" />
+ *         	<bean class="com.tiger.study.interceptor.JwtInterceptor" />
+ *     	</mvc:interceptor>
+ * 	</mvc:interceptors>
+ * 3、每一个 <mvc:interceptor /> 标签，将被解析成一个 MappedInterceptor 类型的 Bean 拦截器对象
+ * 4、然后 MappedInterceptor 类型的拦截器在 AbstractHandlerMapping
+ * 	的 initApplicationContext() -> detectMappedInterceptors 会被扫描到，
+ * 	也就是说在初始化 HandlerMapping 组件的时候会扫描到我们自定义的拦截器，并添加到属性中
  */
 public final class MappedInterceptor implements HandlerInterceptor {
 	/**

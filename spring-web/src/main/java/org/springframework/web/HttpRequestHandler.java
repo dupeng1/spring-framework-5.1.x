@@ -84,6 +84,9 @@ public interface HttpRequestHandler {
 	 * @throws ServletException in case of general errors
 	 * @throws IOException in case of I/O errors
 	 */
+	/**
+	 * 处理请求
+	 */
 	void handleRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException;
 

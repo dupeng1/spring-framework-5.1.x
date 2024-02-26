@@ -43,6 +43,12 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @author Juergen Hoeller
  * @since 3.1
  */
+
+/**
+ * 应答相关对象解析器
+ * 支持的参数类型：ServletResponse, OutputStream, Writer。
+ * 参数值来源：源于resolveArgument方法的第三个参数webRequest，从webRequest获取response。
+ */
 public class ServletResponseMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
 	@Override

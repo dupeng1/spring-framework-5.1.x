@@ -49,6 +49,12 @@ import org.springframework.web.servlet.HandlerMapping;
  * @author Juergen Hoeller
  * @since 3.1
  */
+
+/**
+ * 基于@ModelAttribute注解的处理器
+ * 支持的返回值类型：返回值被@ModelAttribute注解了。
+ * 如何处理返回值：把返回值置入ModelAndViewContainer持有的Model中，可以通过@ModelAttribute的value指定key。
+ */
 public class ServletModelAttributeMethodProcessor extends ModelAttributeMethodProcessor {
 
 	/**

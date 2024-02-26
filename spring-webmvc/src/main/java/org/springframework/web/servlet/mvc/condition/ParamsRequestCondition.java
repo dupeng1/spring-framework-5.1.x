@@ -36,8 +36,13 @@ import org.springframework.web.util.WebUtils;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * 用于存储@requestMapping中的params属性
+ */
 public final class ParamsRequestCondition extends AbstractRequestCondition<ParamsRequestCondition> {
 
+	//String数组类型也会被转成ParamExpression的Set类型。
 	private final Set<ParamExpression> expressions;
 
 

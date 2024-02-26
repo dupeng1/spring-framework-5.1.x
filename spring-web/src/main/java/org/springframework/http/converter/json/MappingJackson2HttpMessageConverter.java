@@ -45,6 +45,11 @@ import org.springframework.lang.Nullable;
  * @author Sebastien Deleuze
  * @since 3.1.2
  */
+
+/**
+ * 继承 AbstractJackson2HttpMessageConverter 抽象类，JSON 格式的消息读取或者写入，
+ * 也就是我们熟悉的 @RequestBody 和 @ResponseBody 注解对应的 HttpMessageConverter 消息转换器
+ */
 public class MappingJackson2HttpMessageConverter extends AbstractJackson2HttpMessageConverter {
 
 	@Nullable

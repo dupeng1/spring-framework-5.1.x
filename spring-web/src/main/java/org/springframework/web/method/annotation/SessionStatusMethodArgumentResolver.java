@@ -32,6 +32,13 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * session处理状态解析器
+ * 支持的参数类型：SessionStatus。
+ * 参数值来源：从ModelAndViewContainer获取SessionStatus。spring在每次调用请求处理方法之前会创建ModelAndViewContainer对象，
+ * 该对象持有SimpleSessionStatus对象，参数值就是SimpleSessionStatus。
+ */
 public class SessionStatusMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
 	@Override

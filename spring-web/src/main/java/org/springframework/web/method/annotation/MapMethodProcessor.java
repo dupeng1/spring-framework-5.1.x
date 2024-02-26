@@ -38,6 +38,16 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * map对象解析器
+ * 支持的参数类型：Map。
+ * 参数值来源：spring会把ModelAndViewContainer持有的BindingAwareModelMap赋值给参数。
+ *
+ * Map返回值处理器
+ * 支持的返回类型：Map接口的实现类。
+ * 如何处理返回值：把Map中的键值对置入ModelAndViewContainer的Model。
+ */
 public class MapMethodProcessor implements HandlerMethodArgumentResolver, HandlerMethodReturnValueHandler {
 
 	@Override

@@ -31,8 +31,14 @@ import org.springframework.util.ObjectUtils;
  * @since 2.5
  * @see #determineUrlsForHandler
  */
-public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHandlerMapping {
 
+/**
+ * 继承 AbstractUrlHandlerMapping 抽象类，自动探测的基于 URL 匹配的 HandlerMapping 抽象实现类
+ */
+public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHandlerMapping {
+	/**
+	 * 是否只扫描可访问的 Handler 们
+	 */
 	private boolean detectHandlersInAncestorContexts = false;
 
 
@@ -56,6 +62,7 @@ public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHand
 	@Override
 	public void initApplicationContext() throws ApplicationContextException {
 		super.initApplicationContext();
+		// 自动探测处理器
 		detectHandlers();
 	}
 
@@ -68,16 +75,21 @@ public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHand
 	 * @see #determineUrlsForHandler(String)
 	 */
 	protected void detectHandlers() throws BeansException {
+		// <1> 从 Spring 上下文获取所有 Object 类型的 Bean 的名称们
 		ApplicationContext applicationContext = obtainApplicationContext();
 		String[] beanNames = (this.detectHandlersInAncestorContexts ?
 				BeanFactoryUtils.beanNamesForTypeIncludingAncestors(applicationContext, Object.class) :
 				applicationContext.getBeanNamesForType(Object.class));
 
 		// Take any bean name that we can determine URLs for.
+		// <2> 遍历所有的 Bean ，逐个注册
 		for (String beanName : beanNames) {
+			// <2.1> 获得 Bean 对应的 URL 们
 			String[] urls = determineUrlsForHandler(beanName);
+			// <2.2> 如果该 Bean 存在对应的 URL，则添加该处理器
 			if (!ObjectUtils.isEmpty(urls)) {
 				// URL paths found: Let's consider it a handler.
+				// 调用父类的方法，往 `handlerMap` 中添加注册器
 				registerHandler(urls, beanName);
 			}
 		}

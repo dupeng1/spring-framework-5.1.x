@@ -40,6 +40,13 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @author Juergen Hoeller
  * @since 3.1
  */
+
+/**
+ * 错误对象解析器
+ * 支持的参数类型：Errors。
+ * 参数值来源：从mavContainer的Model中获取BeanPropertyBindingResult赋值给参数。这个参数对位置有要求，
+ * 必须跟在表单对象后面，也就是说必须跟在被@ModelAttribute注解的参数后面。
+ */
 public class ErrorsMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
 	@Override

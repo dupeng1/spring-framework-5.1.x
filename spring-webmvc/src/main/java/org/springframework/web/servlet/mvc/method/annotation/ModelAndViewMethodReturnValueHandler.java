@@ -42,6 +42,12 @@ import org.springframework.web.servlet.View;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * ModelAndView返回值解析器
+ * 支持的返回类型：ModelAndView。
+ * 如何处理返回值：把返回值ModelAndView持有的视图名称和ModelMap赋值给ModelAndViewContainer。
+ */
 public class ModelAndViewMethodReturnValueHandler implements HandlerMethodReturnValueHandler {
 
 	@Nullable

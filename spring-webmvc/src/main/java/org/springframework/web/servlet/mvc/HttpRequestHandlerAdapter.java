@@ -38,10 +38,17 @@ import org.springframework.web.servlet.ModelAndView;
  * @see LastModified
  * @see SimpleControllerHandlerAdapter
  */
+
+/**
+ * 1、实现 HandlerAdapter 接口，基于 HttpRequestHandler 接口的 HandlerAdapter 实现类
+ * 2、如果这个处理器实现了 HttpRequestHandler 接口，则使用 HttpRequestHandlerAdapter
+ * 调用该处理器的 handleRequest(HttpServletRequest request, HttpServletResponse response)方法去处理器请求，返回 null
+ */
 public class HttpRequestHandlerAdapter implements HandlerAdapter {
 
 	@Override
 	public boolean supports(Object handler) {
+		// 判断处理器是 HttpRequestHandler 类型
 		return (handler instanceof HttpRequestHandler);
 	}
 
@@ -49,7 +56,7 @@ public class HttpRequestHandlerAdapter implements HandlerAdapter {
 	@Nullable
 	public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
+		// HttpRequestHandler 类型的调用
 		((HttpRequestHandler) handler).handleRequest(request, response);
 		return null;
 	}
@@ -57,6 +64,7 @@ public class HttpRequestHandlerAdapter implements HandlerAdapter {
 	@Override
 	public long getLastModified(HttpServletRequest request, Object handler) {
 		if (handler instanceof LastModified) {
+			// 处理器实现了 LastModified 接口的情况下
 			return ((LastModified) handler).getLastModified(request);
 		}
 		return -1L;

@@ -48,6 +48,10 @@ import org.springframework.web.servlet.HandlerMapping;
  * @see #setPrefix
  * @see #setSuffix
  */
+
+/**
+ * 从请求URL中得到FileName
+ */
 public class UrlFilenameViewController extends AbstractUrlViewController {
 
 	private String prefix = "";

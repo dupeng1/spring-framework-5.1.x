@@ -187,7 +187,9 @@ public class ControllerAdviceBean implements Ordered {
 	 */
 	public static List<ControllerAdviceBean> findAnnotatedBeans(ApplicationContext context) {
 		return Arrays.stream(BeanFactoryUtils.beanNamesForTypeIncludingAncestors(context, Object.class))
+				// 包含 @ControllerAdvice 注解
 				.filter(name -> context.findAnnotationOnBean(name, ControllerAdvice.class) != null)
+				// 生成对应的 ControllerAdviceBean 对象
 				.map(name -> new ControllerAdviceBean(name, context))
 				.collect(Collectors.toList());
 	}

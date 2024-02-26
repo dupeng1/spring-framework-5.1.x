@@ -49,7 +49,14 @@ import org.springframework.lang.Nullable;
  */
 
 /**
- * https://blog.csdn.net/Coder_Boy_/article/details/129187882?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522170887508616800225595004%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&request_id=170887508616800225595004&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-13-129187882-null-null.nonecase&utm_term=spring%20mvc&spm=1018.2226.3001.4450
+ * 1、处理器的适配器，因为处理器 handler 的类型是 Object 类型，需要有一个调用者来实现 handler 是怎么被执行
+ * 2、Spring 中的处理器的实现多变，比如用户的处理器可以实现 Controller 接口或者 HttpRequestHandler 接口，
+ * 也可以用 @RequestMapping 注解将方法作为一个处理器等，这就导致 Spring MVC 无法直接执行这个处理器。
+ * 所以这里需要一个处理器适配器，由它去执行处理器
+ * 3、通过遍历 HandlerAdapter 组件们，判断是否支持处理该 handler 处理器，支持则返回该 HandlerAdapter 组件。
+ * 这里是通过一个一个的 HandlerAdapter 组件去判断是否支持该处理器，如果支持则直接返回这个 HandlerAdapter 组件，不会继续下去，
+ * 所以获取处理器对应 HandlerAdapter 组件是有一定的先后顺序的，默认是HttpRequestHandlerAdapter -> SimpleControllerHandlerAdapter
+ * -> RequestMappingHandlerAdapter
  */
 public interface HandlerAdapter {
 
@@ -64,7 +71,9 @@ public interface HandlerAdapter {
 	 * @param handler handler object to check
 	 * @return whether or not this object can use the given handler
 	 */
-	//传入一个Object类型的handler判断是否支持处理该handler；
+	/**
+	 * 是否支持该处理器
+	 */
 	boolean supports(Object handler);
 
 	/**
@@ -79,7 +88,9 @@ public interface HandlerAdapter {
 	 * @return a ModelAndView object with the name of the view and the required
 	 * model data, or {@code null} if the request has been handled directly
 	 */
-	//具体使用handler处理请求的过程，返回类型为ModelAndView；
+	/**
+	 * 执行处理器，返回 ModelAndView 结果
+	 */
 	@Nullable
 	ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception;
 
@@ -92,7 +103,9 @@ public interface HandlerAdapter {
 	 * @see javax.servlet.http.HttpServlet#getLastModified
 	 * @see org.springframework.web.servlet.mvc.LastModified#getLastModified
 	 */
-	//获取资源上一次更改的时间；
+	/**
+	 * 返回请求的最新更新时间，如果不支持该操作，则返回 -1 即可
+	 */
 	long getLastModified(HttpServletRequest request, Object handler);
 
 }

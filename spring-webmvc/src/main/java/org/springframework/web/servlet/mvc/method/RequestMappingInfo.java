@@ -54,20 +54,34 @@ import org.springframework.web.util.UrlPathHelper;
  * @since 3.1
  */
 public final class RequestMappingInfo implements RequestCondition<RequestMappingInfo> {
-
+	/**
+	 * 名字
+	 */
 	@Nullable
 	private final String name;
-
+	/**
+	 * 请求路径的条件
+	 */
 	private final PatternsRequestCondition patternsCondition;
-
+	/**
+	 * 请求方法的条件
+	 */
 	private final RequestMethodsRequestCondition methodsCondition;
-
+	/**
+	 * 请求参数的条件
+	 */
 	private final ParamsRequestCondition paramsCondition;
-
+	/**
+	 * 请求头的条件
+	 */
 	private final HeadersRequestCondition headersCondition;
-
+	/**
+	 * 可生产的 Content-Type 的条件
+	 */
 	private final ConsumesRequestCondition consumesCondition;
-
+	/**
+	 * 自定义的条件
+	 */
 	private final ProducesRequestCondition producesCondition;
 
 	private final RequestConditionHolder customConditionHolder;
@@ -178,6 +192,7 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 * <p>Example: combine type- and method-level request mappings.
 	 * @return a new request mapping info instance; never {@code null}
 	 */
+	//合并方法
 	@Override
 	public RequestMappingInfo combine(RequestMappingInfo other) {
 		String name = combineNames(other);
@@ -214,9 +229,14 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 * the current request, sorted with best matching patterns on top.
 	 * @return a new instance in case all conditions match; or {@code null} otherwise
 	 */
+	//匹配方法，就是根据配置的 @RequestMapping 注解，
+	// 如果所有条件都满足，则创建一个 RequestMappingInfo 对象返回，如果某个条件不满足则直接返回 null，表示不匹配
 	@Override
 	@Nullable
 	public RequestMappingInfo getMatchingCondition(HttpServletRequest request) {
+		// 匹配 methodsCondition、paramsCondition、headersCondition、consumesCondition、producesCondition
+		// 如果任一为空，则返回 null ，表示匹配失败
+		// 都是调用每个属性对应的 getMatchingCondition(HttpServletRequest request) 方法，获得其匹配的真正的条件
 		RequestMethodsRequestCondition methods = this.methodsCondition.getMatchingCondition(request);
 		if (methods == null) {
 			return null;
@@ -245,7 +265,13 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 		if (custom == null) {
 			return null;
 		}
-
+		/*
+		 * 创建匹配的 RequestMappingInfo 对象
+		 * 为什么要创建 RequestMappingInfo 对象呢？
+		 *
+		 * 因为当前 RequestMappingInfo 对象，一个 methodsCondition 可以配置 GET、POST、DELETE 等等条件，
+		 * 但是实际就匹配一个请求类型，此时 methods 只代表其匹配的那个。
+		 */
 		return new RequestMappingInfo(this.name, patterns,
 				methods, params, headers, consumes, produces, custom.getCondition());
 	}
@@ -256,16 +282,23 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 * {@link #getMatchingCondition(HttpServletRequest)} to ensure they have conditions with
 	 * content relevant to current request.
 	 */
+	//比较方法
 	@Override
 	public int compareTo(RequestMappingInfo other, HttpServletRequest request) {
 		int result;
 		// Automatic vs explicit HTTP HEAD mapping
+		// 针对 HEAD 请求方法，特殊处理
 		if (HttpMethod.HEAD.matches(request.getMethod())) {
 			result = this.methodsCondition.compareTo(other.getMethodsCondition(), request);
 			if (result != 0) {
 				return result;
 			}
 		}
+		/*
+		 * 依次比较 patternsCondition、paramsCondition、headersCondition、consumesCondition、
+		 * producesCondition、methodsCondition、customConditionHolder
+		 * 如果有一个不相等，则直接返回比较结果
+		 */
 		result = this.patternsCondition.compareTo(other.getPatternsCondition(), request);
 		if (result != 0) {
 			return result;

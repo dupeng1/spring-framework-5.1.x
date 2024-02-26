@@ -42,8 +42,19 @@ import org.springframework.web.servlet.RequestToViewNameTranslator;
  * @author Juergen Hoeller
  * @since 3.1
  */
-public class ViewNameMethodReturnValueHandler implements HandlerMethodReturnValueHandler {
 
+/**
+ * 视图名称方法返回值解析器
+ * 支持的返回值类型：void，String。
+ * 如何处理返回值：如果返回值是null，不做任何处理；如果返回是字符串，把字符串当做视图名称；如果字符串中包含重定向字符，则设置ModelAndViewContainer的成员变量redirectModelScenario为true。
+ *
+ * 实现 HandlerMethodReturnValueHandler 接口，处理返回结果是视图名的 ReturnValueHandler 实现类
+ * ViewNameMethodReturnValueHandler 适用于前后端未分离，Controller 返回视图名的场景，例如 JSP、Freemarker 等等。
+ */
+public class ViewNameMethodReturnValueHandler implements HandlerMethodReturnValueHandler {
+	/**
+	 * 重定向的表达式的数组，用于判断某个视图是否为重定向的视图，一般情况下，不进行设置。
+	 */
 	@Nullable
 	private String[] redirectPatterns;
 
@@ -67,24 +78,28 @@ public class ViewNameMethodReturnValueHandler implements HandlerMethodReturnValu
 		return this.redirectPatterns;
 	}
 
-
+	//判断是否支持处理该返回类型
 	@Override
 	public boolean supportsReturnType(MethodParameter returnType) {
 		Class<?> paramType = returnType.getParameterType();
+		//该方法的返回类型是否为void或者字符串
 		return (void.class == paramType || CharSequence.class.isAssignableFrom(paramType));
 	}
 
 	@Override
 	public void handleReturnValue(@Nullable Object returnValue, MethodParameter returnType,
 			ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
-
+		// 如果是 String 类型
 		if (returnValue instanceof CharSequence) {
+			// 设置视图名到 mavContainer 中
 			String viewName = returnValue.toString();
 			mavContainer.setViewName(viewName);
+			// 如果是重定向，则标记到 mavContainer 中
 			if (isRedirectViewName(viewName)) {
 				mavContainer.setRedirectModelScenario(true);
 			}
 		}
+		// 如果是非 String 类型，而且非 void ，则抛出 UnsupportedOperationException 异常
 		else if (returnValue != null) {
 			// should not happen
 			throw new UnsupportedOperationException("Unexpected return type: " +
@@ -101,6 +116,7 @@ public class ViewNameMethodReturnValueHandler implements HandlerMethodReturnValu
 	 * reference; "false" otherwise.
 	 */
 	protected boolean isRedirectViewName(String viewName) {
+		// 符合 redirectPatterns 表达式，或者以 redirect: 开头
 		return (PatternMatchUtils.simpleMatch(this.redirectPatterns, viewName) || viewName.startsWith("redirect:"));
 	}
 

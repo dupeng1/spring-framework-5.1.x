@@ -53,6 +53,10 @@ import org.springframework.web.servlet.mvc.annotation.ModelAndViewResolver;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * 这个的 supportsReturnType 方法返回 true，即可以处理所有类型的返回值，这个一般放在最后兜底。
+ */
 public class ModelAndViewResolverMethodReturnValueHandler implements HandlerMethodReturnValueHandler {
 
 	@Nullable

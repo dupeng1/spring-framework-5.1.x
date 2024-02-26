@@ -83,6 +83,10 @@ import org.springframework.web.servlet.ModelAndView;
  * @since 1.1.1
  * @see ServletForwardingController
  */
+
+/**
+ * 将当前应用中的某个 Servlet直接包装为一个Controller，所有到ServletWrappingController的请求实际上是由它内部所包装的这个 Servlet来处理的
+ */
 public class ServletWrappingController extends AbstractController
 		implements BeanNameAware, InitializingBean, DisposableBean {
 

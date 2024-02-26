@@ -77,6 +77,7 @@ import org.springframework.web.method.HandlerMethod;
 /**
  * 拦截器是相对于spring来说的，它和过滤器不一样，过滤器的范围更广一些，是相对于tomcat容器来说的。拦截器可以对用户进行拦截过滤处理
  * 自定义拦截器
+ * 实现类有：MappedInterceptor
  */
 public interface HandlerInterceptor {
 

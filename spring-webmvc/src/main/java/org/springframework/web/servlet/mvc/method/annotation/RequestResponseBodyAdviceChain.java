@@ -86,8 +86,9 @@ class RequestResponseBodyAdviceChain implements RequestBodyAdvice, ResponseBodyA
 	@Override
 	public HttpInputMessage beforeBodyRead(HttpInputMessage request, MethodParameter parameter,
 			Type targetType, Class<? extends HttpMessageConverter<?>> converterType) throws IOException {
-
+		// 此advice就是我们定义的类
 		for (RequestBodyAdvice advice : getMatchingAdvice(parameter, RequestBodyAdvice.class)) {
+			//如果supports方法的返回值为true，则执行RequestBodyAdvice的afterBodyRead方法
 			if (advice.supports(parameter, targetType, converterType)) {
 				request = advice.beforeBodyRead(request, parameter, targetType, converterType);
 			}
@@ -147,6 +148,7 @@ class RequestResponseBodyAdviceChain implements RequestBodyAdvice, ResponseBodyA
 
 	@SuppressWarnings("unchecked")
 	private <A> List<A> getMatchingAdvice(MethodParameter parameter, Class<? extends A> adviceType) {
+		//获取RequestBodyAdvice类型的advice（此advice是我们定义实现RequestBodyAdvice接口的类）
 		List<Object> availableAdvice = getAdvice(adviceType);
 		if (CollectionUtils.isEmpty(availableAdvice)) {
 			return Collections.emptyList();
@@ -158,8 +160,10 @@ class RequestResponseBodyAdviceChain implements RequestBodyAdvice, ResponseBodyA
 				if (!adviceBean.isApplicableToBeanType(parameter.getContainingClass())) {
 					continue;
 				}
+				// 返回的是我们定义的Advice，即根据Bean的名称从BeanFactory中获取Bean对象
 				advice = adviceBean.resolveBean();
 			}
+			// 判断这个类是否是RequestBodyAdvice类型，如果不是就不会加到结果集，所以这就是我们实现RequestBodyAdvice的原因
 			if (adviceType.isAssignableFrom(advice.getClass())) {
 				result.add((A) advice);
 			}

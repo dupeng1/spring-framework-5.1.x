@@ -86,6 +86,10 @@ import org.springframework.web.util.WebUtils;
  * @see org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor
  * @see org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
  */
+
+/**
+ * 将接收到的请求转发到一个命名的servlet
+ */
 public class ServletForwardingController extends AbstractController implements BeanNameAware {
 
 	@Nullable

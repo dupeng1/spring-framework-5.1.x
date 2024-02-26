@@ -60,6 +60,29 @@ import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolv
  * @author Juergen Hoeller
  * @since 3.1
  */
+
+/**
+ * RequestBody注解处理器
+ * 支持的参数类型：被@RequestBody注解的参数，具体类型可以是某个HttpMessageConverter支持转换的类型。
+ * 参数值来源：调用支持该类型的HttpMessageConverter，把request的body转换成该类型。比如参数类型是String.class，则spring调用StringHttpMessageConverter把body转换成String后赋值给参数。
+ * 1、继承 AbstractMessageConverterMethodProcessor 抽象类，
+ * 处理方法参数添加了 @RequestBody 注解方法入参，或者处理方法添加了 @ResponseBody 注解的返回值。
+ * 2、因为前后端分离之后，后端基本是提供 Restful API ，所以 RequestResponseBodyMethodProcessor
+ * 成为了目前最常用的 HandlerMethodReturnValueHandler 实现类。
+ * 3、示例代码：
+ *  @RestController
+ *  @RequestMapping("/user")
+ *  public class UserController {
+ *  	@RequestMapping("/walks")
+ *  		public List<User> walk(@RequestBody User user) {
+ *  		List<User> users = new ArrayList();
+ *  		users.add(new User().setUsername("nihao"));
+ *  		users.add(new User().setUsername("zaijian"));
+ *  		return users;
+ *  	}
+ *  }
+ *  虽然，walks() 方法的返回值没添加 @ResponseBody 注解，但是 @RestController 注解，默认有 @ResponseBody 注解
+ */
 public class RequestResponseBodyMethodProcessor extends AbstractMessageConverterMethodProcessor {
 
 	/**
@@ -106,13 +129,17 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 	}
 
 
+	//判断是否支持处理该方法参数
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
+		//该方法参数是否有 @RequestBody 注解
 		return parameter.hasParameterAnnotation(RequestBody.class);
 	}
 
+	//判断是否支持处理该返回类型
 	@Override
 	public boolean supportsReturnType(MethodParameter returnType) {
+		// 该方法或者所在类是否有 @ResponseBody 注解
 		return (AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ResponseBody.class) ||
 				returnType.hasMethodAnnotation(ResponseBody.class));
 	}
@@ -123,14 +150,16 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 	 * is {@code true} and there is no body content or if there is no suitable
 	 * converter to read the content with.
 	 */
+	//从请求中解析出带有 @RequestBody 注解的参数
 	@Override
 	public Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
 			NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
 
 		parameter = parameter.nestedIfOptional();
+		// 从请求体中解析出方法入参对象
 		Object arg = readWithMessageConverters(webRequest, parameter, parameter.getNestedGenericParameterType());
 		String name = Conventions.getVariableNameForParameter(parameter);
-
+		// 数据绑定相关
 		if (binderFactory != null) {
 			WebDataBinder binder = binderFactory.createBinder(webRequest, arg, name);
 			if (arg != null) {
@@ -143,18 +172,19 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 				mavContainer.addAttribute(BindingResult.MODEL_KEY_PREFIX + name, binder.getBindingResult());
 			}
 		}
-
+		// 返回方法入参对象，如果有必要，则通过 Optional 获取对应的方法入参
 		return adaptArgumentIfNecessary(arg, parameter);
 	}
 
+	//从请求体中解析出方法入参对象
 	@Override
 	protected <T> Object readWithMessageConverters(NativeWebRequest webRequest, MethodParameter parameter,
 			Type paramType) throws IOException, HttpMediaTypeNotSupportedException, HttpMessageNotReadableException {
-
+		// <1> 创建 ServletServerHttpRequest 请求对象
 		HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
 		Assert.state(servletRequest != null, "No HttpServletRequest");
 		ServletServerHttpRequest inputMessage = new ServletServerHttpRequest(servletRequest);
-
+		// <2> 读取请求体中的消息并转换成入参对象
 		Object arg = readWithMessageConverters(inputMessage, parameter, paramType);
 		if (arg == null && checkRequired(parameter)) {
 			throw new HttpMessageNotReadableException("Required request body is missing: " +
@@ -172,12 +202,14 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 	public void handleReturnValue(@Nullable Object returnValue, MethodParameter returnType,
 			ModelAndViewContainer mavContainer, NativeWebRequest webRequest)
 			throws IOException, HttpMediaTypeNotAcceptableException, HttpMessageNotWritableException {
-
+		// <1> 设置已处理
 		mavContainer.setRequestHandled(true);
+		// <2> 创建请求和响应
 		ServletServerHttpRequest inputMessage = createInputMessage(webRequest);
 		ServletServerHttpResponse outputMessage = createOutputMessage(webRequest);
 
 		// Try even with null return value. ResponseBodyAdvice could get involved.
+		// <3> 使用 HttpMessageConverter 对对象进行转换，并写入到响应
 		writeWithMessageConverters(returnValue, returnType, inputMessage, outputMessage);
 	}
 

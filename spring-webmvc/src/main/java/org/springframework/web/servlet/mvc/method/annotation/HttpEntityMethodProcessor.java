@@ -68,6 +68,14 @@ import org.springframework.web.servlet.support.RequestContextUtils;
  * @author Brian Clozel
  * @since 3.1
  */
+
+/**
+ * HttpEntity处理器
+ * 支持的参数类型： HttpEntity<T>，如HttpEntity<String>等。
+ * 参数值来源：spring创建RequestMappingHandlerAdapter对象时，会为它的成员变量messageConverters设置一组默认的
+ * List<HttpMessageConverter<?>>。HttpMessageConverter的作用是负责request的body和对象直接的互转，
+ * 比如StringHttpMessageConverter实现了body和String之间的互转。假设形参是HttpEntity<String>，则参数值就是StringHttpMessageConverter。
+ */
 public class HttpEntityMethodProcessor extends AbstractMessageConverterMethodProcessor {
 
 	private static final Set<HttpMethod> SAFE_METHODS = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);

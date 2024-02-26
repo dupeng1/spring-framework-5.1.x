@@ -32,6 +32,7 @@ import org.springframework.web.servlet.handler.HandlerMethodMappingNamingStrateg
  * @author Rossen Stoyanchev
  * @since 4.1
  */
+//HandlerMethod 的 Mapping 的名字生成策略
 public class RequestMappingInfoHandlerMethodMappingNamingStrategy
 		implements HandlerMethodMappingNamingStrategy<RequestMappingInfo> {
 

@@ -67,6 +67,12 @@ import org.springframework.web.multipart.support.RequestPartServletServerHttpReq
  * @author Juergen Hoeller
  * @since 3.1
  */
+
+/**
+ *  文件上传解析器
+ * 支持的参数类型：@RequestPart(value="file") MultipartFile file，MultipartFile，List<MultipartFile>，javax.servlet.http.Part。
+ * 参数值来源：从文件上传请求对象MultipartHttpServletRequest获取参数值
+ */
 public class RequestPartMethodArgumentResolver extends AbstractMessageConverterMethodArgumentResolver {
 
 	/**

@@ -33,13 +33,19 @@ import org.springframework.web.servlet.support.WebContentGenerator;
  * @author Arjen Poutsma
  * @since 3.1
  */
-public abstract class AbstractHandlerMethodAdapter extends WebContentGenerator implements HandlerAdapter, Ordered {
 
+/**
+ * 实现 HandlerAdapter、Ordered 接口，继承 WebContentGenerator 抽象类，基于 HandlerMethod 的 HandlerMethodAdapter 抽象类
+ */
+public abstract class AbstractHandlerMethodAdapter extends WebContentGenerator implements HandlerAdapter, Ordered {
+	/** 最低优先级 */
 	private int order = Ordered.LOWEST_PRECEDENCE;
 
 
 	public AbstractHandlerMethodAdapter() {
 		// no restriction of HTTP methods by default
+		// 调用 WebContentGenerator 类的构造方法
+		// 参数 restrictDefaultSupportedMethods 参数为 false ，表示不需要严格校验 HttpMethod
 		super(false);
 	}
 
@@ -64,9 +70,10 @@ public abstract class AbstractHandlerMethodAdapter extends WebContentGenerator i
 	 * @param handler the handler instance to check
 	 * @return whether or not this adapter can adapt the given handler
 	 */
-	//调用supportsInternal模板方法；
+	//判断是否支持该处理器，需要调用抽象方法 supportsInternal(HandlerMethod handlerMethod)判断是否支持， 交由子类去实现
 	@Override
 	public final boolean supports(Object handler) {
+		//判断处理器是 HandlerMethod 类型
 		return (handler instanceof HandlerMethod && supportsInternal((HandlerMethod) handler));
 	}
 
@@ -80,7 +87,7 @@ public abstract class AbstractHandlerMethodAdapter extends WebContentGenerator i
 	/**
 	 * This implementation expects the handler to be an {@link HandlerMethod}.
 	 */
-	//调用了handleInternal模板方法；
+	//用于处理请求，执行该处理器，如果该 HandlerAdapter 支持这个处理器，那么则会调用该方法去处理请求，执行这个处理器
 	@Override
 	@Nullable
 	public final ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -106,7 +113,7 @@ public abstract class AbstractHandlerMethodAdapter extends WebContentGenerator i
 	/**
 	 * This implementation expects the handler to be an {@link HandlerMethod}.
 	 */
-	//调用了getLastModifiedInternal模板方法；
+	//获得最后更新时间，调用getLastModifiedInternal(HttpServletRequest request, HandlerMethod handlerMethod)抽象方法，交由子类去实现
 	@Override
 	public final long getLastModified(HttpServletRequest request, Object handler) {
 		return getLastModifiedInternal(request, (HandlerMethod) handler);

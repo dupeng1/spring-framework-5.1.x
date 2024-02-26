@@ -41,6 +41,10 @@ import org.springframework.util.StreamUtils;
  * @author Juergen Hoeller
  * @since 3.0
  */
+
+/**
+ * 继承 AbstractHttpMessageConverter 抽象类，String 类型的消息转换器
+ */
 public class StringHttpMessageConverter extends AbstractHttpMessageConverter<String> {
 
 	/**
@@ -82,14 +86,16 @@ public class StringHttpMessageConverter extends AbstractHttpMessageConverter<Str
 		this.writeAcceptCharset = writeAcceptCharset;
 	}
 
-
+	//是否支持从请求中读取该类型的方法参数，或者是否支持往响应中写入该类型的返回结果
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return String.class == clazz;
 	}
 
+	//从请求中读取该类型的方法参数
 	@Override
 	protected String readInternal(Class<? extends String> clazz, HttpInputMessage inputMessage) throws IOException {
+		//直接从请求的 ServletInputStream 流中读取出来，转换成字符串
 		Charset charset = getContentTypeCharset(inputMessage.getHeaders().getContentType());
 		return StreamUtils.copyToString(inputMessage.getBody(), charset);
 	}
