@@ -39,6 +39,12 @@ import org.springframework.web.servlet.handler.MappedInterceptor;
  * @author Keith Donald
  * @since 3.0
  */
+
+/**
+ * 1、<mvc:interceptor />标签则会被 InterceptorsBeanDefinitionParser 对象进行解析
+ * 2、会将 <mvc:interceptor /> 标签解析 BeanDefinition 对象，beanClass 为 MappedInterceptor，
+ * 解析出来的属性也会添加至其中，也就会给初始化成 MappedInterceptor 类型的 Spring Bean 到 Spring 上下文中
+ */
 class InterceptorsBeanDefinitionParser implements BeanDefinitionParser {
 
 	@Override
@@ -54,6 +60,7 @@ class InterceptorsBeanDefinitionParser implements BeanDefinitionParser {
 
 		List<Element> interceptors = DomUtils.getChildElementsByTagName(element, "bean", "ref", "interceptor");
 		for (Element interceptor : interceptors) {
+			// 将 <mvc:interceptor /> 标签解析 MappedInterceptor 对象
 			RootBeanDefinition mappedInterceptorDef = new RootBeanDefinition(MappedInterceptor.class);
 			mappedInterceptorDef.setSource(context.extractSource(interceptor));
 			mappedInterceptorDef.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);

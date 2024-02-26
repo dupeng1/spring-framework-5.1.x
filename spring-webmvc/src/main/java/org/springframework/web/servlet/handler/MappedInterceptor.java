@@ -42,16 +42,41 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Brian Clozel
  * @since 3.0
  */
-public final class MappedInterceptor implements HandlerInterceptor {
 
+/**
+ * 支持地址匹配的 HandlerInterceptor 实现类
+ * 每一个 <mvc:interceptor /> 标签，将被解析成一个 MappedInterceptor 类型的 Bean 拦截器对象
+ * 例如：
+ * <mvc:interceptors>
+ *     <mvc:interceptor>
+ *         <mvc:mapping path="/**" />
+ *         <mvc:exclude-mapping path="/error/**" />
+ *         <bean class="com.tiger.study.interceptor.JwtInterceptor" />
+ *     </mvc:interceptor>
+ * </mvc:interceptors>
+ * 1、每一个 <mvc:interceptor /> 标签，将被解析成一个 MappedInterceptor 类型的 Bean 拦截器对象
+ * 2、然后 MappedInterceptor 类型的拦截器在 AbstractHandlerMapping
+ * 的 initApplicationContext() -> detectMappedInterceptors 会被扫描到，
+ * 也就是说在初始化 HandlerMapping 组件的时候会扫描到我们自定义的拦截器，并添加到属性中
+ */
+public final class MappedInterceptor implements HandlerInterceptor {
+	/**
+	 * 匹配的路径，拦截器需要匹配的请求路径
+	 */
 	@Nullable
 	private final String[] includePatterns;
-
+	/**
+	 * 不匹配的路径，拦截器需要排除的请求路径
+	 */
 	@Nullable
 	private final String[] excludePatterns;
-
+	/**
+	 * 拦截器对象
+	 */
 	private final HandlerInterceptor interceptor;
-
+	/**
+	 * 路径匹配器，路径匹配器
+	 */
 	@Nullable
 	private PathMatcher pathMatcher;
 
@@ -145,6 +170,7 @@ public final class MappedInterceptor implements HandlerInterceptor {
 	 */
 	public boolean matches(String lookupPath, PathMatcher pathMatcher) {
 		PathMatcher pathMatcherToUse = (this.pathMatcher != null ? this.pathMatcher : pathMatcher);
+		// <1> 先判断该路径是否在不匹配的路径中
 		if (!ObjectUtils.isEmpty(this.excludePatterns)) {
 			for (String pattern : this.excludePatterns) {
 				if (pathMatcherToUse.match(pattern, lookupPath)) {
@@ -152,9 +178,11 @@ public final class MappedInterceptor implements HandlerInterceptor {
 				}
 			}
 		}
+		// <2> 如果匹配的路径为空，则都匹配通过
 		if (ObjectUtils.isEmpty(this.includePatterns)) {
 			return true;
 		}
+		// <3> 判断路径是否在需要匹配的路径中
 		for (String pattern : this.includePatterns) {
 			if (pathMatcherToUse.match(pattern, lookupPath)) {
 				return true;

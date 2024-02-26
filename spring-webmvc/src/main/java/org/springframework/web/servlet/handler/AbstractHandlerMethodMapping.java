@@ -63,6 +63,22 @@ import org.springframework.web.servlet.HandlerMapping;
  * @param <T> the mapping for a {@link HandlerMethod} containing the conditions
  * needed to match the handler method to incoming request.
  */
+
+/**
+ * 1、Spring MVC的请求匹配的注解，体系结构：
+ * org.springframework.web.bind.annotation.@Mapping
+ * org.springframework.web.bind.annotation.@RequestMapping
+ * org.springframework.web.bind.annotation.@GetMapping
+ * org.springframework.web.bind.annotation.@PostMapping
+ * org.springframework.web.bind.annotation.@PutMapping
+ * org.springframework.web.bind.annotation.@DeleteMapping
+ * org.springframework.web.bind.annotation.@PatchMapping
+ *
+ * 2、AbstractHandlerMethodMapping 定义为了 <T> 泛型，交给子类做决定。例如，子类 RequestMappingInfoHandlerMapping
+ * 使用 RequestMappingInfo 类作为 <T> 泛型，也就是我们在上面注解模块看到的 @RequestMapping 等注解信息。
+ *
+ * 3、<T> 泛型，就是我们前面要一直提到的 Mapping 类型
+ */
 public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMapping implements InitializingBean {
 
 	/**
@@ -89,12 +105,18 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		ALLOW_CORS_CONFIG.setAllowCredentials(true);
 	}
 
-
+	/**
+	 * 是否只扫描可访问的 HandlerMethod 们
+	 */
 	private boolean detectHandlerMethodsInAncestorContexts = false;
-
+	/**
+	 * Mapping 命名策略，HandlerMethod 的 Mapping 的名字生成策略接口
+	 */
 	@Nullable
 	private HandlerMethodMappingNamingStrategy<T> namingStrategy;
-
+	/**
+	 * Mapping 注册表
+	 */
 	private final MappingRegistry mappingRegistry = new MappingRegistry();
 
 
