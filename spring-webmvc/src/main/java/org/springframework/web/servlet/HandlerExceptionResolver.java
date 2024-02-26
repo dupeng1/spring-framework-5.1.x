@@ -33,6 +33,10 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 22.11.2003
  */
+
+/**
+ * 处理器异常解析器，将处理器（ handler ）执行时发生的异常，解析( 转换 )成对应的 ModelAndView 结果
+ */
 public interface HandlerExceptionResolver {
 
 	/**

@@ -82,6 +82,10 @@ import javax.servlet.http.HttpServletRequest;
  * @see org.springframework.web.multipart.support.StringMultipartFileEditor
  * @see org.springframework.web.servlet.DispatcherServlet
  */
+
+/**
+ * 内容类型( Content-Type )为 multipart/* 的请求的解析器，例如解析处理文件上传的请求，便于获取参数信息以及上传的文件
+ */
 public interface MultipartResolver {
 
 	/**
