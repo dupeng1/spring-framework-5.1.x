@@ -75,7 +75,7 @@ public final class MappedInterceptor implements HandlerInterceptor {
 	 */
 	private final HandlerInterceptor interceptor;
 	/**
-	 * 路径匹配器，路径匹配器
+	 * 路径匹配器，路径匹配器，将当前请求路径和includePatterns、excludePatterns匹配，类似工具类
 	 */
 	@Nullable
 	private PathMatcher pathMatcher;
@@ -168,6 +168,7 @@ public final class MappedInterceptor implements HandlerInterceptor {
 	 * @param pathMatcher a path matcher for path pattern matching
 	 * @return {@code true} if the interceptor applies to the given request path
 	 */
+	//判断请求路径是否匹配
 	public boolean matches(String lookupPath, PathMatcher pathMatcher) {
 		PathMatcher pathMatcherToUse = (this.pathMatcher != null ? this.pathMatcher : pathMatcher);
 		// <1> 先判断该路径是否在不匹配的路径中

@@ -55,6 +55,12 @@ import org.springframework.web.util.WebUtils;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * 继承 AbstractHandlerMethodMapping 抽象类，定义了使用的泛型 <T> 为
+ * org.springframework.web.servlet.mvc.method.RequestMappingInfo 类，
+ * 即 Mapping 类型就是 RequestMappingInfo 对象
+ */
 public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMethodMapping<RequestMappingInfo> {
 
 	private static final Method HTTP_OPTIONS_HANDLE_METHOD;
@@ -71,6 +77,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 
 
 	protected RequestMappingInfoHandlerMapping() {
+		// 设置父类的 namingStrategy 属性 Mapping 命名策略对象，为 RequestMappingInfoHandlerMethodMappingNamingStrategy 对象
 		setHandlerMethodMappingNamingStrategy(new RequestMappingInfoHandlerMethodMappingNamingStrategy());
 	}
 

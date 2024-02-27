@@ -55,7 +55,8 @@ import org.springframework.lang.Nullable;
  */
 
 /**
- * 1、HandlerMapping：请求的处理器匹配器，负责为请求找到合适的 HandlerExecutionChain 处理器执行链，包含处理器（handler）和拦截器们（interceptors）
+ * 1、HandlerMapping：请求的【处理器匹配器】，负责为请求找到合适的 HandlerExecutionChain【处理器执行链】，
+ * 包含【处理器】（handler）和【拦截器】们（interceptors）
  * 2、handler：处理器，可以将其理解成 HandlerMethod 对象（例如我们使用最多的 @RequestMapping 注解所标注的方法会解析成该对象）
  * ，包含了方法的所有信息，通过该对象能够执行该方法
  * 3、HandlerInterceptor：拦截器，对处理请求进行增强处理，可用于在执行方法前、成功执行方法后、处理完成后进行一些逻辑处理
@@ -149,7 +150,8 @@ public interface HandlerMapping {
 	 * @throws Exception if there is an internal error
 	 */
 	/**
-	 * 返回一个包含handler Object和所有拦截器的HandlerExecutionChain
+	 * 获得请求对应的处理器和拦截器们
+	 * 返回一个包含处理器和所有拦截器的HandlerExecutionChain
 	 */
 	@Nullable
 	HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception;

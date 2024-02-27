@@ -65,7 +65,10 @@ import org.springframework.web.servlet.HandlerMapping;
  */
 
 /**
- * 1、Spring MVC的请求匹配的注解，体系结构：
+ * 基于Method进行匹配，例如，我们所熟知的 @RequestMapping 等注解的方式
+ * 1、AbstractHandlerMethodMapping继承AbstractHandlerMapping抽象类，以Method方法作为Handler处理器的HandlerMapping抽象类，
+ * 提供Mapping的初始化、注册等通用的骨架方法
+ * 2、Spring MVC的请求匹配的注解，体系结构：
  * org.springframework.web.bind.annotation.@Mapping
  * org.springframework.web.bind.annotation.@RequestMapping
  * org.springframework.web.bind.annotation.@GetMapping
@@ -73,11 +76,8 @@ import org.springframework.web.servlet.HandlerMapping;
  * org.springframework.web.bind.annotation.@PutMapping
  * org.springframework.web.bind.annotation.@DeleteMapping
  * org.springframework.web.bind.annotation.@PatchMapping
- * 2、AbstractHandlerMethodMapping继承 AbstractHandlerMapping 抽象类，以 Method 方法 作为 Handler 处理器 的 HandlerMapping 抽象类，
- * 提供 Mapping 的初始化、注册等通用的骨架方法
- * 3、AbstractHandlerMethodMapping 定义为了 <T> 泛型，交给子类做决定。例如，子类 RequestMappingInfoHandlerMapping
- * 使用 RequestMappingInfo 类作为 <T> 泛型，RequestMappingInfo也就是我们在上面注解模块看到的 @RequestMapping 等注解信息。<T> 泛型，
- * 就是我们前面要一直提到的 Mapping 类型
+ * 3、AbstractHandlerMethodMapping定义为了<T>泛型，交给子类做决定。例如，子类 RequestMappingInfoHandlerMapping
+ * 使用RequestMappingInfo类作为<T>泛型，RequestMappingInfo也就是我们在上面注解模块看到的@RequestMapping等注解信息
  */
 public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMapping implements InitializingBean {
 
@@ -600,15 +600,12 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * Mapping 注册表
 	 */
 	class MappingRegistry {
-		/**
-		 * Mapping和MappingRegistration注册表
-		 */
+		//Mapping和MappingRegistration（Mapping + HandlerMethod）注册表
 		private final Map<T, MappingRegistration<T>> registry = new HashMap<>();
 		//Mapping和HandlerMethod集合
 		private final Map<T, HandlerMethod> mappingLookup = new LinkedHashMap<>();
-		//URL和Mapping 数组
+		//URL（就是固定死的路径，而非多个）和Mapping 数组
 		private final MultiValueMap<String, T> urlLookup = new LinkedMultiValueMap<>();
-
 		//Mapping 的名字与 HandlerMethod 的映射
 		private final Map<String, List<HandlerMethod>> nameLookup = new ConcurrentHashMap<>();
 

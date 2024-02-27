@@ -70,11 +70,11 @@ import org.springframework.web.util.UrlPathHelper;
  */
 
 /**
- * 一、为请求找到合适的HandlerExecutionChain处理器执行链，暴露 getHandlerInternal(HttpServletRequest request) 抽象方法，交由子类实现
+ * 一、实现了“为请求找到合适的HandlerExecutionChain处理器执行链”对应的的骨架逻辑，
+ * 暴露 getHandlerInternal(HttpServletRequest request) 抽象方法，交由子类实现
  *	二、AbstractHandlerMapping 的子类，分成两派，分别是：
  * 		1、AbstractUrlHandlerMapping ，基于 URL 进行匹配
- * 		<bean   class="org.springframework.web.servlet.handler.
- *        SimpleUrlHandlerMapping">
+ * 		<bean   class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
  *              <property name="mappings">
  *                   <props>
  *                        <prop key="/hello.form“>helloController</prop>
@@ -109,7 +109,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	//排序值 order
 	//默认值为Integer的最大值，后面注释的意思是和没有排序是一样的，因为只有理论上才可能超过Integer.MAX_VALUE。
 	private int order = Ordered.LOWEST_PRECEDENCE;  // default: same as non-Ordered
-
+	//当前 Bean 的名称
 	@Nullable
 	private String beanName;
 

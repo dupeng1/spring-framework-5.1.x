@@ -53,6 +53,10 @@ import org.springframework.web.util.UrlPathHelper;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
+
+/**
+ * 实现 RequestCondition 接口，每个方法的定义的请求信息，也就是 @RequestMapping 等注解的信息
+ */
 public final class RequestMappingInfo implements RequestCondition<RequestMappingInfo> {
 	/**
 	 * 名字

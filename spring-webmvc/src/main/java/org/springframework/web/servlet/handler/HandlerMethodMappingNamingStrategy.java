@@ -48,7 +48,7 @@ public interface HandlerMethodMappingNamingStrategy<T> {
 	 * @return the name
 	 */
 	/**
-	 * 根据 HandlerMethod 获取名称，就是为对应的 Mappring 对象生成一个名称，便于获取
+	 * 根据 HandlerMethod 获取名称，就是为对应的 Mapping 对象生成一个名称，便于获取
 	 */
 	String getName(HandlerMethod handlerMethod, T mapping);
 

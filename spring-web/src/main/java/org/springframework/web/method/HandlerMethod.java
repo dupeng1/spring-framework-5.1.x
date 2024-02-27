@@ -62,13 +62,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * 处理器对象，也就是某个方法的封装对象（Method+所在类的 Bean 对象）
+ * Handler（方法所在类）+method（方法对象）的组合
+ * 我们使用最多的@RequestMapping注解所标注的方法会解析成该对象
  */
 public class HandlerMethod {
 
 	/** Logger that is available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 	/**
-	 * Bean 对象
+	 * Bean名称 或 Bean对象
 	 */
 	private final Object bean;
 
