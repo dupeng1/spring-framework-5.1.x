@@ -72,16 +72,22 @@ import org.springframework.web.util.UrlPathHelper;
 /**
  * 一、实现了“为请求找到合适的HandlerExecutionChain处理器执行链”对应的的骨架逻辑，
  * 暴露 getHandlerInternal(HttpServletRequest request) 抽象方法，交由子类实现
- *	二、AbstractHandlerMapping 的子类，分成两派，分别是：
+ *
+ * 二、AbstractHandlerMapping 的子类，分成两派，基于 URL 进行匹配或者基于 Method 进行匹配，分别是：
  * 		1、AbstractUrlHandlerMapping ，基于 URL 进行匹配
+ * 		配置HandlerMapping组件， 通过HandlerMapping组件，DispatcherServlet控制器可以将客户HTTP请求映射到Controller组件上。
+ * 		使用如下配置可以实现 当客户发出hello.form请求时，会调用HelloController组件进行处理。
  * 		<bean   class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
- *              <property name="mappings">
- *                   <props>
- *                        <prop key="/hello.form“>helloController</prop>
- *                   </props>
- *              </property>
+ *       	<property name="mappings">
+ *           	<props>
+ *               	<prop key="/hello.form“>helloController</prop>
+ *               </props>
+ *           </property>
  *      </bean>
+ *
  *      2、AbstractHandlerMethodMapping ，基于 Method 进行匹配，例如，我们所熟知的 @RequestMapping 等注解的方式
+ *
+ *  三：https://blog.csdn.net/Coder_Boy_/article/details/129134190?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522170894502116800188516763%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&request_id=170894502116800188516763&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-9-129134190-null-null.nonecase&utm_term=spring%20mvc&spm=1018.2226.3001.4450
  *
  */
 public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
@@ -91,10 +97,10 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	@Nullable
 	private Object defaultHandler;
 
-	//URL 路径工具类
+	//URL 路径工具类，用来获取请求路径
 	private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
-	//路径匹配器
+	//路径匹配器，用来匹配请求路径和【处理器匹配器】注册的路径是否匹配
 	private PathMatcher pathMatcher = new AntPathMatcher();
 
 	//配置的拦截器数组.

@@ -112,29 +112,29 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 		// <2> 如果 parameter 是内嵌类型（Optional 类型）的，则获取内嵌的参数。否则，还是使用 parameter 自身
 		//一般情况下，parameter 参数，我们不太会使用 Optional 类型。可以暂时忽略
 		MethodParameter nestedParameter = parameter.nestedIfOptional();
-		// <3> 如果 name 是占位符，则进行解析成对应的值
+		// <3> 如果 name 是占位符，则进行解析成对应的值【例如：@RequestParam(value = "${server.port}")】
 		Object resolvedName = resolveStringValue(namedValueInfo.name);
 		if (resolvedName == null) {
 			// 如果解析不到，则抛出 IllegalArgumentException 异常
 			throw new IllegalArgumentException(
 					"Specified name must not resolve to null: [" + namedValueInfo.name + "]");
 		}
-		// <4> 解析 name 对应的值
+		// <4> 解析 name 对应的值，解析参数名 name 对应的值，交由子类去实现
 		Object arg = resolveName(resolvedName.toString(), nestedParameter, webRequest);
 		// <5> 如果 arg 不存在，则使用默认值
 		if (arg == null) {
 			if (namedValueInfo.defaultValue != null) {
-				// <5.1> 使用默认值
+				// <5.1> 使用默认值，解析默认值
 				arg = resolveStringValue(namedValueInfo.defaultValue);
 			}
-			// <5.2> 如果是必填，则处理参数缺失的情况
+			// <5.2> 如果是必填，则处理参数缺失的情况，处理参数缺失的情况调用，也就是抛出指定的异常
 			else if (namedValueInfo.required && !nestedParameter.isOptional()) {
 				handleMissingValue(namedValueInfo.name, nestedParameter, webRequest);
 			}
 			// <5.3> 处理空值的情况
 			arg = handleNullValue(namedValueInfo.name, arg, nestedParameter.getNestedParameterType());
 		}
-		// <6> 如果 arg 为空串，则使用默认值
+		// <6> 如果 arg 为空串，并且存在默认值，则使用默认值，解析默认值
 		else if ("".equals(arg) && namedValueInfo.defaultValue != null) {
 			arg = resolveStringValue(namedValueInfo.defaultValue);
 		}

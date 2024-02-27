@@ -58,8 +58,15 @@ import org.springframework.web.multipart.MultipartResolver;
  * @see HttpServletRequest#getParts()
  * @see org.springframework.web.multipart.commons.CommonsMultipartResolver
  */
+
+/**
+ * 实现 MultipartResolver 接口，基于 Servlet 3.0 标准的上传文件 API 的 MultipartResolver 实现类
+ */
 public class StandardServletMultipartResolver implements MultipartResolver {
 
+	/**
+	 * 是否延迟解析
+	 */
 	private boolean resolveLazily = false;
 
 
@@ -79,14 +86,17 @@ public class StandardServletMultipartResolver implements MultipartResolver {
 
 	@Override
 	public boolean isMultipart(HttpServletRequest request) {
+		// 请求的 Content-type 必须 multipart/ 开头
 		return StringUtils.startsWithIgnoreCase(request.getContentType(), "multipart/");
 	}
 
+	//直接将 HttpServletRequest 转换成 StandardMultipartHttpServletRequest 对象
 	@Override
 	public MultipartHttpServletRequest resolveMultipart(HttpServletRequest request) throws MultipartException {
 		return new StandardMultipartHttpServletRequest(request, this.resolveLazily);
 	}
 
+	//清理资源，删除临时的 javax.servlet.http.Part 们
 	@Override
 	public void cleanupMultipart(MultipartHttpServletRequest request) {
 		if (!(request instanceof AbstractMultipartHttpServletRequest) ||

@@ -57,9 +57,12 @@ import org.springframework.web.util.WebUtils;
  */
 
 /**
- * 继承 AbstractHandlerMethodMapping 抽象类，定义了使用的泛型 <T> 为
+ * 1、继承 AbstractHandlerMethodMapping 抽象类，定义了使用的泛型 <T> 为
  * org.springframework.web.servlet.mvc.method.RequestMappingInfo 类，
  * 即 Mapping 类型就是 RequestMappingInfo 对象
+ * 2、RequestMappingInfoHandlerMapping 定义了使用 RequestMappingInfo 对象，
+ * 而其子类 RequestMappingHandlerMapping 将使用了 @RequestMapping 注解的方法，
+ * 解析生成 RequestMappingInfo 对象。这样，如果未来我们自己定义注解，或者其他方式来生成 RequestMappingHandlerMapping 对象
  */
 public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMethodMapping<RequestMappingInfo> {
 

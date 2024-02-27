@@ -56,19 +56,24 @@ import org.springframework.util.CollectionUtils;
  */
 
 /**
- * 继承 AbstractUrlHandlerMapping 抽象类，简单的就 URL 匹配的 HandlerMapping 实现类
+ * 1、继承 AbstractUrlHandlerMapping 抽象类，简单的就 URL 匹配的 HandlerMapping 实现类
  *
+ * 2、使用实例：
  * <bean id="helloController" class="com.tiger.study.controller.HelloController"/>
  *
- * <!-- 定义请求处理映射 HandlerMapping -->
- * <bean class="org.springframework.web.servlet.handler. SimpleUrlHandlerMapping">
+ * 定义请求处理映射 HandlerMapping
+ * <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
  *     <property name="mappings" ref="urlMappings" />
  * </bean>
  *
- * <!-- 定义请求映射表 map -->
+ * 定义请求映射表 map
  * <util:properties id="urlMappings">
  *     <prop key="/hello.form">helloController</prop>
  * </util:properties>
+ *
+ * 3、如果有一个 Controller 或者 HttpRequestHandler 接口的实现类
+ * 	配置 SimpleUrlHandlerMapping 类型的 HandlerMapping 对象，
+ * 	往它的 Map<String, Object> urlMap 中添加 url 与 Controller 实现类的映射就好了
  */
 public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
 	/**
@@ -120,6 +125,7 @@ public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
 	 * Calls the {@link #registerHandlers} method in addition to the
 	 * superclass's initialization.
 	 */
+	//用于初始化，将 urlMap 中的URL与处理器添加到父类的 handlerMap 中
 	@Override
 	public void initApplicationContext() throws BeansException {
 		super.initApplicationContext();

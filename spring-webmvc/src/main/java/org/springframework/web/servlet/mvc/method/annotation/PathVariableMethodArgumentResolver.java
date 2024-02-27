@@ -64,10 +64,10 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 
 /**
- * 处理@PathVariable注解的参数解析器
+ * 1、处理@PathVariable注解的参数解析器
  * 支持的参数类型：参数被@PathVariable注解了。
  * 参数值来源：返回模板路径变量，如果获取不到，则返回null。
- * 实现 UriComponentsContributor 接口，继承 AbstractNamedValueMethodArgumentResolver 抽象类，处理路径参数
+ * 2、实现 UriComponentsContributor 接口，继承 AbstractNamedValueMethodArgumentResolver 抽象类，处理路径参数
  */
 public class PathVariableMethodArgumentResolver extends AbstractNamedValueMethodArgumentResolver
 		implements UriComponentsContributor {

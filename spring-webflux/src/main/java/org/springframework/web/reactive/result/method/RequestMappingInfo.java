@@ -238,9 +238,9 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 * the current request, sorted with best matching patterns on top.
 	 * @return a new instance in case all conditions match; or {@code null} otherwise
 	 */
-	//获取匹配的条件
-	//在注册Handler时，将@RequestMapping对象解析为RequestMappingInfo对象，之后每一个RequestMappingInfo对象均和request进行匹配。
 	//从当前 RequestMappingInfo 获得匹配的条件。如果匹配，则基于其匹配的条件，创建新的 RequestMappingInfo 对象，如果不匹配，则返回 null
+	//就是根据配置的 @RequestMapping 注解，如果所有条件都满足，则创建一个 RequestMappingInfo 对象返回，如果某个条件不满足则直接返回 null，表示不匹配
+	//在注册Handler时，将@RequestMapping对象解析为RequestMappingInfo对象，之后每一个RequestMappingInfo对象均和request进行匹配。
 	@Override
 	@Nullable
 	public RequestMappingInfo getMatchingCondition(ServerWebExchange exchange) {
@@ -301,6 +301,11 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 		if (result != 0) {
 			return result;
 		}
+		/*
+		 * 依次比较 patternsCondition、paramsCondition、headersCondition、consumesCondition、
+		 * producesCondition、methodsCondition、customConditionHolder
+		 * 如果有一个不相等，则直接返回比较结果
+		 */
 		result = this.paramsCondition.compareTo(other.getParamsCondition(), exchange);
 		if (result != 0) {
 			return result;

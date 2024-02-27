@@ -41,9 +41,16 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
  * @author Arjen Poutsma
  * @since 06.10.2003
  */
+
+/**
+ * 1、继承了 HttpServletRequestWrapper 类，实现了 MultipartHttpServletRequest接口
+ * 2、该类是 StandardMultipartHttpServletRequest 和 DefaultMultipartHttpServletRequest 的父类，实现了一些公共的方法
+ */
 public abstract class AbstractMultipartHttpServletRequest extends HttpServletRequestWrapper
 		implements MultipartHttpServletRequest {
-
+	/**
+	 * 请求中的文件信息
+	 */
 	@Nullable
 	private MultiValueMap<String, MultipartFile> multipartFiles;
 

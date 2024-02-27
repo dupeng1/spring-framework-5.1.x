@@ -545,8 +545,15 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>If no bean is defined with the given name in the BeanFactory for this namespace,
 	 * no multipart handling is provided.
 	 */
+	/**
+	 * 1、在 Spring MVC 中，multipartResolver 默认为 null【注意】，需要自己配置，mybatis 集成 Spring 模块下的 spring-mvc.xml
+	 * 文件中配置 MultipartResolver 为 CommonsMultipartResolver 实现类，也可以配置为 StandardServletMultipartResolver 实现类
+	 * 2、在 Spring Boot 中，multipartResolver 默认为 StandardServletMultipartResolver 实现类
+	 * @param context
+	 */
 	private void initMultipartResolver(ApplicationContext context) {
 		try {
+			// 从 Spring 上下文中获取名称为 "multipartResolver" ，类型为 MultipartResolver 的 Bean
 			this.multipartResolver = context.getBean(MULTIPART_RESOLVER_BEAN_NAME, MultipartResolver.class);
 			if (logger.isTraceEnabled()) {
 				logger.trace("Detected " + this.multipartResolver);
@@ -656,6 +663,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			//则获得默认配置的 HandlerMapping 类，调用
 			// getDefaultStrategies(ApplicationContext context, Class<T> strategyInterface) 方法，
 			// 就是从 DispatcherServlet.properties 文件中读取 HandlerMapping 的默认实现类
+			// 里面有BeanNameUrlHandlerMapping 和 RequestMappingHandlerMapping 对象
 			this.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);
 			if (logger.isTraceEnabled()) {
 				logger.trace("No HandlerMappings declared for servlet '" + getServletName() +
@@ -1373,6 +1381,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		if (this.handlerAdapters != null) {
 			for (HandlerAdapter adapter : this.handlerAdapters) {
 				//看哪一个适配器支持这个执行链
+				//默认是HttpRequestHandlerAdapter -> SimpleControllerHandlerAdapter -> RequestMappingHandlerAdapter
 				if (adapter.supports(handler)) {
 					return adapter;
 				}

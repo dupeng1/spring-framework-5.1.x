@@ -59,7 +59,9 @@ public abstract class ApplicationObjectSupport implements ApplicationContextAwar
 	@Nullable
 	private MessageSourceAccessor messageSourceAccessor;
 
-
+	//因为实现了 ApplicationContextAware 接口，则在初始化该 Bean 的时候会调用 setApplicationContext
+	//在这个方法中会调用 initApplicationContext() 这个方法
+	//在父类 AbstractHandlerMapping 中，该方法会初始化拦截器们
 	@Override
 	public final void setApplicationContext(@Nullable ApplicationContext context) throws BeansException {
 		if (context == null && !isContextRequired()) {

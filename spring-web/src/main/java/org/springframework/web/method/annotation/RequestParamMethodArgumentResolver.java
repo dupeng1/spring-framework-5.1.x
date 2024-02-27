@@ -76,12 +76,11 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 
 /**
- * 处理@RequestParam注解
+ * 1、处理@RequestParam注解，如果是Map类型，注解必须有name属性
  * 支持的参数类型：参数被@RequestParam注解了，如@RequestParam Stirng，@RequestParam String[]。
  * 参数值来源：从request请求对象获取参数。
- * 1、参数解析器 HandlerMethodArgumentResolver 的实现类，处理header的请求参数
- * 2、继承 AbstractNamedValueMethodArgumentResolver 抽象类
- * 3、解析用@RequestHeader注释的Map类型方法参数.对于 RequestParamMethodArgumentResolver 类，它的效果是，将指定名字的参数添加到 Map 集合中
+ * 2、参数解析器 HandlerMethodArgumentResolver 的实现类
+ * 3、它的效果是，将指定名字的参数添加到 Map 集合中，示例如下：
  *      @RequestMapping("/hello")
  * 		public String hello5(@RequestParam(name = "map") Map<String, Object> map) {
  *     		return "666";
@@ -166,7 +165,7 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethod
 			if (MultipartResolutionDelegate.isMultipartArgument(parameter)) {
 				return true;
 			}
-			// <2> 如果开启 useDefaultResolution 功能，则判断是否为普通类型
+			// <2> 如果开启 useDefaultResolution 功能，则判断是否为普通类型，用来兜底
 			else if (this.useDefaultResolution) {
 				return BeanUtils.isSimpleProperty(parameter.getNestedParameterType());
 			}

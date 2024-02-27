@@ -60,13 +60,11 @@ import org.springframework.web.multipart.support.MultipartResolutionDelegate;
  */
 
 /**
- * 请求参数map解析器
+ * 1、处理@RequestParam注解，但是注解上没有 name 属性的 Map 类型的参数
  * 支持的参数类型：被@RequestParam注解的MultiValueMap或Map。
  * 参数值来源：来自request.getParameterMap()，如果参数类型是MultiValueMap，对应值是LinkedMultiValueMap；
- * 如果参数类型是Map，对应值是LinkedHashMap，此时某个参数有多个值，只取第一个。
- * 1、实现 HandlerMethodArgumentResolver 接口，
- * 用于处理带有 @RequestParam 注解，但是注解上没有 name 属性的 Map 类型的参数， HandlerMethodArgumentResolver 的实现类
- * 2、它的效果是，将所有参数添加到 Map 集合中，示例如下：
+ * 2、参数解析器 HandlerMethodArgumentResolver 的实现类
+ * 3、它的效果是，将所有参数添加到 Map 集合中，示例如下：
  * 		@RequestMapping("/hello")
  * 		public String hello4(@RequestParam Map<String, Object> map) {
  *     		return "666";

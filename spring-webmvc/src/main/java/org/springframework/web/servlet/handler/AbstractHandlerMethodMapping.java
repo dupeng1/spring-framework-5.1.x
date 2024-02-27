@@ -65,9 +65,9 @@ import org.springframework.web.servlet.HandlerMapping;
  */
 
 /**
- * 基于Method进行匹配，例如，我们所熟知的 @RequestMapping 等注解的方式
- * 1、AbstractHandlerMethodMapping继承AbstractHandlerMapping抽象类，以Method方法作为Handler处理器的HandlerMapping抽象类，
- * 提供Mapping的初始化、注册等通用的骨架方法
+ * 1、以Method方法作为Handler处理器的HandlerMapping抽象类，提供Mapping的初始化、注册等通用的骨架方法
+ * Mapping指的就是这里的T
+ *
  * 2、Spring MVC的请求匹配的注解，体系结构：
  * org.springframework.web.bind.annotation.@Mapping
  * org.springframework.web.bind.annotation.@RequestMapping
@@ -76,6 +76,7 @@ import org.springframework.web.servlet.HandlerMapping;
  * org.springframework.web.bind.annotation.@PutMapping
  * org.springframework.web.bind.annotation.@DeleteMapping
  * org.springframework.web.bind.annotation.@PatchMapping
+ *
  * 3、AbstractHandlerMethodMapping定义为了<T>泛型，交给子类做决定。例如，子类 RequestMappingInfoHandlerMapping
  * 使用RequestMappingInfo类作为<T>泛型，RequestMappingInfo也就是我们在上面注解模块看到的@RequestMapping等注解信息
  */
@@ -155,6 +156,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	/**
 	 * Return a (read-only) map with all mappings and HandlerMethod's.
 	 */
+	//获取mapping和HandlerMethod映射关系
 	public Map<T, HandlerMethod> getHandlerMethods() {
 		this.mappingRegistry.acquireReadLock();
 		try {
@@ -172,6 +174,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * list will never be modified and is safe to iterate.
 	 * @see #setHandlerMethodMappingNamingStrategy
 	 */
+	//获取mappingName对应的HandlerMethod
 	@Nullable
 	public List<HandlerMethod> getHandlerMethodsForMappingName(String mappingName) {
 		return this.mappingRegistry.getHandlerMethodsByMappingName(mappingName);
@@ -180,6 +183,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	/**
 	 * Return the internal mapping registry. Provided for testing purposes.
 	 */
+	//获取Mapping 注册表
 	MappingRegistry getMappingRegistry() {
 		return this.mappingRegistry;
 	}
@@ -191,6 +195,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * @param handler the handler
 	 * @param method the method
 	 */
+	//注册Mapping 注册表
 	public void registerMapping(T mapping, Object handler, Method method) {
 		if (logger.isTraceEnabled()) {
 			logger.trace("Register \"" + mapping + "\" to " + method.toGenericString());
@@ -203,6 +208,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * <p>This method may be invoked at runtime after initialization has completed.
 	 * @param mapping the mapping to unregister
 	 */
+	//取消注册Mapping 注册表
 	public void unregisterMapping(T mapping) {
 		if (logger.isTraceEnabled()) {
 			logger.trace("Unregister mapping \"" + mapping + "\"");
@@ -315,6 +321,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 					(MethodIntrospector.MetadataLookup<T>) method -> {
 						try {
 							// 创建该方法对应的 Mapping 对象，例如根据 @RequestMapping 注解创建 RequestMappingInfo 对象
+							//子类RequestMappingHandlerMapping实现，因为RequestMappingHandlerMapping使用@RequestMapping实现RequestMappingInfo
 							return getMappingForMethod(method, userType);
 						}
 						catch (Throwable ex) {
@@ -357,6 +364,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * @throws IllegalStateException if another method was already registered
 	 * under the same mapping
 	 */
+	//注册handler、method、mapping
 	protected void registerHandlerMethod(Object handler, Method method, T mapping) {
 		this.mappingRegistry.register(mapping, handler, method);
 	}
@@ -498,6 +506,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		// 遍历 Mapping 数组
 		for (T mapping : mappings) {
 			// <1> 执行匹配，抽象方法，交由子类实现
+			//子类RequestMappingHandlerMapping实现，通过RequestMappingInfo判断过滤
 			T match = getMatchingMapping(mapping, request);
 			if (match != null) {
 				// <2> 如果匹配，则创建 Match 对象，添加到 matches 中

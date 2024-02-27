@@ -53,8 +53,9 @@ import org.springframework.web.servlet.HandlerExecutionChain;
  * @since 16.04.2003
  */
 /**
- * 以 URL 作为 Handler 处理器 的 HandlerMapping 抽象类，提供 Handler 的获取、注册等等通用的骨架方法
- * ，当然，目前这种方式已经基本不用了，被 @RequestMapping 等注解的方式所取代
+ * 1、以URL作为Handler处理器的HandlerMapping抽象类，提供Handler的获取、注册等等通用的骨架方法
+ *
+ * 2、当然，目前这种方式已经基本不用了，被@RequestMapping等注解的方式所取代
  * 子类，分成两条线：
  * 		AbstractUrlHandlerMapping <= SimpleUrlHandlerMapping <= WebSocketHandlerMapping
  * 		AbstractUrlHandlerMapping <= AbstractDetectingUrlHandlerMapping <= BeanNameUrlHandlerMapping
@@ -134,6 +135,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 	 * @param request current HTTP request
 	 * @return the handler instance, or {@code null} if none found
 	 */
+	//获取请求对应的处理器
 	@Override
 	@Nullable
 	protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
@@ -183,6 +185,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 	 * @see #exposePathWithinMapping
 	 * @see org.springframework.util.AntPathMatcher
 	 */
+	//获得请求对应的处理器
 	@Nullable
 	protected Object lookupHandler(String urlPath, HttpServletRequest request) throws Exception {
 		// Direct match?
@@ -205,6 +208,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 		List<String> matchingPatterns = new ArrayList<>();
 		// <2.1> 情况二，Pattern 匹配合适的，并添加到 matchingPatterns 中
 		for (String registeredPattern : this.handlerMap.keySet()) {
+			// 路径通过Pattern匹配成功
 			if (getPathMatcher().match(registeredPattern, urlPath)) {
 				matchingPatterns.add(registeredPattern);
 			}
@@ -297,10 +301,10 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 			String pathWithinMapping, @Nullable Map<String, String> uriTemplateVariables) {
 		// <1> 创建 HandlerExecutionChain 对象
 		HandlerExecutionChain chain = new HandlerExecutionChain(rawHandler);
-		// <2> 添加 PathExposingHandlerInterceptor 拦截器，到 chain 中
+		// <2> 添加 PathExposingHandlerInterceptor 拦截器，到 chain 中，用于暴露 bestMatchingPattern 属性到请求中
 		chain.addInterceptor(new PathExposingHandlerInterceptor(bestMatchingPattern, pathWithinMapping));
 		if (!CollectionUtils.isEmpty(uriTemplateVariables)) {
-			// <3> 添加 UriTemplateVariablesHandlerInterceptor 拦截器，到 chain 中
+			// <3> 添加 UriTemplateVariablesHandlerInterceptor 拦截器，到 chain 中，用于暴露 uriTemplateVariables 属性到请求中
 			chain.addInterceptor(new UriTemplateVariablesHandlerInterceptor(uriTemplateVariables));
 		}
 		return chain;
@@ -395,21 +399,21 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 			}
 		}
 		else {
-			// <4.1> 如果是 / 根路径，则设置为 rootHandler
+			// <4.1> 如果是 / 根路径，则设置为 rootHandler，注册的时候初始化rootHandler
 			if (urlPath.equals("/")) {
 				if (logger.isTraceEnabled()) {
 					logger.trace("Root mapping to " + getHandlerDescription(handler));
 				}
 				setRootHandler(resolvedHandler);
 			}
-			// <4.2> 如果是 /* 路径，则设置为默认处理器
+			// <4.2> 如果是 /* 路径，则设置为默认处理器，注册的时候初始化defaultHandler
 			else if (urlPath.equals("/*")) {
 				if (logger.isTraceEnabled()) {
 					logger.trace("Default mapping to " + getHandlerDescription(handler));
 				}
 				setDefaultHandler(resolvedHandler);
 			}
-			// <4.3> 添加到 handlerMap 中
+			// <4.3> 如果是其他路径，添加到 handlerMap 中
 			else {
 				this.handlerMap.put(urlPath, resolvedHandler);
 				if (logger.isTraceEnabled()) {

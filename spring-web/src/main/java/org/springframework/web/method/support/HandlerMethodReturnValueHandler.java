@@ -30,7 +30,7 @@ import org.springframework.web.context.request.NativeWebRequest;
  */
 
 /**
- * 结果处理器
+ * 返回结果处理器
  */
 public interface HandlerMethodReturnValueHandler {
 

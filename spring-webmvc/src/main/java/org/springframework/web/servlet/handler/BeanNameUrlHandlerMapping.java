@@ -50,10 +50,15 @@ import org.springframework.util.StringUtils;
  */
 
 /**
- * 继承 AbstractDetectingUrlHandlerMapping 抽象类，基于 Bean 的名字来自动探测的 HandlerMapping 实现类
- * <!-- 定义一个 helloController Bean，实现了 Controller 接口 -->
+ * 1、继承 AbstractDetectingUrlHandlerMapping 抽象类，基于 Bean 的名字来自动探测的 HandlerMapping 实现类
+ *
+ * 2、使用实例：
  * <bean id="/hello.form" class="com.tiger.study.controller.HelloController"/>
- * 和 SimpleUrlHandlerMapping 不同，只需要设置它的 beanName 以 / 开头就好了，会被 BeanNameUrlHandlerMapping 探测到
+ *
+ * 3、如果有一个 Controller 或者 HttpRequestHandler 接口的实现类
+ * 配置 BeanNameUrlHandlerMapping 类型的 HandlerMapping 对象，
+ * 设置 Controller 实现类 的 beanName 为以 / 开头的名称就好了，
+ * 它会探测到，将这个 Bean 的 beanName 作为 url，将 Controller 实现类 作为处理器
  */
 public class BeanNameUrlHandlerMapping extends AbstractDetectingUrlHandlerMapping {
 

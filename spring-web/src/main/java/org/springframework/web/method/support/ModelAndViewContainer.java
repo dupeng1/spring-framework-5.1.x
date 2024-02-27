@@ -176,6 +176,9 @@ public class ModelAndViewContainer {
 	 * Whether to use the default model or the redirect model.
 	 */
 	private boolean useDefaultModel() {
+		//情况一 !this.redirectModelScenario ，处理器返回 redirect 视图的标识为 false 的时候，即不重定向
+		//情况二 this.redirectModel == null && !this.ignoreDefaultModelOnRedirect ，redirectModel 重定向 Model 为空，
+		// 并且 ignoreDefaultModelOnRedirect 为 true ，即忽略 defaultModel
 		return (!this.redirectModelScenario || (this.redirectModel == null && !this.ignoreDefaultModelOnRedirect));
 	}
 
