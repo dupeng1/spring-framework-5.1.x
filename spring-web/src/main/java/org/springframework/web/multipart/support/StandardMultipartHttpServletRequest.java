@@ -61,6 +61,10 @@ import org.springframework.web.multipart.MultipartFile;
  * 1、继承 AbstractMultipartHttpServletRequest 抽象类，基于 Servlet 3.0 的 Multipart HttpServletRequest 实现类
  * 2、包含了一个 javax.servlet.http.HttpServletRequest 对象和它的 javax.servlet.http.Part 对象们
  * 3、其中 Part 对象会被封装成 StandardMultipartFile 对象
+ * 4、MultipartRequest
+ * 		MultipartHttpServletRequest
+ * 			AbstractMultipartHttpServletRequest
+ * 				StandardMultipartHttpServletRequest
  */
 public class StandardMultipartHttpServletRequest extends AbstractMultipartHttpServletRequest {
 	/**
@@ -228,9 +232,11 @@ public class StandardMultipartHttpServletRequest extends AbstractMultipartHttpSe
 	/**
 	 * Spring MultipartFile adapter, wrapping a Servlet 3.0 Part object.
 	 */
-	//这个类封装了 Servlet 3.0 的 Part 对象，也就是我们常用到的 MultipartFile 对象，支持对文件的操作，
-	// 内部其实都是调用 javax.servlet.http.Part 的方法
-	//实现了 MultipartFile 接口和 Serializable 接口，内部封装了 javax.servlet.http.Part 对象和文件名称
+	/**
+	 * 这个类封装了 Servlet 3.0 的 Part 对象，也就是我们常用到的 MultipartFile 对象，支持对文件的操作，
+	 * 内部其实都是调用 javax.servlet.http.Part 的方法
+	 * 实现了 MultipartFile 接口和 Serializable 接口，内部封装了 javax.servlet.http.Part 对象和文件名称
+	 */
 	@SuppressWarnings("serial")
 	private static class StandardMultipartFile implements MultipartFile, Serializable {
 

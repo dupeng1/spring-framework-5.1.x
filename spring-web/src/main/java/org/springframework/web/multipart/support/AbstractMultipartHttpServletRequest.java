@@ -45,11 +45,14 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 /**
  * 1、继承了 HttpServletRequestWrapper 类，实现了 MultipartHttpServletRequest接口
  * 2、该类是 StandardMultipartHttpServletRequest 和 DefaultMultipartHttpServletRequest 的父类，实现了一些公共的方法
+ * 3、MultipartRequest
+ *   	MultipartHttpServletRequest
+ *  		AbstractMultipartHttpServletRequest
  */
 public abstract class AbstractMultipartHttpServletRequest extends HttpServletRequestWrapper
 		implements MultipartHttpServletRequest {
 	/**
-	 * 请求中的文件信息
+	 * 请求中的文件信息，保存由子类解析出请求中的 Part 对象所封装成的 MultipartFile 对象
 	 */
 	@Nullable
 	private MultiValueMap<String, MultipartFile> multipartFiles;
@@ -74,6 +77,7 @@ public abstract class AbstractMultipartHttpServletRequest extends HttpServletReq
 		return HttpMethod.resolve(getRequest().getMethod());
 	}
 
+	/** 获取请求头信息 */
 	@Override
 	public HttpHeaders getRequestHeaders() {
 		HttpHeaders headers = new HttpHeaders();
@@ -85,16 +89,19 @@ public abstract class AbstractMultipartHttpServletRequest extends HttpServletReq
 		return headers;
 	}
 
+	/** 获取文件名称列表 */
 	@Override
 	public Iterator<String> getFileNames() {
 		return getMultipartFiles().keySet().iterator();
 	}
 
+	/** 获取指定文件名的单个文件 */
 	@Override
 	public MultipartFile getFile(String name) {
 		return getMultipartFiles().getFirst(name);
 	}
 
+	/** 获取指定文件名的多个文件 */
 	@Override
 	public List<MultipartFile> getFiles(String name) {
 		List<MultipartFile> multipartFiles = getMultipartFiles().get(name);

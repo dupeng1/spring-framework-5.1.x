@@ -74,25 +74,60 @@ import org.springframework.web.servlet.support.RequestContextUtils;
  * @author Juergen Hoeller
  * @since 3.1
  */
+
+/**
+ * 实现 ApplicationContextAware、InitializingBean 接口，继承 AbstractHandlerMethodExceptionResolver 抽象类，
+ * 基于 @ExceptionHandler 配置 HandlerMethod 的 HandlerExceptionResolver 实现类。
+ * @Log4j2
+ * @RestControllerAdvice
+ * public class CustomizeExceptionHandler extends ResponseEntityExceptionHandler {
+ *
+ *     @ExceptionHandler({EmptyArgumentException.class, IllegalArgumentException.class})
+ *     public Result<?> customizeHandleArgumentException(HttpServletRequest request, final Exception e, HttpServletResponse response) {
+ *         response.setStatus(HttpStatus.OK.value());
+ *         return Result.fail(ResultCode.PARAM_ERROR.getCode(), e.getMessage());
+ *     }
+ *
+ *     @ExceptionHandler({Exception.class})
+ *     public Result<?> customizeHandleException(HttpServletRequest request, final Exception e, HttpServletResponse response) {
+ *         log.error("异常拦截[{}]：", e.getMessage(), e);
+ *         response.setStatus(HttpStatus.OK.value());
+ *         return Result.fail(ResultCode.UNKNOWN.getCode(), e.getMessage());
+ *     }
+ * }
+ * 该自定义异常处理类会处理 Controller 类抛出的指定类型的异常
+ */
 public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExceptionResolver
 		implements ApplicationContextAware, InitializingBean {
-
+	/**
+	 * 自定义的方法参数处理器
+	 */
 	@Nullable
 	private List<HandlerMethodArgumentResolver> customArgumentResolvers;
-
+	/**
+	 * 方法参数处理器组合
+	 */
 	@Nullable
 	private HandlerMethodArgumentResolverComposite argumentResolvers;
-
+	/**
+	 * 自定义的执行结果处理器
+	 */
 	@Nullable
 	private List<HandlerMethodReturnValueHandler> customReturnValueHandlers;
-
+	/**
+	 * 执行结果处理器组合
+	 */
 	@Nullable
 	private HandlerMethodReturnValueHandlerComposite returnValueHandlers;
-
+	/**
+	 * HTTP 消息转换器
+	 */
 	private List<HttpMessageConverter<?>> messageConverters;
 
 	private ContentNegotiationManager contentNegotiationManager = new ContentNegotiationManager();
-
+	/**
+	 * 响应体的后置增强器
+	 */
 	private final List<Object> responseBodyAdvice = new ArrayList<>();
 
 	@Nullable
@@ -103,7 +138,6 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 
 	private final Map<ControllerAdviceBean, ExceptionHandlerMethodResolver> exceptionHandlerAdviceCache =
 			new LinkedHashMap<>();
-
 
 	public ExceptionHandlerExceptionResolver() {
 		StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter();
@@ -255,39 +289,44 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 		return this.applicationContext;
 	}
 
-
+	//实现了 InitializingBean 接口，在 Sping 初始化该 Bean 的时候，会调用该方法，完成一些初始化工作
 	@Override
 	public void afterPropertiesSet() {
 		// Do this first, it may add ResponseBodyAdvice beans
+		//初始化 exceptionHandlerAdviceCache、responseBodyAdvice
 		initExceptionHandlerAdviceCache();
-
+		// 初始化 argumentResolvers 参数，获得默认的 HandlerMethodArgumentResolver 数组
 		if (this.argumentResolvers == null) {
 			List<HandlerMethodArgumentResolver> resolvers = getDefaultArgumentResolvers();
 			this.argumentResolvers = new HandlerMethodArgumentResolverComposite().addResolvers(resolvers);
 		}
+		// 初始化 returnValueHandlers 参数，获得默认的 HandlerMethodReturnValueHandler 数组
 		if (this.returnValueHandlers == null) {
 			List<HandlerMethodReturnValueHandler> handlers = getDefaultReturnValueHandlers();
 			this.returnValueHandlers = new HandlerMethodReturnValueHandlerComposite().addHandlers(handlers);
 		}
 	}
-
+	//初始化 exceptionHandlerAdviceCache、responseBodyAdvice
 	private void initExceptionHandlerAdviceCache() {
 		if (getApplicationContext() == null) {
 			return;
 		}
-
+		// <1> 扫描 @ControllerAdvice 注解的 Bean 们，并将进行排序
 		List<ControllerAdviceBean> adviceBeans = ControllerAdviceBean.findAnnotatedBeans(getApplicationContext());
 		AnnotationAwareOrderComparator.sort(adviceBeans);
-
+		// <2> 遍历 ControllerAdviceBean 数组
 		for (ControllerAdviceBean adviceBean : adviceBeans) {
 			Class<?> beanType = adviceBean.getBeanType();
 			if (beanType == null) {
 				throw new IllegalStateException("Unresolvable type for ControllerAdviceBean: " + adviceBean);
 			}
+			// <2.1> 扫描该 ControllerAdviceBean 对应的类型
 			ExceptionHandlerMethodResolver resolver = new ExceptionHandlerMethodResolver(beanType);
+			// <2.2> 有 @ExceptionHandler 注解，则添加到 exceptionHandlerAdviceCache 中
 			if (resolver.hasExceptionMappings()) {
 				this.exceptionHandlerAdviceCache.put(adviceBean, resolver);
 			}
+			// <2.3> 如果该 beanType 类型是 ResponseBodyAdvice 子类，则添加到 responseBodyAdvice 中
 			if (ResponseBodyAdvice.class.isAssignableFrom(beanType)) {
 				this.responseBodyAdvice.add(adviceBean);
 			}

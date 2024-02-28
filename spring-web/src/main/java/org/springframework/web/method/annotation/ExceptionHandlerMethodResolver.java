@@ -41,17 +41,29 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * @author Juergen Hoeller
  * @since 3.1
  */
+
+/**
+ * 添加 @ControllerAdvice 注解的 Bean，用于解析添加了 @ExceptionHandler 注解的方法
+ */
 public class ExceptionHandlerMethodResolver {
 
 	/**
 	 * A filter for selecting {@code @ExceptionHandler} methods.
 	 */
+	//MethodFilter 对象，用于过滤带有 @ExceptionHandler 注解的方法
 	public static final MethodFilter EXCEPTION_HANDLER_METHODS = method ->
 			AnnotatedElementUtils.hasAnnotation(method, ExceptionHandler.class);
 
-
+	/** 已经映射的方法
+     *
+			 * 在 {@link #ExceptionHandlerMethodResolver(Class)} 构造方法中初始化
+     */
 	private final Map<Class<? extends Throwable>, Method> mappedMethods = new HashMap<>(16);
-
+	/**
+	 * 已经匹配的方法
+	 *
+	 * 在 {@link #resolveMethod(Exception)} 方法中初始化
+	 */
 	private final Map<Class<? extends Throwable>, Method> exceptionLookupCache = new ConcurrentReferenceHashMap<>(16);
 
 
@@ -60,8 +72,11 @@ public class ExceptionHandlerMethodResolver {
 	 * @param handlerType the type to introspect
 	 */
 	public ExceptionHandlerMethodResolver(Class<?> handlerType) {
+		// <1> 遍历 @ExceptionHandler 注解的方法，这些方法用于处理对应的异常
 		for (Method method : MethodIntrospector.selectMethods(handlerType, EXCEPTION_HANDLER_METHODS)) {
+			// <2> 遍历处理的异常集合，获取到该方法能处理哪些异常
 			for (Class<? extends Throwable> exceptionType : detectExceptionMappings(method)) {
+				// <3> 添加到 mappedMethods 中
 				addExceptionMapping(exceptionType, method);
 			}
 		}

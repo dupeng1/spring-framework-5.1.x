@@ -60,7 +60,9 @@ import org.springframework.web.multipart.MultipartResolver;
  */
 
 /**
- * 实现 MultipartResolver 接口，基于 Servlet 3.0 标准的上传文件 API 的 MultipartResolver 实现类
+ * 1、实现 MultipartResolver 接口，基于 Servlet 3.0 标准的上传文件 API 的 MultipartResolver 实现类
+ * 2、会将 HttpServletRequest 封装成 StandardMultipartHttpServletRequest 对象，
+ * 由 Servlet 3.0 提供 API 获取请求中的 javax.servlet.http.Part 对象，然后进行解析，文件会封装成 StandardMultipartFile 对象
  */
 public class StandardServletMultipartResolver implements MultipartResolver {
 

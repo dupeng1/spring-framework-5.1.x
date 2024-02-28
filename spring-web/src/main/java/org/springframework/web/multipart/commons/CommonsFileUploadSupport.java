@@ -246,6 +246,8 @@ public abstract class CommonsFileUploadSupport {
 	 * @return the Spring MultipartParsingResult
 	 * @see CommonsMultipartFile#CommonsMultipartFile(org.apache.commons.fileupload.FileItem)
 	 */
+	//遍历 fileItems 集合，如果是一个简单的表单字段，那么就是一个普通的参数，将参数名和值保存起来
+	//否则就是文件，将其封装成 CommonsMultipartFile 保存起来
 	protected MultipartParsingResult parseFileItems(List<FileItem> fileItems, String encoding) {
 		MultiValueMap<String, MultipartFile> multipartFiles = new LinkedMultiValueMap<>();
 		Map<String, String[]> multipartParameters = new HashMap<>();

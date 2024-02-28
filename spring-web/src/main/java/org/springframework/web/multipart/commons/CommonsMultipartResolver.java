@@ -60,9 +60,40 @@ import org.springframework.web.util.WebUtils;
  * @see org.apache.commons.fileupload.servlet.ServletFileUpload
  * @see org.apache.commons.fileupload.disk.DiskFileItemFactory
  */
+
+/**
+ * 1、实现 MultipartResolver 接口，基于 Apache Commons FileUpload 的 MultipartResolver 实现类
+ * 2、会将 HttpServletRequest 封装成 DefaultMultipartHttpServletRequest 对象，由 Apache 的 Commons FileUpload 组件来实现，
+ * 通过 org.apache.commons.fileupload.servlet.ServletFileUpload 对象获取请求中的 org.apache.commons.fileupload.FileItem 对象，然后进行解析，文件会封装成 CommonsMultipartFile 对象 *
+ * 3、如果需要使用这个 MultipartResolver 实现类，需要引入 commons-fileupload、commons-io 和 commons-codec 组件，例如：
+ * <dependencies>
+ *  <dependency>
+ *  	<groupId>commons-fileupload</groupId>
+ *  	<artifactId>commons-fileupload</artifactId>
+ *  	<version>1.4</version>
+ *  </dependency>
+ *  <dependency>
+ *  	<groupId>commons-io</groupId>
+ *  	<artifactId>commons-io</artifactId>
+ *  	<version>2.8.0</version>
+ *  </dependency>
+ *  <dependency>
+ *  	<groupId>commons-codec</groupId>
+ *  	<artifactId>commons-codec</artifactId>
+ *  	<version>1.15</version>
+ *  </dependency>
+ *  </dependencies>
+ *  3、如果 Spring Boot 项目中需要使用 CommonsMultipartResolver，需要在 application.yml 中添加如下配置，排除其默认的配置，如下：
+ *  spring:
+ *   	autoconfigure:
+ *     		exclude: org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration
+ *
+ */
 public class CommonsMultipartResolver extends CommonsFileUploadSupport
 		implements MultipartResolver, ServletContextAware {
-
+	/**
+	 * 是否延迟解析
+	 */
 	private boolean resolveLazily = false;
 
 
@@ -120,8 +151,10 @@ public class CommonsMultipartResolver extends CommonsFileUploadSupport
 	}
 
 
+	//判断是否为 multipart 请求，必须是 POST 请求，且 Content-Type 为 multipart/ 开头
 	@Override
 	public boolean isMultipart(HttpServletRequest request) {
+		// 必须是 POST 请求，且 Content-Type 为 multipart/ 开头
 		return ServletFileUpload.isMultipartContent(request);
 	}
 
@@ -129,9 +162,12 @@ public class CommonsMultipartResolver extends CommonsFileUploadSupport
 	public MultipartHttpServletRequest resolveMultipart(final HttpServletRequest request) throws MultipartException {
 		Assert.notNull(request, "Request must not be null");
 		if (this.resolveLazily) {
+			//将 HttpServletRequest 转换成 DefaultMultipartHttpServletRequest 对象
+			//如果开启了延迟解析，则重写该对象的 initializeMultipart() 方法，用于解析请求
 			return new DefaultMultipartHttpServletRequest(request) {
 				@Override
 				protected void initializeMultipart() {
+					// 解析请求，获取文件、参数信息
 					MultipartParsingResult parsingResult = parseRequest(request);
 					setMultipartFiles(parsingResult.getMultipartFiles());
 					setMultipartParameters(parsingResult.getMultipartParameters());
@@ -140,6 +176,9 @@ public class CommonsMultipartResolver extends CommonsFileUploadSupport
 			};
 		}
 		else {
+			//直接调用 parseRequest(HttpServletRequest request) 方法解析请求，
+			// 返回 MultipartParsingResult 对象，包含 MultipartFile 对象和普通参数信息
+			// 解析请求，获取文件、参数信息
 			MultipartParsingResult parsingResult = parseRequest(request);
 			return new DefaultMultipartHttpServletRequest(request, parsingResult.getMultipartFiles(),
 					parsingResult.getMultipartParameters(), parsingResult.getMultipartParameterContentTypes());
@@ -152,11 +191,16 @@ public class CommonsMultipartResolver extends CommonsFileUploadSupport
 	 * @return the parsing result
 	 * @throws MultipartException if multipart resolution failed.
 	 */
+	//用于解析请求，返回 MultipartParsingResult 对象，包含 MultipartFile 对象、普通参数信息以及参数的 Content-Type 信息
 	protected MultipartParsingResult parseRequest(HttpServletRequest request) throws MultipartException {
+		// <1> 获取请求中的编码
 		String encoding = determineEncoding(request);
+		// <2> 获取 ServletFileUpload （ commons-fileupload 中的类）对象
 		FileUpload fileUpload = prepareFileUpload(encoding);
 		try {
+			// <3> 获取请求中的流数据
 			List<FileItem> fileItems = ((ServletFileUpload) fileUpload).parseRequest(request);
+			// <4> 将这些流数据转换成 MultipartParsingResult，包含 CommonsMultipartFile、参数信息、Content-type
 			return parseFileItems(fileItems, encoding);
 		}
 		catch (FileUploadBase.SizeLimitExceededException ex) {
@@ -188,6 +232,7 @@ public class CommonsMultipartResolver extends CommonsFileUploadSupport
 		return encoding;
 	}
 
+	//清理文件产生的临时资源
 	@Override
 	public void cleanupMultipart(MultipartHttpServletRequest request) {
 		if (!(request instanceof AbstractMultipartHttpServletRequest) ||

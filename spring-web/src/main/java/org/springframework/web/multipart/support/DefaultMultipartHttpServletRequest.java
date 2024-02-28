@@ -43,6 +43,10 @@ import org.springframework.web.multipart.MultipartFile;
  * @since 29.09.2003
  * @see org.springframework.web.multipart.MultipartResolver
  */
+
+/**
+ * 继承 AbstractMultipartHttpServletRequest 抽象类，MultipartHttpServletRequest 的默认实现类
+ */
 public class DefaultMultipartHttpServletRequest extends AbstractMultipartHttpServletRequest {
 
 	private static final String CONTENT_TYPE = "Content-Type";

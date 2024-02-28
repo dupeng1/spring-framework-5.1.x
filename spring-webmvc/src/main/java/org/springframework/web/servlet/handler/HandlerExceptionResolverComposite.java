@@ -34,11 +34,26 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Rossen Stoyanchev
  * @since 3.1
  */
-public class HandlerExceptionResolverComposite implements HandlerExceptionResolver, Ordered {
 
+/**
+ * 1、实现 HandlerExceptionResolver、Ordered 接口，复合的 HandlerExceptionResolver 实现类
+ *
+ * 2、 包含三个实现类
+ * org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver
+ *
+ * org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver
+ *
+ * org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver
+ */
+public class HandlerExceptionResolverComposite implements HandlerExceptionResolver, Ordered {
+	/**
+	 * 异常解析器数组
+	 */
 	@Nullable
 	private List<HandlerExceptionResolver> resolvers;
-
+	/**
+	 * 优先级，默认最低
+	 */
 	private int order = Ordered.LOWEST_PRECEDENCE;
 
 
@@ -76,6 +91,7 @@ public class HandlerExceptionResolverComposite implements HandlerExceptionResolv
 			HttpServletRequest request, HttpServletResponse response, @Nullable Object handler, Exception ex) {
 
 		if (this.resolvers != null) {
+			//遍历 HandlerExceptionResolver 数组，逐个处理异常 ex，如果成功，则返回 ModelAndView 对象
 			for (HandlerExceptionResolver handlerExceptionResolver : this.resolvers) {
 				ModelAndView mav = handlerExceptionResolver.resolveException(request, response, handler, ex);
 				if (mav != null) {

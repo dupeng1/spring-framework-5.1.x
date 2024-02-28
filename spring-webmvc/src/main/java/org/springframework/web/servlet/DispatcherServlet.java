@@ -295,6 +295,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		// This is currently strictly internal and not meant to be customized
 		// by application developers.
 		try {
+			//会从 DispatcherServlet.properties 文件中加载默认的组件实现类，将相关配置加载到 defaultStrategies 中
 			ClassPathResource resource = new ClassPathResource(DEFAULT_STRATEGIES_PATH, DispatcherServlet.class);
 			defaultStrategies = PropertiesLoaderUtils.loadProperties(resource);
 		}
@@ -510,8 +511,10 @@ public class DispatcherServlet extends FrameworkServlet {
 	/**
 	 * This implementation calls {@link #initStrategies}.
 	 */
+	//创建 Servlet WebApplicationContext 容器后会触发该方法，
 	@Override
 	protected void onRefresh(ApplicationContext context) {
+		//初始化 Spring MVC 的各个组件
 		initStrategies(context);
 	}
 
