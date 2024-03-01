@@ -42,6 +42,11 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.transaction.support.TransactionTemplate
  * @see org.springframework.transaction.interceptor.TransactionInterceptor
  */
+
+/**
+ * 事务管理器
+ * 是Spring 抽象的接口，其定义了事务的3个基本动作。具体实现是由相应的子类进行的
+ */
 public interface PlatformTransactionManager {
 
 	/**
@@ -67,6 +72,7 @@ public interface PlatformTransactionManager {
 	 * @see TransactionDefinition#getTimeout
 	 * @see TransactionDefinition#isReadOnly
 	 */
+	//获取当前激活的事务或者创建一个事务
 	TransactionStatus getTransaction(@Nullable TransactionDefinition definition)
 			throws TransactionException;
 
@@ -97,6 +103,7 @@ public interface PlatformTransactionManager {
 	 * is already completed (that is, committed or rolled back)
 	 * @see TransactionStatus#setRollbackOnly
 	 */
+	//提交当前事务
 	void commit(TransactionStatus status) throws TransactionException;
 
 	/**
@@ -115,6 +122,7 @@ public interface PlatformTransactionManager {
 	 * @throws IllegalTransactionStateException if the given transaction
 	 * is already completed (that is, committed or rolled back)
 	 */
+	//回滚当前事务
 	void rollback(TransactionStatus status) throws TransactionException;
 
 }

@@ -36,6 +36,11 @@ import java.io.Flushable;
  * @see org.springframework.transaction.support.TransactionCallback#doInTransaction
  * @see org.springframework.transaction.interceptor.TransactionInterceptor#currentTransactionStatus()
  */
+
+/**
+ * 事务状态对象
+ * 该对象保存着事务运行过程中的一些属性，当前是否是一个新事物、事务保存点、是否需要回滚、还保存着挂起事务的连接资源
+ */
 public interface TransactionStatus extends SavepointManager, Flushable {
 
 	/**
@@ -43,6 +48,7 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	 * in an existing transaction, or potentially not running in an actual
 	 * transaction in the first place.
 	 */
+	//是否新事物
 	boolean isNewTransaction();
 
 	/**
@@ -56,6 +62,7 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	 * @see #rollbackToSavepoint(Object)
 	 * @see #releaseSavepoint(Object)
 	 */
+	//事务保存点
 	boolean hasSavepoint();
 
 	/**
@@ -69,6 +76,7 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	 * @see org.springframework.transaction.support.TransactionCallback#doInTransaction
 	 * @see org.springframework.transaction.interceptor.TransactionAttribute#rollbackOn
 	 */
+	//事务回滚标识
 	void setRollbackOnly();
 
 	/**

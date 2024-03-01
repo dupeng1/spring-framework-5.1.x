@@ -1573,6 +1573,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			//如果beanClass已经被加载了，直接返回class对象
 			//	底层是判断this.beanClass instanceof Class
 			//  之前说过一开始扫描生成的BeanDefinition这里其实是class的类名，String格式
+			//如果我们设置某一个 Bean 的 Scope 是 prototype 的话，那么当第二次获取该 Bean 的实例的时候，就会走 if 这条线
 			if (mbd.hasBeanClass()) {
 				return mbd.getBeanClass();
 			}
@@ -1622,6 +1623,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		String className = mbd.getBeanClassName();
 		if (className != null) {
+			//例如：<bean class="#{beanNameUtils.name}" id="user"/>
 			//解析Spring表达式，有可能直接返回一个Class对象
 			Object evaluated = evaluateBeanDefinitionString(className, mbd);
 			if (!className.equals(evaluated)) {
@@ -1640,6 +1642,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			if (freshResolve) {
 				// When resolving against a temporary class loader, exit early in order
 				// to avoid storing the resolved Class in the bean definition.
+				//用指定类加载器加载类
 				if (dynamicLoader != null) {
 					try {
 						//类加载器，加载Class

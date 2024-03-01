@@ -39,6 +39,11 @@ import org.springframework.util.Assert;
  * @see DataSourceTransactionManager
  * @see DataSourceUtils
  */
+
+/**
+ * 里面封装了数据库的Connection对象
+ * 该对象就是包含了数据库连接的Connection对象
+ */
 public class ConnectionHolder extends ResourceHolderSupport {
 
 	/**

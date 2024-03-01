@@ -34,6 +34,11 @@ import javax.servlet.ServletContextListener;
  * @see #setContextInitializers
  * @see org.springframework.web.WebApplicationInitializer
  */
+
+/**
+ * 实现 javax.servlet.ServletContextListener 接口，继承 ContextLoader 类，
+ * 实现 Servlet 容器启动和关闭时，分别初始化和销毁 WebApplicationContext 容器
+ */
 public class ContextLoaderListener extends ContextLoader implements ServletContextListener {
 
 	/**
@@ -98,8 +103,10 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 	/**
 	 * Initialize the root web application context.
 	 */
+	//监听到 Servlet 容器启动事件
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
+		// <1> 初始化 Root WebApplicationContext
 		initWebApplicationContext(event.getServletContext());
 	}
 
@@ -107,8 +114,10 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 	/**
 	 * Close the root web application context.
 	 */
+	//监听到 Servlet 销毁启动事件
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
+		// <2> 销毁 Root WebApplicationContext
 		closeWebApplicationContext(event.getServletContext());
 		ContextCleanupListener.cleanupAttributes(event.getServletContext());
 	}

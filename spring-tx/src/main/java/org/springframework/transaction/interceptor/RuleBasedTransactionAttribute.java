@@ -128,12 +128,15 @@ public class RuleBasedTransactionAttribute extends DefaultTransactionAttribute i
 	 * return false.
 	 * @see TransactionAttribute#rollbackOn(java.lang.Throwable)
 	 */
+	//判断是否回滚异常，true回滚，false不回滚
 	@Override
 	public boolean rollbackOn(Throwable ex) {
 		if (logger.isTraceEnabled()) {
 			logger.trace("Applying rules to determine whether transaction should rollback on " + ex);
 		}
-
+		//层级1：根据回滚规则、异常层级判断
+		//如果在 @Transactional 中配置了 rollbackFor，这个方法就会用捕获到的异常和 rollbackFor 中配置的异常做比较。
+		// 如果捕获到的异常是 rollbackFor 配置的异常或其子类，就会直接 rollback。
 		RollbackRuleAttribute winner = null;
 		int deepest = Integer.MAX_VALUE;
 
@@ -152,6 +155,9 @@ public class RuleBasedTransactionAttribute extends DefaultTransactionAttribute i
 		}
 
 		// User superclass behavior (rollback on unchecked) if no rule matches.
+		//层级2：没有回滚规则，使用父类判断逻辑
+		//如果没有配置 rollbackFor 或者 异常类型没有匹配，则使用父类的 super.rollbackOn(ex)条件进行判断。
+		//如果没有配置 rollbackFor 事务回滚条件是：只有抛出的异常类型是RuntimeException 或者Error时才回滚
 		if (winner == null) {
 			logger.trace("No relevant rollback rule found: applying default rules");
 			return super.rollbackOn(ex);

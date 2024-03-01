@@ -259,6 +259,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	protected String[] getCandidateBeanNames() {
 		// 获取上下文中所有的 Bean 的名称
 		//是否只扫描可访问的 HandlerMethod 们，默认false
+		//如果detectHandlerMethodsInAncestorContexts是true，则扫描父子上下文的bean
+		//如果detectHandlerMethodsInAncestorContexts是false，则只扫描当前上下文的bean
+		//这个变量默认为false，默认情况下，只去当前容器（SpringMVC 容器）查找 Bean
 		return (this.detectHandlerMethodsInAncestorContexts ?
 				BeanFactoryUtils.beanNamesForTypeIncludingAncestors(obtainApplicationContext(), Object.class) :
 				obtainApplicationContext().getBeanNamesForType(Object.class));

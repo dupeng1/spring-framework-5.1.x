@@ -60,7 +60,7 @@ public class ExceptionHandlerMethodResolver {
      */
 	private final Map<Class<? extends Throwable>, Method> mappedMethods = new HashMap<>(16);
 	/**
-	 * 已经匹配的方法
+	 * 已经匹配的方法，经过查找，比较优先级之后所产生的
 	 *
 	 * 在 {@link #resolveMethod(Exception)} 方法中初始化
 	 */
@@ -87,10 +87,13 @@ public class ExceptionHandlerMethodResolver {
 	 * Extract exception mappings from the {@code @ExceptionHandler} annotation first,
 	 * and then as a fallback from the method signature itself.
 	 */
+	//获得方法的异常数组
 	@SuppressWarnings("unchecked")
 	private List<Class<? extends Throwable>> detectExceptionMappings(Method method) {
 		List<Class<? extends Throwable>> result = new ArrayList<>();
+		// 首先，从方法上的 @ExceptionHandler 注解中，获得要处理的异常类型，添加到 result 中
 		detectAnnotationExceptionMappings(method, result);
+		// 其次，如果获取不到，从方法参数中，获得所处理的异常，添加到 result 中
 		if (result.isEmpty()) {
 			for (Class<?> paramType : method.getParameterTypes()) {
 				if (Throwable.class.isAssignableFrom(paramType)) {
@@ -98,6 +101,7 @@ public class ExceptionHandlerMethodResolver {
 				}
 			}
 		}
+		// 如果获取不到，则抛出 IllegalStateException 异常
 		if (result.isEmpty()) {
 			throw new IllegalStateException("No exception types mapped to " + method);
 		}
@@ -110,8 +114,11 @@ public class ExceptionHandlerMethodResolver {
 		result.addAll(Arrays.asList(ann.value()));
 	}
 
+	//添加到 mappedMethods 中
 	private void addExceptionMapping(Class<? extends Throwable> exceptionType, Method method) {
+		// 添加到 mappedMethods 中
 		Method oldMethod = this.mappedMethods.put(exceptionType, method);
+		// 如果已存在，说明冲突，所以抛出 IllegalStateException 异常
 		if (oldMethod != null && !oldMethod.equals(method)) {
 			throw new IllegalStateException("Ambiguous @ExceptionHandler method mapped for [" +
 					exceptionType + "]: {" + oldMethod + ", " + method + "}");
@@ -121,6 +128,7 @@ public class ExceptionHandlerMethodResolver {
 	/**
 	 * Whether the contained type has any exception mappings.
 	 */
+	//判断 mappedMethods 非空
 	public boolean hasExceptionMappings() {
 		return !this.mappedMethods.isEmpty();
 	}
@@ -131,6 +139,7 @@ public class ExceptionHandlerMethodResolver {
 	 * @param exception the exception
 	 * @return a Method to handle the exception, or {@code null} if none found
 	 */
+	//获取解析异常对应的方法
 	@Nullable
 	public Method resolveMethod(Exception exception) {
 		return resolveMethodByThrowable(exception);
@@ -145,7 +154,9 @@ public class ExceptionHandlerMethodResolver {
 	 */
 	@Nullable
 	public Method resolveMethodByThrowable(Throwable exception) {
+		// 首先，获得异常对应的方法
 		Method method = resolveMethodByExceptionType(exception.getClass());
+		// 其次，获取不到，则使用异常 cause 对应的方法
 		if (method == null) {
 			Throwable cause = exception.getCause();
 			if (cause != null) {
@@ -161,9 +172,12 @@ public class ExceptionHandlerMethodResolver {
 	 * @param exceptionType the exception type
 	 * @return a Method to handle the exception, or {@code null} if none found
 	 */
+	//获得异常对应的方法
 	@Nullable
 	public Method resolveMethodByExceptionType(Class<? extends Throwable> exceptionType) {
+		// 首先，先从 exceptionLookupCache 缓存中获得异常对应的处理方法
 		Method method = this.exceptionLookupCache.get(exceptionType);
+		// 其次，获取不到，则从 mappedMethods 中获得，并添加到 exceptionLookupCache 中
 		if (method == null) {
 			method = getMappedMethod(exceptionType);
 			this.exceptionLookupCache.put(exceptionType, method);
@@ -174,14 +188,17 @@ public class ExceptionHandlerMethodResolver {
 	/**
 	 * Return the {@link Method} mapped to the given exception type, or {@code null} if none.
 	 */
+	//获得异常对应的方法
 	@Nullable
 	private Method getMappedMethod(Class<? extends Throwable> exceptionType) {
 		List<Class<? extends Throwable>> matches = new ArrayList<>();
+		// 遍历 mappedMethods 数组，匹配异常，添加到 matches 中
 		for (Class<? extends Throwable> mappedException : this.mappedMethods.keySet()) {
 			if (mappedException.isAssignableFrom(exceptionType)) {
 				matches.add(mappedException);
 			}
 		}
+		// 将匹配的结果，排序，选择第一个
 		if (!matches.isEmpty()) {
 			matches.sort(new ExceptionDepthComparator(exceptionType));
 			return this.mappedMethods.get(matches.get(0));

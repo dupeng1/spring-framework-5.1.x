@@ -60,12 +60,12 @@ public abstract class AbstractHandlerExceptionResolver implements HandlerExcepti
 	 */
 	private int order = Ordered.LOWEST_PRECEDENCE;
 	/**
-	 * 匹配的处理器对象的集合
+	 * 匹配的【处理器】对象的集合
 	 */
 	@Nullable
 	private Set<?> mappedHandlers;
 	/**
-	 * 匹配的处理器类型的数组
+	 * 匹配的【处理器】类型的数组
 	 */
 	@Nullable
 	private Class<?>[] mappedHandlerClasses;

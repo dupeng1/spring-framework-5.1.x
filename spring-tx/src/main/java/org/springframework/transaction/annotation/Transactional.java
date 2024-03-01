@@ -56,6 +56,14 @@ import org.springframework.transaction.TransactionDefinition;
  * @see org.springframework.transaction.interceptor.DefaultTransactionAttribute
  * @see org.springframework.transaction.interceptor.RuleBasedTransactionAttribute
  */
+
+/**
+ * 1、在容器启动过程中，创建Bean时，会判断该类或者方法中是否有被@Transaction注解修饰，
+ * 如果有，那么就会为该类创建代理类，也就是把Spring给我们做的事务相关操作织入到原有的逻辑。
+ *
+ * 2、我们都知道Spring的AOP有around、before、after等，他们都会各自的通知Advisor，
+ * 那么事务的Advisor是哪个呢？TransactionInterceptor，该类就是事务逻辑的Advisor
+ */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited

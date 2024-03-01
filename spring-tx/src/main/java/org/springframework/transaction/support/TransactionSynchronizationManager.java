@@ -74,25 +74,35 @@ import org.springframework.util.Assert;
  * @see org.springframework.jdbc.datasource.DataSourceTransactionManager
  * @see org.springframework.jdbc.datasource.DataSourceUtils#getConnection
  */
+
+/**
+ * 存储了一个事务执行过程中的属性和资源信息，本质就是6个ThreadLocal
+ */
 public abstract class TransactionSynchronizationManager {
 
 	private static final Log logger = LogFactory.getLog(TransactionSynchronizationManager.class);
 
+	//连接池，从ThreadLocal拿，（和当前线程绑定）线程级别唯一建立连接对象和连接池的映射
 	private static final ThreadLocal<Map<Object, Object>> resources =
 			new NamedThreadLocal<>("Transactional resources");
 
+	//事务同步
 	private static final ThreadLocal<Set<TransactionSynchronization>> synchronizations =
 			new NamedThreadLocal<>("Transaction synchronizations");
 
+	//当前事务的名称
 	private static final ThreadLocal<String> currentTransactionName =
 			new NamedThreadLocal<>("Current transaction name");
 
+	//当前事务是否只读
 	private static final ThreadLocal<Boolean> currentTransactionReadOnly =
 			new NamedThreadLocal<>("Current transaction read-only status");
 
+	//当前事务的隔离级别
 	private static final ThreadLocal<Integer> currentTransactionIsolationLevel =
 			new NamedThreadLocal<>("Current transaction isolation level");
 
+	//实际事务是否激活
 	private static final ThreadLocal<Boolean> actualTransactionActive =
 			new NamedThreadLocal<>("Actual transaction active");
 
@@ -134,9 +144,12 @@ public abstract class TransactionSynchronizationManager {
 	 * resource object), or {@code null} if none
 	 * @see ResourceTransactionManager#getResourceFactory()
 	 */
+	//连接线程级缓存：确保当前线程拿到唯一的数据连接
 	@Nullable
 	public static Object getResource(Object key) {
+		//这里数据源，可能扩展；但默认就是原来的datasource
 		Object actualKey = TransactionSynchronizationUtils.unwrapResourceIfNecessary(key);
+		//获取连接对象
 		Object value = doGetResource(actualKey);
 		if (value != null && logger.isTraceEnabled()) {
 			logger.trace("Retrieved value [" + value + "] for key [" + actualKey + "] bound to thread [" +
@@ -151,9 +164,11 @@ public abstract class TransactionSynchronizationManager {
 	@Nullable
 	private static Object doGetResource(Object actualKey) {
 		Map<Object, Object> map = resources.get();
+		//这里就是第一个进入返回空的代码处，第二次开始就从缓存的map中获取上次的连接
 		if (map == null) {
 			return null;
 		}
+		//实际为获取上次缓存的连接
 		Object value = map.get(actualKey);
 		// Transparently remove ResourceHolder that was marked as void...
 		if (value instanceof ResourceHolder && ((ResourceHolder) value).isVoid()) {

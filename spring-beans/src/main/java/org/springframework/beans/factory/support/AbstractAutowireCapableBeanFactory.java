@@ -650,7 +650,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object exposedObject = bean;
 		try {
 			// 属性填充阶段
-			// 填充Bean的属性值，这包括属性注入和依赖处理等操作
+			// 给Bean 的各个属性赋值，标注了 @Autowired 注解的属性被自动赋值
 			// 则会递归初始依赖 bean
 			populateBean(beanName, mbd, instanceWrapper);
 			// 对Bean进行初始化
@@ -1287,9 +1287,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		boolean autowireNecessary = false;
 		if (args == null) {
 			synchronized (mbd.constructorArgumentLock) {
+				//去判断 resolvedConstructorOrFactoryMethod 是否不为空，不为空的话，说明这个 Bean 之前已经创建过了，
+				// 该用什么方法创建等等问题都已经确定了，所以这次就不用重新再去确定了（resolved = true）
 				if (mbd.resolvedConstructorOrFactoryMethod != null) {
 					//获得已解析的构造函数或工厂方法
 					resolved = true;
+					// 表示构造方法的参数是否已经处理好了
 					autowireNecessary = mbd.constructorArgumentsResolved;
 				}
 			}
@@ -1581,6 +1584,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			//2.@Autowired、@Value、 @Inject、@Resource注解注入
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof InstantiationAwareBeanPostProcessor) {
+					//例如：AutowiredAnnotationBeanPostProcessor
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
 					//InstantiationAwareBeanPostProcessor的实现中：
 					//	AutowiredAnnotationBeanPostProcessor内部并不会处理pvs，直接返回了

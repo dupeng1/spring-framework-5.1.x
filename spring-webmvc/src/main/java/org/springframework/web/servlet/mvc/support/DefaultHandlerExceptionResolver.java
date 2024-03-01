@@ -140,6 +140,14 @@ import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
  * @since 3.0
  * @see org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
  */
+
+/**
+ * 1、继承 AbstractHandlerExceptionResolver 抽象类，默认 HandlerExceptionResolver 实现类，针对各种异常，设置错误响应码。
+ * 2、默认 HandlerExceptionResolver 实现类，针对各种异常，设置错误响应码。例如 HTTP Method 不支持，则在这个实现类中往响应中设置错误码和错误信息
+ * 3、HandlerExceptionResolver
+ *  	AbstractHandlerExceptionResolver
+ *  		DefaultHandlerExceptionResolver
+ */
 public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionResolver {
 
 	/**
@@ -258,6 +266,7 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
 		if (supportedMethods != null) {
 			response.setHeader("Allow", StringUtils.arrayToDelimitedString(supportedMethods, ", "));
 		}
+		// 405 状态码，HTTP Method 不支持
 		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, ex.getMessage());
 		return new ModelAndView();
 	}

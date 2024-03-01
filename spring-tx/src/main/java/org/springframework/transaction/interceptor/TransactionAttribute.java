@@ -30,6 +30,12 @@ import org.springframework.transaction.TransactionDefinition;
  * @see DefaultTransactionAttribute
  * @see RuleBasedTransactionAttribute
  */
+
+/**
+ * 事务属性信息
+ * 存储了@Transaction注解的一些信息，隔离级别、传播特性
+ * 继承TransactionDefinitio事务属性，包含：事务的隔离级别、事务的传播类型、事务超时时间、事务名称、事务是否只读
+ */
 public interface TransactionAttribute extends TransactionDefinition {
 
 	/**

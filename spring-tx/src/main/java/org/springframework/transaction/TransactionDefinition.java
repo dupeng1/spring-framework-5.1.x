@@ -43,6 +43,10 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.transaction.support.DefaultTransactionDefinition
  * @see org.springframework.transaction.interceptor.TransactionAttribute
  */
+
+/**
+ * 事务的定义信息，主要保存了隔离级别、传播属性等
+ */
 public interface TransactionDefinition {
 
 	/**
