@@ -24,6 +24,10 @@ import org.springframework.core.NestedRuntimeException;
  * @author Rod Johnson
  * @since 17.03.2003
  */
+
+/**
+ * 所有事务异常类的父类。
+ */
 @SuppressWarnings("serial")
 public abstract class TransactionException extends NestedRuntimeException {
 

@@ -28,6 +28,10 @@ import java.lang.reflect.Constructor;
  * @author Rod Johnson
  * @see ConstructorInterceptor
  */
+
+/**
+ * Invocation的子类，包含了获取构造器的方法。
+ */
 public interface ConstructorInvocation extends Invocation {
 
 	/**

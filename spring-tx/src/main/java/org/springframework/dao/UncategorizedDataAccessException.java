@@ -25,6 +25,10 @@ import org.springframework.lang.Nullable;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 无法归类的异常，比如，JDBC发生了一个SQLException，但是我们无法将其精确定位到更具体的异常。
+ */
 @SuppressWarnings("serial")
 public abstract class UncategorizedDataAccessException extends NonTransientDataAccessException {
 

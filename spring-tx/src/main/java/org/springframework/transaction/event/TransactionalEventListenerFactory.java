@@ -30,6 +30,10 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
  * @author Stephane Nicoll
  * @since 4.2
  */
+
+/**
+ * EventListenerFactory接口实现类，处理带@ TransactionalEventListener注解的方法。
+ */
 public class TransactionalEventListenerFactory implements EventListenerFactory, Ordered {
 
 	private int order = 50;

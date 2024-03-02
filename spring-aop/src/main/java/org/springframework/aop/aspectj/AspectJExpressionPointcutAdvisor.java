@@ -28,6 +28,15 @@ import org.springframework.lang.Nullable;
  * @author Rob Harrop
  * @since 2.0
  */
+
+/**
+ * AspectJ表达式切点（通过解析XML配置文件中的<aop:pointcut>元素生成的就是此类型的bean）。
+ * 它是一种切点，但与一般的切点不同，一般的切点需要持有单独的ClassFilter和MethodMatcher。
+ * 但是AspectJ表达式切点本身就兼具了这两个组件的功能。因为切点表达式，就是用来描述要代理的目标类和目标方法的。
+ *
+ * 用来处理对应 AspectJ 的 advice 和切点的，有advice的设置和获取、切点表达式的一些处理、设置切点的Bean工厂，获取该切点等方法。
+ * 该类创建了一个 AspectJExpressionPointcut，它们之间的关系是一对一的组合关系。
+ */
 @SuppressWarnings("serial")
 public class AspectJExpressionPointcutAdvisor extends AbstractGenericPointcutAdvisor implements BeanFactoryAware {
 

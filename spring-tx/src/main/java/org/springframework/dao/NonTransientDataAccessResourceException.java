@@ -25,6 +25,10 @@ import org.springframework.lang.Nullable;
  * @since 2.5
  * @see java.sql.SQLNonTransientConnectionException
  */
+
+/**
+ * 资源完全失效抛出的数据访问异常，而且这种失效是永久的。
+ */
 @SuppressWarnings("serial")
 public class NonTransientDataAccessResourceException extends NonTransientDataAccessException {
 

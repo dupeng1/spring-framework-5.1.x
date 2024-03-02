@@ -48,8 +48,14 @@ import org.springframework.util.Assert;
  * @see #releaseSavepoint
  * @see SimpleTransactionStatus
  */
+
+/**
+ * Spring事务管理机制中TransactionStatus的最终落地实现
+ * 有savepoint的事务的回滚是通过TransactionStatus实现的
+ * TransactionStatus持有事务对象transaction，事务保存点savepoint是保存在transaction中，最终通过调用transaction的rollbackToSavepoint回滚事务到存储点。
+ */
 public class DefaultTransactionStatus extends AbstractTransactionStatus {
-	//新创建事务
+	//事务操作对象，Object transaction的可能取值：DataSourceTransactionObject、HibernateTransactionObject或者JpaTransactionObject
 	@Nullable
 	private final Object transaction;
 	//是否需要新事物

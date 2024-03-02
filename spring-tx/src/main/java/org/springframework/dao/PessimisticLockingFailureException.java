@@ -30,6 +30,10 @@ package org.springframework.dao;
  * @see DeadlockLoserDataAccessException
  * @see OptimisticLockingFailureException
  */
+
+/**
+ * 悲观锁冲突引发的异常。当发生这种数据库错误的时候，由Spring的SQLException转换机制抛出。
+ */
 @SuppressWarnings("serial")
 public class PessimisticLockingFailureException extends ConcurrencyFailureException {
 

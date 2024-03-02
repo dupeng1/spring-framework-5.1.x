@@ -24,6 +24,10 @@ package org.springframework.dao;
  *
  * @author Thomas Risberg
  */
+
+/**
+ * 当尝试插入或者更新数据时违反了主键或者唯一性约束抛出的异常
+ */
 @SuppressWarnings("serial")
 public class DuplicateKeyException extends DataIntegrityViolationException {
 

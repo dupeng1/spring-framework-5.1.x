@@ -35,6 +35,11 @@ import org.springframework.util.ObjectUtils;
  * @see org.springframework.transaction.interceptor.TransactionProxyFactoryBean
  * @see org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator
  */
+
+/**
+ * TransactionAttributeSource最简单的实现，对于所有的方法都返回同样的TransactionAttribute。TransactionAttribute可以指定，
+ * 否则默认为PROPAGATION_REQUIRED（事务传播属性：支持当前事务，如果当前没有事务，就新建一个事务）。
+ */
 @SuppressWarnings("serial")
 public class MatchAlwaysTransactionAttributeSource implements TransactionAttributeSource, Serializable {
 

@@ -29,6 +29,10 @@ package org.springframework.dao;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 在一个数据访问操作正常结束后我们无法进行清理抛出的异常。比如，一个JDBC连接在成功被使用后无法关闭。
+ */
 @SuppressWarnings("serial")
 public class CleanupFailureDataAccessException extends NonTransientDataAccessException {
 

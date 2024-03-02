@@ -57,6 +57,10 @@ import org.springframework.util.ReflectionUtils;
  * @author Ramnivas Laddad
  * @since 2.0
  */
+
+/**
+ * 这个类用来封装一些AspectJ内部的结果，在将来解压中再重新推送到AspectJ项目中。
+ */
 class RuntimeTestWalker {
 
 	private static final Field residualTestField;

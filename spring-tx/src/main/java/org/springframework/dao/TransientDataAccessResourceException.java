@@ -24,6 +24,10 @@ package org.springframework.dao;
  * @since 2.5
  * @see java.sql.SQLTransientConnectionException
  */
+
+/**
+ * 当资源暂时性失效、操作还可以重试时抛出的数据访问异常。
+ */
 @SuppressWarnings("serial")
 public class TransientDataAccessResourceException extends TransientDataAccessException {
 

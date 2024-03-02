@@ -30,6 +30,24 @@ package org.springframework.aop;
  * @see org.springframework.aop.support.ClassFilters
  * @see org.springframework.aop.support.MethodMatchers
  */
+
+/**
+ * 切点。切点的主要作用是定义通知所要应用到的类跟方法。
+ * 具体的哪些类、哪些方法由ClassFilter和MethodMatcher匹配，只有满足切入点的条件时才插入advice。
+ *
+ * 	AnnotationMatchingPointcut：注解匹配切点。根据类上或方法上是否存在指定的注解判断切点的匹配性，如果没有显示指定注解，则匹配所有。
+ * 	DynamicMethodMatcherPointcut：动态方法匹配器切点。它本质上是一个方法匹配器，但同时具有了切点的功能。
+ * 	ComposablePointcut：可组合的切点。这种切点可以与或逻辑，任意组合其他的Pointcut、ClassFilter和MethodMatcher。其本质是通过ClassFilters和MethodMatchers两个工具类进行Pointcut内部组件的组合。
+ * 	JdkRegexpMethodPointcut： JDK正则表达式切点，即使用正则表达式描述方法的拦截规则和排除规则。
+ * 	AspectJExpressionPointcut：AspectJ切点表达式切点。顾名思义，使用AspectJ的切点表达式描述筛选规则。表达式基本语法如下（非完整语法）：execution(<方法修饰符>? <方法返回值类型> <包名>.<类名>.<方法名>(<参数类型>) [throws <异常类型>]?)
+ *
+ *
+ * 如果连接点相当于数据中的记录，那么切点相当于查询条件，一个切点可以匹配多个连接点
+ * 所以切点表示一组Joinpoint，这些Jointpoint或是通过逻辑关系组合起来，
+ * 或是通过通配、正则表达式等方式集中起来，它定义了相应的 Advice 将要发生的地方
+ *
+ *
+ */
 public interface Pointcut {
 
 	/**

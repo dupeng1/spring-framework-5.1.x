@@ -41,6 +41,12 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @see EnableTransactionManagement
  * @see org.springframework.context.annotation.Primary
  */
+
+/**
+ * 被带有@EnableTransactionManagement注解的配置类实现的接口，这些配置类要指定默认的PlatformTransactionManager bean
+ * （或者是ReactiveTransactionManager bean），
+ * 以用于注解驱动事务管理，而不是通过类型进行查找。为什么要这样，比如在容器中现有两个PlatformTransactionManager。
+ */
 public interface TransactionManagementConfigurer {
 
 	/**

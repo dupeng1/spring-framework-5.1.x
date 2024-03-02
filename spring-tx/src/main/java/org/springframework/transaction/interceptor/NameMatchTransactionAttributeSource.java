@@ -40,6 +40,10 @@ import org.springframework.util.PatternMatchUtils;
  * @see #isMatch
  * @see MethodMapTransactionAttributeSource
  */
+
+/**
+ * 它是通过方法名的匹配来（可以采用通配符）来寻找TransactionAttribute ，当有多个时使用最长的那一个。
+ */
 @SuppressWarnings("serial")
 public class NameMatchTransactionAttributeSource implements TransactionAttributeSource, Serializable {
 

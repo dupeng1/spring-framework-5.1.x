@@ -23,6 +23,10 @@ package org.springframework.transaction;
  * @author Juergen Hoeller
  * @since 1.1
  */
+
+/**
+ * 试图挂起一个事务，但是底层后台不支持事务的挂起时抛出的异常
+ */
 @SuppressWarnings("serial")
 public class TransactionSuspensionNotSupportedException extends CannotCreateTransactionException {
 

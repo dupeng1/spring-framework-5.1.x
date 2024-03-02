@@ -50,6 +50,10 @@ import org.springframework.util.ClassUtils;
  * @author Stephane Nicoll
  * @since 2.0
  */
+
+/**
+ * org.springframework.beans.factory.xml.BeanDefinitionParser接口的实现类，使得用户可以方便的对所有的基础架构bean开启注解驱动的事务界定。
+ */
 class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParser {
 
 	/**

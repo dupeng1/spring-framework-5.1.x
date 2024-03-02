@@ -36,6 +36,10 @@ import org.springframework.lang.Nullable;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 数据访问异常类的一个处于根位置的基类
+ */
 @SuppressWarnings("serial")
 public abstract class DataAccessException extends NestedRuntimeException {
 

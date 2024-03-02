@@ -32,6 +32,10 @@ import org.springframework.util.Assert;
  * @since 2.0
  * @see SimpleAspectInstanceFactory
  */
+
+/**
+ * AspectInstanceFactory接口的一个实现类，用来支持单例的对象，对于每次调用getAspectInstance()，都返回同一个切面实例。
+ */
 @SuppressWarnings("serial")
 public class SingletonAspectInstanceFactory implements AspectInstanceFactory, Serializable {
 

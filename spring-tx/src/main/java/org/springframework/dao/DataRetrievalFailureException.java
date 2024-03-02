@@ -26,6 +26,10 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 13.10.2003
  */
+
+/**
+ * 检索数据失败时抛出的异常，比如，通过一个已知标识符查找指定的数据。该异常类会被对象关系映射工具或者DAO实现类抛出。
+ */
 @SuppressWarnings("serial")
 public class DataRetrievalFailureException extends NonTransientDataAccessException {
 

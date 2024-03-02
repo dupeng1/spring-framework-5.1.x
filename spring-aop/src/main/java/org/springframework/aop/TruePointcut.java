@@ -23,6 +23,10 @@ import java.io.Serializable;
  *
  * @author Rod Johnson
  */
+
+/**
+ * Pointcut（切点）接口的一个最简单的实现类，匹配到所有。
+ */
 @SuppressWarnings("serial")
 final class TruePointcut implements Pointcut, Serializable {
 

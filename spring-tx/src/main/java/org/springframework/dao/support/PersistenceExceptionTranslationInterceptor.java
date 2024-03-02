@@ -45,6 +45,11 @@ import org.springframework.util.ReflectionUtils;
  * @since 2.0
  * @see PersistenceExceptionTranslator
  */
+
+/**
+ * 一个aop 方法拦截器（MethodInterceptor）。提供基于PersistenceExceptionTranslator的异常转换，
+ * 它是PersistenceExceptionTranslator的代理，将运行时抛出的异常转换为spring 的DataAccessException族。
+ */
 public class PersistenceExceptionTranslationInterceptor
 		implements MethodInterceptor, BeanFactoryAware, InitializingBean {
 

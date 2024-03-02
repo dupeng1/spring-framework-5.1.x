@@ -45,6 +45,10 @@ import org.springframework.util.xml.DomUtils;
  * @author Chris Beams
  * @since 2.0
  */
+
+/**
+ * 用于<tx:advice>标签的BeanDefinitionParser。
+ */
 class TxAdviceBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
 
 	private static final String METHOD_ELEMENT = "method";

@@ -41,6 +41,10 @@ import org.springframework.util.CollectionUtils;
  * @since 3.1
  * @see EnableTransactionManagement
  */
+
+/**
+ * 配置类（@Configuration）的抽象基类，提供了公共结构用于开启Spring的注解驱动的事务管理能力。
+ */
 @Configuration
 public abstract class AbstractTransactionManagementConfiguration implements ImportAware {
 

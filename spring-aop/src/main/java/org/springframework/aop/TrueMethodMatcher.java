@@ -24,6 +24,10 @@ import java.lang.reflect.Method;
  *
  * @author Rod Johnson
  */
+
+/**
+ * MethodMatcher接口的一个最简单的实现类，匹配到所有的方法。
+ */
 @SuppressWarnings("serial")
 final class TrueMethodMatcher implements MethodMatcher, Serializable {
 

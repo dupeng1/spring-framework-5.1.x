@@ -30,6 +30,10 @@ import org.springframework.aop.AfterAdvice;
  * @author Rod Johnson
  * @since 2.0
  */
+
+/**
+ * 返回通知，AspectJ中 after 属性对应的通知（@After 标注的方法会被解析成该通知），不论是否异常都会执行。
+ */
 @SuppressWarnings("serial")
 public class AspectJAfterAdvice extends AbstractAspectJAdvice
 		implements MethodInterceptor, AfterAdvice, Serializable {

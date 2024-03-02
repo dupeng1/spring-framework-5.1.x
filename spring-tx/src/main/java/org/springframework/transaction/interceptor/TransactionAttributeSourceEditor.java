@@ -46,6 +46,10 @@ import org.springframework.util.StringUtils;
  * @since 26.04.2003
  * @see TransactionAttributeEditor
  */
+
+/**
+ * 属性编辑器，用于将一个字符串转换成TransactionAttributeSource。事务属性字符串必须能被该包中的TransactionAttributeEditor解析。
+ */
 public class TransactionAttributeSourceEditor extends PropertyEditorSupport {
 
 	@Override

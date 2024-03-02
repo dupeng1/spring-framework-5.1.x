@@ -46,6 +46,10 @@ import org.springframework.lang.Nullable;
 
 /**
  * 事务的定义信息，主要保存了隔离级别、传播属性等
+ * TransactionDefinition
+ * 		DefaultTransactionDefinition
+ * 			DefaultTransactionAttribute
+ *
  */
 public interface TransactionDefinition {
 
@@ -55,6 +59,8 @@ public interface TransactionDefinition {
 	 * <p>This is typically the default setting of a transaction definition,
 	 * and typically defines a transaction synchronization scope.
 	 */
+	//事务传播机制
+	// 1.如果存在一个事务，则支持当前事务。如果没有事务则开启一个新的事务。
 	int PROPAGATION_REQUIRED = 0;
 
 	/**
@@ -76,6 +82,7 @@ public interface TransactionDefinition {
 	 * @see org.springframework.transaction.support.AbstractPlatformTransactionManager#setTransactionSynchronization
 	 * @see org.springframework.transaction.support.AbstractPlatformTransactionManager#SYNCHRONIZATION_ON_ACTUAL_TRANSACTION
 	 */
+	// 如果存在一个事务，支持当前事务。如果没有事务，则非事务的执行。但是对于事务同步的事务管理器，PROPAGATION_SUPPORTS与不使用事务有少许不同。
 	int PROPAGATION_SUPPORTS = 1;
 
 	/**
@@ -84,6 +91,7 @@ public interface TransactionDefinition {
 	 * <p>Note that transaction synchronization within a {@code PROPAGATION_MANDATORY}
 	 * scope will always be driven by the surrounding transaction.
 	 */
+	// 如果已经存在一个事务，支持当前事务。如果没有一个活动的事务，则抛出异常。
 	int PROPAGATION_MANDATORY = 2;
 
 	/**
@@ -99,6 +107,7 @@ public interface TransactionDefinition {
 	 * and resumed appropriately.
 	 * @see org.springframework.transaction.jta.JtaTransactionManager#setTransactionManager
 	 */
+	// 开启一个新的事务。如果一个事务已经存在，则先将这个存在的事务挂起。
 	int PROPAGATION_REQUIRES_NEW = 3;
 
 	/**
@@ -114,6 +123,7 @@ public interface TransactionDefinition {
 	 * will be suspended and resumed appropriately.
 	 * @see org.springframework.transaction.jta.JtaTransactionManager#setTransactionManager
 	 */
+	// 以非事务的方式运行，若当前存在事务，就挂起当前事务
 	int PROPAGATION_NOT_SUPPORTED = 4;
 
 	/**
@@ -122,6 +132,7 @@ public interface TransactionDefinition {
 	 * <p>Note that transaction synchronization is <i>not</i> available within a
 	 * {@code PROPAGATION_NEVER} scope.
 	 */
+	// 总是非事务地执行，并挂起任何存在的事务
 	int PROPAGATION_NEVER = 5;
 
 	/**
@@ -135,6 +146,7 @@ public interface TransactionDefinition {
 	 * nested transactions as well.
 	 * @see org.springframework.jdbc.datasource.DataSourceTransactionManager
 	 */
+	// 如果一个活动的事务存在，则运行在一个嵌套的事务中。 如果没有活动事务, 则按TransactionDefinition.PROPAGATION_REQUIRED 属性执行。
 	int PROPAGATION_NESTED = 6;
 
 
@@ -143,6 +155,7 @@ public interface TransactionDefinition {
 	 * All other levels correspond to the JDBC isolation levels.
 	 * @see java.sql.Connection
 	 */
+	// 默认使用数据库隔离级别
 	int ISOLATION_DEFAULT = -1;
 
 	/**
@@ -205,6 +218,7 @@ public interface TransactionDefinition {
 	 * @see #PROPAGATION_REQUIRED
 	 * @see org.springframework.transaction.support.TransactionSynchronizationManager#isActualTransactionActive()
 	 */
+	//事务传播行为
 	int getPropagationBehavior();
 
 	/**
@@ -224,6 +238,7 @@ public interface TransactionDefinition {
 	 * @see #ISOLATION_DEFAULT
 	 * @see org.springframework.transaction.support.AbstractPlatformTransactionManager#setValidateExistingTransaction
 	 */
+	//事务隔离级别
 	int getIsolationLevel();
 
 	/**
@@ -236,6 +251,7 @@ public interface TransactionDefinition {
 	 * an exception when given any other timeout than {@link #TIMEOUT_DEFAULT}.
 	 * @return the transaction timeout
 	 */
+	//执行超时时间
 	int getTimeout();
 
 	/**
@@ -254,6 +270,7 @@ public interface TransactionDefinition {
 	 * @see org.springframework.transaction.support.TransactionSynchronization#beforeCommit(boolean)
 	 * @see org.springframework.transaction.support.TransactionSynchronizationManager#isCurrentTransactionReadOnly()
 	 */
+	//是否只读
 	boolean isReadOnly();
 
 	/**
@@ -266,6 +283,7 @@ public interface TransactionDefinition {
 	 * @see org.springframework.transaction.interceptor.TransactionAspectSupport
 	 * @see org.springframework.transaction.support.TransactionSynchronizationManager#getCurrentTransactionName()
 	 */
+	//事务名称
 	@Nullable
 	String getName();
 

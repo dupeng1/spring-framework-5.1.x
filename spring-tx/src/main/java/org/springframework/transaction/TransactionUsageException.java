@@ -23,6 +23,10 @@ package org.springframework.transaction;
  * @author Rod Johnson
  * @since 22.03.2003
  */
+
+/**
+ * 不适当的使用Spring事务API抛出的异常。
+ */
 @SuppressWarnings("serial")
 public class TransactionUsageException extends TransactionException {
 

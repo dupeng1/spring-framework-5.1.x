@@ -30,6 +30,10 @@ import org.springframework.transaction.support.DelegatingTransactionDefinition;
  * @author Juergen Hoeller
  * @since 1.2
  */
+
+/**
+ * TransactionAttribute接口的抽象实现类，将所有的调用委托给给定的目标TransactionAttribute实例。
+ */
 @SuppressWarnings("serial")
 public abstract class DelegatingTransactionAttribute extends DelegatingTransactionDefinition
 		implements TransactionAttribute, Serializable {

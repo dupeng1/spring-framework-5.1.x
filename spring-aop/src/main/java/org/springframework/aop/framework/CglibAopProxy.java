@@ -162,6 +162,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 		}
 
 		try {
+			//获取代理类需要继承的父类
 			Class<?> rootClass = this.advised.getTargetClass();
 			Assert.state(rootClass != null, "Target class must be available for creating a CGLIB proxy");
 
@@ -186,11 +187,15 @@ class CglibAopProxy implements AopProxy, Serializable {
 					enhancer.setUseCache(false);
 				}
 			}
+			//代理类的父类，也就是目标类AServcie
 			enhancer.setSuperclass(proxySuperClass);
+			//代理类需要实现的接口
 			enhancer.setInterfaces(AopProxyUtils.completeProxiedInterfaces(this.advised));
 			enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
 			enhancer.setStrategy(new ClassLoaderAwareUndeclaredThrowableStrategy(classLoader));
-
+			//添加回调方法，这些回调类都实现了MethodInterceptor接口
+			//getCallbacks会拿到很多MethodInterceptor的实现类，作为回调添加到代理类里面去
+			//当AService的方法被调用时，会进到MethodInterceptor里面的intercept方法里面去
 			Callback[] callbacks = getCallbacks(rootClass);
 			Class<?>[] types = new Class<?>[callbacks.length];
 			for (int x = 0; x < types.length; x++) {

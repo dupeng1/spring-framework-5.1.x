@@ -48,7 +48,16 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @see org.springframework.aop.framework.ProxyFactoryBean
  * @see org.springframework.aop.framework.ProxyFactory
  */
-//spring事务拦截器
+/**
+ * spring事务拦截器
+ * TransactionInterceptor是Spring框架内置实现的一个MethodInterceptor，用于声明式事务管理，使用Spring事务基础设施org.springframework.transaction.PlatformTransactionManager。
+ *
+ *        作为一个MethodInterceptor，TransactionInterceptor会被包裹在使用了事务注解的bean组件外面形成该组件的代理对象，当调用相应使用事务注解的方法时，TransactionInterceptor的方法拦截器逻辑会被应用，从而完成相应的事务管理。
+ *
+ *        TransactionInterceptor继承自TransactionAspectSupport。主要的事务管理逻辑实现在该基类中。TransactionInterceptor自身主要是实现接口MethodInterceptor定义的方法invoke，触发被TransactionAspectSupport事务拦截逻辑包围的目标方法的调用。
+ *
+ *        关于TransactionInterceptor如何被引入到应用，ProxyTransactionManagementConfiguration是一个很好的例子。在该配置类中，TransactionInterceptor被作为一个bean定义注册到容器，它会被ProxyTransactionManagementConfiguration注册到容器的另外一个bean transactionAdvisor使用；应用启动时Spring的自动代理机制会发现transactionAdvisor以及它所使用的TransactionInterceptor，并将该TransactionInterceptor在创建相应bean的代理对象时包裹到bean外部
+ */
 @SuppressWarnings("serial")
 public class TransactionInterceptor extends TransactionAspectSupport implements MethodInterceptor, Serializable {
 
@@ -93,11 +102,11 @@ public class TransactionInterceptor extends TransactionAspectSupport implements 
 		// Work out the target class: may be {@code null}.
 		// The TransactionAttributeSource should be passed the target class
 		// as well as the method, which may be from an interface.
-		//1、获取 TargetClass
+		//1、获取 TargetClass，即目标类
 		Class<?> targetClass = (invocation.getThis() != null ? AopUtils.getTargetClass(invocation.getThis()) : null);
 
 		// Adapt to TransactionAspectSupport's invokeWithinTransaction...
-		//2、调用父类 TransactionAspectSupport #invokeWithinTransaction处理事务
+		//2、执行切面方法和目标方法，调用父类 TransactionAspectSupport #invokeWithinTransaction处理事务
 		return invokeWithinTransaction(invocation.getMethod(), targetClass, invocation::proceed);
 	}
 

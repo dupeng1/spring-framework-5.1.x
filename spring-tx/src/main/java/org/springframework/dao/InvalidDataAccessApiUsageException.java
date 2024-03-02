@@ -25,6 +25,10 @@ package org.springframework.dao;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 对API错误使用抛出的异常，例如未能 “编译”需要在执行前编译的查询对象
+ */
 @SuppressWarnings("serial")
 public class InvalidDataAccessApiUsageException extends NonTransientDataAccessException {
 

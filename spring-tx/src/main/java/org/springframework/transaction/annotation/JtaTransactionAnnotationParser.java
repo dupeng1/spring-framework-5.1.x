@@ -36,6 +36,10 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
  * @author Juergen Hoeller
  * @since 4.0
  */
+
+/**
+ * 策略实现，用于解析parsing JTA（Java Transaction API） 1.2的事务注解。
+ */
 @SuppressWarnings("serial")
 public class JtaTransactionAnnotationParser implements TransactionAnnotationParser, Serializable {
 

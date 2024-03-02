@@ -24,6 +24,11 @@ package org.springframework.aop;
  * @since 2.0.1
  * @see org.springframework.aop.support.AopUtils#isAopProxy(Object)
  */
+
+/**
+ * 标记接口，Spring使用JDK动态代理或者CGLIB的方式来生成代理对象，
+ * 其中每个代理对象都会实现SpringProxy接口。用来判定是否是Spring产生的代理对象。
+ */
 public interface SpringProxy {
 
 }

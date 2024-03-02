@@ -27,6 +27,11 @@ import org.aopalliance.aop.Advice;
  * @author Rod Johnson
  * @see AfterAdvice
  */
+
+/**
+ * 在 join point 前被执行的 advice。虽然 before advice 是在 join point 前被执行，但是它并不能够阻止 join point 的执行，
+ * 除非发生了异常(即我们在 before advice 代码中, 不能人为地决定是否继续执行 join point 中的代码)。
+ */
 public interface BeforeAdvice extends Advice {
 
 }

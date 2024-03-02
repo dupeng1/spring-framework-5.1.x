@@ -41,6 +41,10 @@ package org.aopalliance.intercept;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 构造器拦截器，Interceptor的子接口，拦截构造器并处理。
+ */
 public interface ConstructorInterceptor extends Interceptor  {
 
 	/**

@@ -24,6 +24,10 @@ package org.springframework.dao;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 当尝试插入或者更新数据时违反了完整性约束时抛出的异常
+ */
 @SuppressWarnings("serial")
 public class DataIntegrityViolationException extends NonTransientDataAccessException {
 

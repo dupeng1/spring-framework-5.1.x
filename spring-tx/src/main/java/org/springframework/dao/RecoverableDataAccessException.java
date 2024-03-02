@@ -27,6 +27,10 @@ package org.springframework.dao;
  * @since 2.5
  * @see java.sql.SQLRecoverableException
  */
+
+/**
+ * 如果应用执行一些恢复步骤、重试整个事务或者如果是分布式事务，事务分开，先前一个失败的操作可能可以成功的抛出的数据访问异常。
+ */
 @SuppressWarnings("serial")
 public class RecoverableDataAccessException extends DataAccessException {
 

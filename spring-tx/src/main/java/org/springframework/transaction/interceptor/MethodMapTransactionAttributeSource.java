@@ -43,6 +43,10 @@ import org.springframework.util.PatternMatchUtils;
  * @see #isMatch
  * @see NameMatchTransactionAttributeSource
  */
+
+/**
+ * 在其内部维护了一个Map来根据每个Method来决定TransactionAttribute
+ */
 public class MethodMapTransactionAttributeSource
 		implements TransactionAttributeSource, BeanClassLoaderAware, InitializingBean {
 

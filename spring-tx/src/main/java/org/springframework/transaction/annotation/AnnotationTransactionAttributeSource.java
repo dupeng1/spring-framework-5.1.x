@@ -52,6 +52,11 @@ import org.springframework.util.ClassUtils;
  * @see org.springframework.transaction.interceptor.TransactionInterceptor#setTransactionAttributeSource
  * @see org.springframework.transaction.interceptor.TransactionProxyFactoryBean#setTransactionAttributeSource
  */
+
+/**
+ * 完成创建SpringTransactionAnnotationParser、JtaTransactionAnnotationParser、
+ * Ejb3TransactionAnnotationParser对象并添加到解析器列表中，以便后面处理对应注解的工作。
+ */
 @SuppressWarnings("serial")
 public class AnnotationTransactionAttributeSource extends AbstractFallbackTransactionAttributeSource
 		implements Serializable {

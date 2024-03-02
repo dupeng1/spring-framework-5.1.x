@@ -37,6 +37,10 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 名字空间处理器，允许使用XML或注解对声明式事务进行配置。
+ */
 public class TxNamespaceHandler extends NamespaceHandlerSupport {
 
 	static final String TRANSACTION_MANAGER_ATTRIBUTE = "transaction-manager";

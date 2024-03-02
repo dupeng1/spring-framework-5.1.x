@@ -38,8 +38,8 @@ import java.io.Flushable;
  */
 
 /**
- * 事务状态对象
- * 该对象保存着事务运行过程中的一些属性，当前是否是一个新事物、事务保存点、是否需要回滚、还保存着挂起事务的连接资源
+ * 表示一个事物的状态
+ * TransactionStatus主要作为事务运行时载体，保存着事务信息，事务的状态。
  */
 public interface TransactionStatus extends SavepointManager, Flushable {
 
@@ -48,7 +48,7 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	 * in an existing transaction, or potentially not running in an actual
 	 * transaction in the first place.
 	 */
-	//是否新事物
+	//是否是一个新的事务
 	boolean isNewTransaction();
 
 	/**
@@ -62,7 +62,7 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	 * @see #rollbackToSavepoint(Object)
 	 * @see #releaseSavepoint(Object)
 	 */
-	//事务保存点
+	//判断是否有回滚点，是否基于嵌套事务创建了一个savepoint
 	boolean hasSavepoint();
 
 	/**
@@ -76,13 +76,17 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	 * @see org.springframework.transaction.support.TransactionCallback#doInTransaction
 	 * @see org.springframework.transaction.interceptor.TransactionAttribute#rollbackOn
 	 */
-	//事务回滚标识
+	//设置当前事务应该回滚；
+	//将一个事务标识为不可提交的。在调用完setRollbackOnly()后只能被回滚
+	//在大多数情况下，事务管理器会检测到这一点，在它发现事务要提交时会立刻结束事务。
+	//调用完setRollbackOnly()后，数数据库可以继续执行select，但不允许执行update语句，因为事务只可以进行读取操作，任何修改都不会被提交。
 	void setRollbackOnly();
 
 	/**
 	 * Return whether the transaction has been marked as rollback-only
 	 * (either by the application or by the transaction infrastructure).
 	 */
+	//返回当前事务是否应该回滚；
 	boolean isRollbackOnly();
 
 	/**
@@ -93,6 +97,7 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	 * get applied to the primary resource or to transaction synchronizations,
 	 * depending on the underlying resource.
 	 */
+	//这个应该是和Hibernate或JPA相关的
 	@Override
 	void flush();
 
@@ -102,6 +107,7 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	 * @see PlatformTransactionManager#commit
 	 * @see PlatformTransactionManager#rollback
 	 */
+	//当前事务否已经完成。
 	boolean isCompleted();
 
 }

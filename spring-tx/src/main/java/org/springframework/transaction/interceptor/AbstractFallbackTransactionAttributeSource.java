@@ -49,6 +49,19 @@ import org.springframework.util.ClassUtils;
  * @author Juergen Hoeller
  * @since 1.1
  */
+
+/**
+ * TransactionAttributeSource接口抽象实现，按如下顺序依次尝试获取事务注解属性：
+ *  1）specific target method和method相同签名的targetClass上的那个方法；
+ *
+ *        2）target class – 也就是参数targetClass；
+ *
+ *        3）declaring method – 也就是参数method；
+ *
+ *        4）declaring class/interface – method的声明类/所属类。
+ *
+ *        并对所发现的事务注解属性进行了缓存。
+ */
 public abstract class AbstractFallbackTransactionAttributeSource implements TransactionAttributeSource {
 
 	/**

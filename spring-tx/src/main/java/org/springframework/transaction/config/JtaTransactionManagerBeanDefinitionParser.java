@@ -33,6 +33,10 @@ import org.springframework.beans.factory.xml.ParserContext;
  * @see org.springframework.transaction.jta.WebLogicJtaTransactionManager
  * @see org.springframework.transaction.jta.WebSphereUowTransactionManager
  */
+
+/**
+ * 解析XML配置元素<tx:jta-transaction-manager>，自动检测WebLogic 和WebSphere服务器，暴露相应的JtaTransactionManager子类。
+ */
 public class JtaTransactionManagerBeanDefinitionParser extends AbstractSingleBeanDefinitionParser  {
 
 	@Override

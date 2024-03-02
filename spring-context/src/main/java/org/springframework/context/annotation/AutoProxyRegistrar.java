@@ -35,6 +35,10 @@ import org.springframework.core.type.AnnotationMetadata;
  * @since 3.1
  * @see EnableAspectJAutoProxy
  */
+
+/**
+ * 会往Spring容器中注册InfrastructureAdvisorAutoProxyCreator后置处理器
+ */
 public class AutoProxyRegistrar implements ImportBeanDefinitionRegistrar {
 
 	private final Log logger = LogFactory.getLog(getClass());

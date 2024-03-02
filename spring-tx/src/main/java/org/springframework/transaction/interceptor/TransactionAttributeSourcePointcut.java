@@ -32,6 +32,11 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @since 2.5.5
  */
+
+/**
+ * 切点实现类。Pointcut拦截住了方法，然后使用TransactionAttributeSource去方法和类上获取事务属性，
+ * 如果能获取到，说明此方法需要参与事务，则进行事务增强，反之则不增强。
+ */
 @SuppressWarnings("serial")
 abstract class TransactionAttributeSourcePointcut extends StaticMethodMatcherPointcut implements Serializable {
 
@@ -42,7 +47,9 @@ abstract class TransactionAttributeSourcePointcut extends StaticMethodMatcherPoi
 				PersistenceExceptionTranslator.class.isAssignableFrom(targetClass)) {
 			return false;
 		}
+		//拿到@Baan也就是AnnotationTransactionAttributeSource
 		TransactionAttributeSource tas = getTransactionAttributeSource();
+		//判断method是否带有@Transaction注解
 		return (tas == null || tas.getTransactionAttribute(method, targetClass) != null);
 	}
 

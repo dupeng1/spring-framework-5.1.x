@@ -40,6 +40,11 @@ import org.springframework.core.annotation.AliasFor;
  * @author Sam Brannen
  * @since 4.2
  */
+
+/**
+ * 一个事件监听器，根据TransactionPhase被调用。如果一个事件没有被活跃的事务所发布，该事件就被丢弃了除非fallbackExecution标识位设置了。
+ * 如果事务在运行中，事件会根据其进行的阶段被处理。
+ */
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

@@ -40,6 +40,10 @@ import org.springframework.util.StringUtils;
  * @see org.springframework.transaction.TransactionDefinition
  * @see org.springframework.core.Constants
  */
+
+/**
+ * 用于事务属性的属性编辑器。接受{PROPAGATION_NAME， ISOLATION_NAME， readOnly，timeout_NNNN，+Exception1，-Exception2}类型的字符串。
+ */
 public class TransactionAttributeEditor extends PropertyEditorSupport {
 
 	/**

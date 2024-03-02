@@ -94,6 +94,7 @@ public @interface Transactional {
 	 * <p>Defaults to {@link Propagation#REQUIRED}.
 	 * @see org.springframework.transaction.interceptor.TransactionAttribute#getPropagationBehavior()
 	 */
+	//设置事务传播行为
 	Propagation propagation() default Propagation.REQUIRED;
 
 	/**
@@ -118,6 +119,7 @@ public @interface Transactional {
 	 * transactions.
 	 * @see org.springframework.transaction.interceptor.TransactionAttribute#getTimeout()
 	 */
+	//设置事务超时时间
 	int timeout() default TransactionDefinition.TIMEOUT_DEFAULT;
 
 	/**
@@ -132,6 +134,7 @@ public @interface Transactional {
 	 * @see org.springframework.transaction.interceptor.TransactionAttribute#isReadOnly()
 	 * @see org.springframework.transaction.support.TransactionSynchronizationManager#isCurrentTransactionReadOnly()
 	 */
+	//设置是否为只读事务
 	boolean readOnly() default false;
 
 	/**
@@ -148,6 +151,8 @@ public @interface Transactional {
 	 * @see #rollbackForClassName
 	 * @see org.springframework.transaction.interceptor.DefaultTransactionAttribute#rollbackOn(Throwable)
 	 */
+	//设置事务回滚异常class，指定遇到某一类异常回滚事务；因为某些异常是不回滚的
+	//未指定，程序中出现异常遇到如下两种异常会做事务回滚；否则不回滚；Error、 运行时异常
 	Class<? extends Throwable>[] rollbackFor() default {};
 
 	/**
@@ -168,6 +173,7 @@ public @interface Transactional {
 	 * @see #rollbackFor
 	 * @see org.springframework.transaction.interceptor.DefaultTransactionAttribute#rollbackOn(Throwable)
 	 */
+	//设置事务回滚异常类名
 	String[] rollbackForClassName() default {};
 
 	/**
@@ -181,6 +187,7 @@ public @interface Transactional {
 	 * @see #noRollbackForClassName
 	 * @see org.springframework.transaction.interceptor.DefaultTransactionAttribute#rollbackOn(Throwable)
 	 */
+	//设置事务不回滚异常
 	Class<? extends Throwable>[] noRollbackFor() default {};
 
 	/**
@@ -193,6 +200,7 @@ public @interface Transactional {
 	 * @see #noRollbackFor
 	 * @see org.springframework.transaction.interceptor.DefaultTransactionAttribute#rollbackOn(Throwable)
 	 */
+	//设置事务不回滚异常类名
 	String[] noRollbackForClassName() default {};
 
 }

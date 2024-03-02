@@ -22,6 +22,10 @@ package org.springframework.dao;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 执行一个更新，获取相应锁失败时抛出的异常，比如一个"select for update"语句
+ */
 @SuppressWarnings("serial")
 public class CannotAcquireLockException extends PessimisticLockingFailureException {
 

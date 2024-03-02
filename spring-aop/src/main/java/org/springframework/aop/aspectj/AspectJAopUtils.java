@@ -30,6 +30,10 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 相比于AopUtils，AspectJAopUtils是专门针对于AspectJ advisors的工具类。
+ */
 public abstract class AspectJAopUtils {
 
 	/**

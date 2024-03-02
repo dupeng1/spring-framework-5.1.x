@@ -23,6 +23,10 @@ package org.springframework.transaction.config;
  * @author Stephane Nicoll
  * @since 3.1
  */
+
+/**
+ * 配置常量，用于子包之间的内部共享。
+ */
 public abstract class TransactionManagementConfigUtils {
 
 	/**

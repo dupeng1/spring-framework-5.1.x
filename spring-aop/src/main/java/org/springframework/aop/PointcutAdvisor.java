@@ -23,6 +23,18 @@ package org.springframework.aop;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 代表具有切点的切面，它包含Advice和Pointcut两个类，
+ * 这样就可以通过类、方法名以及方法方位等信息灵活地定义切面的连接点，提供更具适用性的切面。其有6种实现类：
+ *
+ * DefaultPointcutAdvisor：最常用的切面类型，它可以通过任意Pointcut和Advice定义一个切面，唯一不支持的是引介的切面类型，一般可以通过扩展该类实现自定义的切面；
+ * NameMatchMethodPointcutAdvisor：通过该类可以定义，按方法名定义切点的切面；
+ * RegexpMethodPointcutAdvisor：按正则表达式匹配方法名进行切点定义的切面；
+ * StaticMethodMatcherPointcutAdvisor：静态方法匹配器切点定义的切面；
+ * AspecJExpressionPointcutAdvisor：Aspecj切点表达式定义切点的切面；
+ * AspecJPointcutAdvisor：使用AspecJ语法定义切点的切面。
+ */
 public interface PointcutAdvisor extends Advisor {
 
 	/**

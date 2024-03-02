@@ -30,6 +30,10 @@ import org.springframework.aop.interceptor.ExposeInvocationInterceptor;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 它相对于AopProxyUtils,它只是专门处理AspectJ代理对象的工具类。
+ */
 public abstract class AspectJProxyUtils {
 
 	/**

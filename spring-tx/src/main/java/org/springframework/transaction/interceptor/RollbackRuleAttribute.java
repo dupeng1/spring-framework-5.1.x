@@ -31,6 +31,10 @@ import org.springframework.util.Assert;
  * @since 09.04.2003
  * @see NoRollbackRuleAttribute
  */
+
+/**
+ * 决定一个给定的异常（和其任意的子类）是否应该引发一个回滚。
+ */
 @SuppressWarnings("serial")
 public class RollbackRuleAttribute implements Serializable{
 

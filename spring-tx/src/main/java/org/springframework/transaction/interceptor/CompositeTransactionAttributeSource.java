@@ -29,6 +29,10 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 这是一个集合代理类，其构造方法要求传入一些实现，然后在被调用的时候循环调用那些实现直到获得满意结果
+ */
 @SuppressWarnings("serial")
 public class CompositeTransactionAttributeSource implements TransactionAttributeSource, Serializable {
 

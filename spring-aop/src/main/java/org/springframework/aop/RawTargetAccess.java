@@ -32,6 +32,10 @@ package org.springframework.aop;
  * @since 2.0.5
  * @see org.springframework.aop.scope.ScopedObject
  */
+
+/**
+ * AOP代理的标记接口，用来返回原始的目标对象。
+ */
 public interface RawTargetAccess {
 
 }

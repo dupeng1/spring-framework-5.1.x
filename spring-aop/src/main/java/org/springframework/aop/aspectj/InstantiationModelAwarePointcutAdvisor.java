@@ -27,6 +27,10 @@ import org.springframework.aop.PointcutAdvisor;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 由spring aop顾问实现的接口，封装了可能具有延迟初始化策略的AspectJ 切面。
+ */
 public interface InstantiationModelAwarePointcutAdvisor extends PointcutAdvisor {
 
 	/**

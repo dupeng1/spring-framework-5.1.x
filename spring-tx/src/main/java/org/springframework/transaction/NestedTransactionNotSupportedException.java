@@ -23,6 +23,10 @@ package org.springframework.transaction;
  * @author Juergen Hoeller
  * @since 1.1
  */
+
+/**
+ * 试图使用嵌套式事务，但是底层后端不支持嵌套式事务抛出的异常。
+ */
 @SuppressWarnings("serial")
 public class NestedTransactionNotSupportedException extends CannotCreateTransactionException {
 

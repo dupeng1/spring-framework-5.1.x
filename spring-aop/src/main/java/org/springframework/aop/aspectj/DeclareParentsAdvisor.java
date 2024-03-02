@@ -33,6 +33,13 @@ import org.springframework.aop.support.DelegatingIntroductionInterceptor;
  * @author Ramnivas Laddad
  * @since 2.0
  */
+
+/**
+ * Spring AOP提供的@Before、@After、@AfterReturning、@AfterThrowing、@Around只对类的现有方法进行增强处理。
+ * 如果需要对现有类增加新的方法，有两种方法可实现：
+ * （1）扩展现有类：实现简单，但如果对多个现有类进行扩展时，需增加多个类。
+ * （2）使用@DeclareParents注解实现：实现复杂，可使用通配符匹配。
+ */
 public class DeclareParentsAdvisor implements IntroductionAdvisor {
 
 	private final Advice advice;

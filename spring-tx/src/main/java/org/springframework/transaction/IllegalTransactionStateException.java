@@ -24,6 +24,7 @@ package org.springframework.transaction;
  * @author Juergen Hoeller
  * @since 21.01.2004
  */
+//根据应用的事务传播行为，当事务的存在或不存在等于非法状态时引发异常。
 @SuppressWarnings("serial")
 public class IllegalTransactionStateException extends TransactionUsageException {
 

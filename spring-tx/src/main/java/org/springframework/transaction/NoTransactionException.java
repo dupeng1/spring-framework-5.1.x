@@ -25,6 +25,10 @@ package org.springframework.transaction;
  * @author Rod Johnson
  * @since 17.03.2003
  */
+
+/**
+ * 当一个操作依赖于一个现有的事务（比如设置回滚的状态），但是不存在这个现有的事务时抛出的异常。该异常表示非法使用事务API的情况。
+ */
 @SuppressWarnings("serial")
 public class NoTransactionException extends TransactionUsageException {
 

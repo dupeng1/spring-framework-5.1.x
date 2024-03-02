@@ -34,6 +34,10 @@ import org.springframework.util.NumberUtils;
  * @author Juergen Hoeller
  * @since 1.0.2
  */
+
+/**
+ * DAO实现类的各种实用方法。适用于任何数据访问技术。提供的方法主要用于从给定的集合中返回结果对象，如果找到0个或者多个则抛出相应的异常。
+ */
 public abstract class DataAccessUtils {
 
 	/**

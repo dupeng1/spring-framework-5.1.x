@@ -25,6 +25,10 @@ package org.springframework.dao;
  * @since 1.0.2
  * @see EmptyResultDataAccessException
  */
+
+/**
+ * 当返回的结果大小和期望的不一致时抛出的异常，比如，期望得到1行数据但是返回的0或者多于1行的数据。
+ */
 @SuppressWarnings("serial")
 public class IncorrectResultSizeDataAccessException extends DataRetrievalFailureException {
 

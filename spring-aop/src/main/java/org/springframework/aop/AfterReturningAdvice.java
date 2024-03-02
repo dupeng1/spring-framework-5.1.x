@@ -28,6 +28,11 @@ import org.springframework.lang.Nullable;
  * @see MethodBeforeAdvice
  * @see ThrowsAdvice
  */
+
+/**
+ * 后置通知（After Returning Advice）后置通知相比较于前置通知，
+ * 主要有以下几点不同：后置通知可以访问目标方法的返回值，但是不能修改，后置通知是在方法执行完成后执行。
+ */
 public interface AfterReturningAdvice extends AfterAdvice {
 
 	/**

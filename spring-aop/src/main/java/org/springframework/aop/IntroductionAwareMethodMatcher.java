@@ -26,6 +26,10 @@ import java.lang.reflect.Method;
  * @author Adrian Colyer
  * @since 2.0
  */
+
+/**
+ * 继承自MethodMatcher，在进行方法匹配时考虑了引入。
+ */
 public interface IntroductionAwareMethodMatcher extends MethodMatcher {
 
 	/**

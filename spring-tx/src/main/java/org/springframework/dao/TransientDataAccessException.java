@@ -27,6 +27,10 @@ import org.springframework.lang.Nullable;
  * @since 2.5
  * @see java.sql.SQLTransientException
  */
+
+/**
+ * 表示一些暂态的数据访问异常，当操作在无干扰的情况下重试，先前失败的操作很可能会成功。
+ */
 @SuppressWarnings("serial")
 public abstract class TransientDataAccessException extends DataAccessException {
 

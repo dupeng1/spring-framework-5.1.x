@@ -32,6 +32,10 @@ import org.springframework.beans.factory.InitializingBean;
  * @since 1.2.2
  * @see org.springframework.jdbc.core.support.JdbcDaoSupport
  */
+
+/**
+ * DAOs的通用基类，定义了DAO初始化的模板方法。会被Spring的DAO支持类所继承，比如JdbcDaoSupport， JdoDaoSupport等等
+ */
 public abstract class DaoSupport implements InitializingBean {
 
 	/** Logger available to subclasses. */

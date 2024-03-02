@@ -43,6 +43,10 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @see ApplicationListenerMethodAdapter
  * @see TransactionalEventListener
  */
+
+/**
+ * GenericApplicationListener适配器，将对事件的处理委托给带@TransactionalEventListener注解的方法。
+ */
 class ApplicationListenerMethodTransactionalAdapter extends ApplicationListenerMethodAdapter {
 
 	private final TransactionalEventListener annotation;

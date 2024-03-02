@@ -35,6 +35,7 @@ import org.springframework.transaction.TransactionTimedOutException;
  */
 public abstract class ResourceHolderSupport implements ResourceHolder {
 
+	//当Holder被注册到同步之后，为true,否则为false;同步处理完成之后，synchronizedWithTransaction被重新设置为false
 	private boolean synchronizedWithTransaction = false;
 
 	private boolean rollbackOnly = false;

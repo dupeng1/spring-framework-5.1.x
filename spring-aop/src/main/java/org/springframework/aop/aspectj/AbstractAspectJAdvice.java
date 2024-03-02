@@ -59,6 +59,10 @@ import org.springframework.util.StringUtils;
  * @author Ramnivas Laddad
  * @since 2.0
  */
+
+/**
+ * AOP基类，用来包装AspectJ切面（AspectJ aspect）或AspectJ注解（AspectJ-annotated）的通知方法。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedenceInformation, Serializable {
 

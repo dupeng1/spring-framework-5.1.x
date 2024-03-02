@@ -29,6 +29,10 @@ package org.springframework.aop;
  * @since 04.04.2003
  * @see IntroductionInterceptor
  */
+
+/**
+ * advisor顾问，封装了spring aop中的切点和通知。这个接口是用来处理一个或者多个引入的顾问的父接口。
+ */
 public interface IntroductionAdvisor extends Advisor, IntroductionInfo {
 
 	/**

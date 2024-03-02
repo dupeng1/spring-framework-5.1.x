@@ -22,6 +22,10 @@ package org.springframework.dao;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 当前进程发生死锁，它的事务需要回滚时抛出的一般异常
+ */
 @SuppressWarnings("serial")
 public class DeadlockLoserDataAccessException extends PessimisticLockingFailureException {
 

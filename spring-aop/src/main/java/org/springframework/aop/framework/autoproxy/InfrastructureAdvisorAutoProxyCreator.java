@@ -27,6 +27,16 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0.7
  */
+
+/**
+ * 每一个bean初始化过程都是会运行postProcessAfterInitialization 方法
+ * BeanPostProcessor
+ * 	InstantiationAwareBeanPostProcessor
+ * 		SmartInstantiationAwareBeanPostProcessor
+ * 			AbstractAutoProxyCreator
+ * 				AbstractAdvisorAutoProxyCreator
+ * 						InfrastructureAdvisorAutoProxyCreator
+ */
 @SuppressWarnings("serial")
 public class InfrastructureAdvisorAutoProxyCreator extends AbstractAdvisorAutoProxyCreator {
 

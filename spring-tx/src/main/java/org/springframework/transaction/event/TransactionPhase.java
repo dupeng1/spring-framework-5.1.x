@@ -26,6 +26,10 @@ import org.springframework.transaction.support.TransactionSynchronization;
  * @since 4.2
  * @see TransactionalEventListener
  */
+
+/**
+ * 枚举类，枚举了事务事件监听器应用的时机。有：BEFORE_COMMIT、AFTER_COMMIT、AFTER_ROLLBACK、AFTER_COMPLETION。
+ */
 public enum TransactionPhase {
 
 	/**

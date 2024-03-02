@@ -64,12 +64,17 @@ public class BeanFactoryAdvisorRetrievalHelper {
 	 * @return the list of {@link org.springframework.aop.Advisor} beans
 	 * @see #isEligibleBean
 	 */
+	// 获取所有的Advisor
+	// 例如组件ProxyTransactionManagementConfiguration，会往Spring容器里面注册3个Bean。 切面、切点、通知。
+	// 其中切面BeanFactoryTransactionAttributeSourceAdvisor, 就是我们这里要拿到的。
 	public List<Advisor> findAdvisorBeans() {
 		// Determine list of advisor bean names, if not cached already.
+		// 获取缓存的advisor Bean 的名称列表，如果为null,
 		String[] advisorNames = this.cachedAdvisorBeanNames;
 		if (advisorNames == null) {
 			// Do not initialize FactoryBeans here: We need to leave all regular beans
 			// uninitialized to let the auto-proxy creator apply to them!
+			//这里是根据type  类型获取所有Advisor 对应的所有的类的beanName， 里面其实是调用的DefaultListableBeanFactory#getBeanNamesForType
 			advisorNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 					this.beanFactory, Advisor.class, true, false);
 			this.cachedAdvisorBeanNames = advisorNames;
@@ -80,6 +85,7 @@ public class BeanFactoryAdvisorRetrievalHelper {
 
 		List<Advisor> advisors = new ArrayList<>();
 		for (String name : advisorNames) {
+			// isEligibleBean()是提供的一个钩子方法，这里默认返回值都是true
 			if (isEligibleBean(name)) {
 				if (this.beanFactory.isCurrentlyInCreation(name)) {
 					if (logger.isTraceEnabled()) {
@@ -88,6 +94,7 @@ public class BeanFactoryAdvisorRetrievalHelper {
 				}
 				else {
 					try {
+						// 根据beanName 获取对应的Bean,加到advisors 里面
 						advisors.add(this.beanFactory.getBean(name, Advisor.class));
 					}
 					catch (BeanCreationException ex) {

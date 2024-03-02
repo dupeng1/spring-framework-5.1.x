@@ -29,6 +29,10 @@ import org.aopalliance.intercept.MethodInterceptor;
  * @author Rod Johnson
  * @see DynamicIntroductionAdvice
  */
+
+/**
+ * AOP联盟中的MethodInterceptor（方法拦截器，拦截方法并处理）的子接口。
+ */
 public interface IntroductionInterceptor extends MethodInterceptor, DynamicIntroductionAdvice {
 
 }

@@ -32,6 +32,10 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * PersistenceExceptionTranslator接口的实现类，支持链技术，允许按顺序添加PersistenceExceptionTranslator实例。
+ */
 public class ChainedPersistenceExceptionTranslator implements PersistenceExceptionTranslator {
 
 	/** List of PersistenceExceptionTranslators. */

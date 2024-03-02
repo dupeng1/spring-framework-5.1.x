@@ -35,6 +35,10 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
  * @see Ejb3TransactionAnnotationParser
  * @see JtaTransactionAnnotationParser
  */
+
+/**
+ * 策略接口，用于解析熟知的事务注解类型。
+ */
 public interface TransactionAnnotationParser {
 
 	/**

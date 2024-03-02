@@ -28,6 +28,10 @@ import java.lang.reflect.Method;
  * @author Rod Johnson
  * @see MethodInterceptor
  */
+
+/**
+ * Invocation的子类，返回被调用的方法信息。
+ */
 public interface MethodInvocation extends Invocation {
 
 	/**

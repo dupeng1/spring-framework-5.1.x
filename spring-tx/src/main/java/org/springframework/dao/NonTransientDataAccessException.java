@@ -27,6 +27,10 @@ import org.springframework.lang.Nullable;
  * @since 2.5
  * @see java.sql.SQLNonTransientException
  */
+
+/**
+ * 一种非暂态的数据访问异常，因为同一操作的重试仍然会失败还会引发该异常，除非引发异常的原因排除。
+ */
 @SuppressWarnings("serial")
 public abstract class NonTransientDataAccessException extends DataAccessException {
 

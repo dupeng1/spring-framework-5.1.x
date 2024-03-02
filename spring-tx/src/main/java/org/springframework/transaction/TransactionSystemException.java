@@ -26,6 +26,10 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @since 24.03.2003
  */
+
+/**
+ * 当一个事务系统发生故障时抛出的异常，比如在提交或者回滚时。
+ */
 @SuppressWarnings("serial")
 public class TransactionSystemException extends TransactionException {
 

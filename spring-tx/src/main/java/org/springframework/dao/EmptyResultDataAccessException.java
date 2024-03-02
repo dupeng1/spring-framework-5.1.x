@@ -24,6 +24,10 @@ package org.springframework.dao;
  * @since 2.0
  * @see IncorrectResultSizeDataAccessException
  */
+
+/**
+ * 当期望返回的结果至少包含一行数据（或者元素），但实际只有0个时抛出的异常
+ */
 @SuppressWarnings("serial")
 public class EmptyResultDataAccessException extends IncorrectResultSizeDataAccessException {
 

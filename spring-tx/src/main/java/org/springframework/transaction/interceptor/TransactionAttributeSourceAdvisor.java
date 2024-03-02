@@ -37,6 +37,10 @@ import org.springframework.util.Assert;
  * @see #setTransactionInterceptor
  * @see TransactionProxyFactoryBean
  */
+
+/**
+ * TransactionAttributeSource的增强器，用于包含一个事务拦截器，仅用于事务方法。
+ */
 @SuppressWarnings("serial")
 public class TransactionAttributeSourceAdvisor extends AbstractPointcutAdvisor {
 

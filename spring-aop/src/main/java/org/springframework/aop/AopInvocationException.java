@@ -25,6 +25,10 @@ import org.springframework.core.NestedRuntimeException;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 因为错误的配置或者始料不及的运行时出现的问题，导致AOP运行时方法调用失败时抛出的异常。
+ */
 @SuppressWarnings("serial")
 public class AopInvocationException extends NestedRuntimeException {
 

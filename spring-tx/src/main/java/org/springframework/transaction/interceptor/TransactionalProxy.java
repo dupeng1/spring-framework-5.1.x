@@ -28,6 +28,10 @@ import org.springframework.aop.SpringProxy;
  * @author Juergen Hoeller
  * @since 4.1.7
  */
+
+/**
+ * 标记接口，用于手动创建事务代理。
+ */
 public interface TransactionalProxy extends SpringProxy {
 
 }

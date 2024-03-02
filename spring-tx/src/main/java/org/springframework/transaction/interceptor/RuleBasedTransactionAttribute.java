@@ -39,6 +39,11 @@ import org.springframework.lang.Nullable;
  * @since 09.04.2003
  * @see TransactionAttributeEditor
  */
+
+/**
+ * TransactionAttribute实现类，通过应用许多回滚规则来计算给定的异常是否要引发事务的回滚，包括正面和负面的。
+ * 如果没有和该异常相关的规则，使用DefaultTransactionAttribute（在运行时异常时回滚）。
+ */
 @SuppressWarnings("serial")
 public class RuleBasedTransactionAttribute extends DefaultTransactionAttribute implements Serializable {
 

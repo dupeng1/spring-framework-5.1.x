@@ -35,6 +35,16 @@ import org.springframework.util.ClassUtils;
  * @see TransactionManagementConfigUtils#TRANSACTION_ASPECT_CONFIGURATION_CLASS_NAME
  * @see TransactionManagementConfigUtils#JTA_TRANSACTION_ASPECT_CONFIGURATION_CLASS_NAME
  */
+
+/**
+ * 配置启动事务启动（EnableTransactionManagement）时，导入注册的配置bean。
+ * 它包括AutoProxyRegistrar和ProxyTransactionManagementConfiguration两大配置块。
+ * （1）AutoProxyRegistrar ：负责依赖注入事务的相关属性配置和注入事务入口类(InfrastructureAdvisorAutoProxyCreator类)；
+ * （2）ProxyTransactionManagementConfiguration：负责注入事务相关的Bean，包括：
+ * 		事务切面Bean（BeanFactoryTransactionAttributeSourceAdvisor）；
+ * 		事务配置属性bean（TransactionAttributeSource）；
+ * 		事务拦截器bean（TransactionInterceptor）。
+ */
 public class TransactionManagementConfigurationSelector extends AdviceModeImportSelector<EnableTransactionManagement> {
 
 	/**
@@ -43,6 +53,7 @@ public class TransactionManagementConfigurationSelector extends AdviceModeImport
 	 * and {@code ASPECTJ} values of {@link EnableTransactionManagement#mode()},
 	 * respectively.
 	 */
+	//负责定义外部加入spring容器的配置类
 	@Override
 	protected String[] selectImports(AdviceMode adviceMode) {
 		switch (adviceMode) {

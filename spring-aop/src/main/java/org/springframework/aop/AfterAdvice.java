@@ -26,6 +26,10 @@ import org.aopalliance.aop.Advice;
  * @since 2.0.3
  * @see BeforeAdvice
  */
+
+/**
+ * 无论一个 join point 是正常退出还是发生了异常， 都会被执行的 advice。
+ */
 public interface AfterAdvice extends Advice {
 
 }

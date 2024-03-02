@@ -34,6 +34,11 @@ import org.springframework.util.TypeUtils;
  * @author Ramnivas Laddad
  * @since 2.0
  */
+
+/**
+ * 后置通知，AspectJ中 afterReturning 属性对应的通知（@AfterReturning 标注的方法会被解析成该通知），
+ * 在切面方法执行之后执行，如果有异常，则不执行。注意：该通知与AspectJMethodBeforeAdvice对应。
+ */
 @SuppressWarnings("serial")
 public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice
 		implements AfterReturningAdvice, AfterAdvice, Serializable {

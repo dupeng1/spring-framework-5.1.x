@@ -149,9 +149,14 @@ import org.springframework.core.Ordered;
  * @see ProxyTransactionManagementConfiguration
  * @see org.springframework.transaction.aspectj.AspectJTransactionManagementConfiguration
  */
+
+/**
+ * 开启Spring的注解驱动事务管理能力，使用在@Configuration类中。
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+// 引入TransactionManagementConfigurationSelector
 @Import(TransactionManagementConfigurationSelector.class)
 public @interface EnableTransactionManagement {
 

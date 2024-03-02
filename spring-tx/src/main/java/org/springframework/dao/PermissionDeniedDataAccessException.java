@@ -23,6 +23,10 @@ package org.springframework.dao;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 当一个潜在的资源被拒绝访问一个指定的元素，比如一个指定的数据库表时抛出的异常。
+ */
 @SuppressWarnings("serial")
 public class PermissionDeniedDataAccessException extends NonTransientDataAccessException {
 

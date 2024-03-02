@@ -44,6 +44,10 @@ import org.springframework.transaction.TransactionUsageException;
  * @see SimpleTransactionStatus
  * @see DefaultTransactionStatus
  */
+
+/**
+ * 持有事务的几个重要状态，业务执行后，spring事务管理器需要通过状态判断事务是提交或者是回滚
+ */
 public abstract class AbstractTransactionStatus implements TransactionStatus {
 
 	//是否需要回滚

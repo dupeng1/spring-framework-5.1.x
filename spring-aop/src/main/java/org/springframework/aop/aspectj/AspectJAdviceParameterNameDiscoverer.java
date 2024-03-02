@@ -117,6 +117,10 @@ import org.springframework.util.StringUtils;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 从切点表达式、返回值、抛出异常来推断一个AspectJ通知方法的参数名，如果不存在一个明确的推断，返回Null。
+ */
 public class AspectJAdviceParameterNameDiscoverer implements ParameterNameDiscoverer {
 
 	private static final String THIS_JOIN_POINT = "thisJoinPoint";

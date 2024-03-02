@@ -28,6 +28,10 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  * @see PessimisticLockingFailureException
  */
+
+/**
+ * 乐观锁冲突抛出的异常。对象关系映射工具或者个性化的DAO实现类会抛出该异常。乐观锁失效通常不是由数据库自身检测出来。
+ */
 @SuppressWarnings("serial")
 public class OptimisticLockingFailureException extends ConcurrencyFailureException {
 

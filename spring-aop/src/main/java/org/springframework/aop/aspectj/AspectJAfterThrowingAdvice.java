@@ -30,6 +30,10 @@ import org.springframework.aop.AfterAdvice;
  * @author Rod Johnson
  * @since 2.0
  */
+
+/**
+ * 异常通知，AspectJ中 after 属性对应的通知（@AfterThrowing标注的方法会被解析成该通知），在连接点抛出异常后执行。
+ */
 @SuppressWarnings("serial")
 public class AspectJAfterThrowingAdvice extends AbstractAspectJAdvice
 		implements MethodInterceptor, AfterAdvice, Serializable {

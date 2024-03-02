@@ -24,6 +24,10 @@ package org.aopalliance.intercept;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 运行时的方法调用，继承自joinpoint。
+ */
 public interface Invocation extends Joinpoint {
 
 	/**

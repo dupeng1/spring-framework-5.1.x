@@ -23,6 +23,10 @@ import java.io.Serializable;
  *
  * @author Rod Johnson
  */
+
+/**
+ * ClassFilter接口的一个最简单的实现类，匹配到所有的类
+ */
 @SuppressWarnings("serial")
 final class TrueClassFilter implements ClassFilter, Serializable {
 

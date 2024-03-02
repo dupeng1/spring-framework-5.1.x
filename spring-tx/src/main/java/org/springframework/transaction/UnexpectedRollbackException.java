@@ -23,6 +23,10 @@ package org.springframework.transaction;
  * @author Rod Johnson
  * @since 17.03.2003
  */
+
+/**
+ * 尝试提交一个事务，但是引发了一个意料之外的回滚抛出的异常。
+ */
 @SuppressWarnings("serial")
 public class UnexpectedRollbackException extends TransactionException {
 

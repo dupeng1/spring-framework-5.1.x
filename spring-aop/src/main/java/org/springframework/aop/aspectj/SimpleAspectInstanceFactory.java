@@ -31,6 +31,10 @@ import org.springframework.util.ReflectionUtils;
  * @author Juergen Hoeller
  * @since 2.0.4
  */
+
+/**
+ * 该接口主要用于从给定的类（或者 beanName 等）获取一个切面实例，这是AspectInstanceFactory接口的一个实现类。
+ */
 public class SimpleAspectInstanceFactory implements AspectInstanceFactory {
 
 	private final Class<?> aspectClass;

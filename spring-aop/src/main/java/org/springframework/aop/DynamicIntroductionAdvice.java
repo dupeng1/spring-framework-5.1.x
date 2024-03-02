@@ -36,6 +36,10 @@ import org.aopalliance.aop.Advice;
  * @see IntroductionInfo
  * @see IntroductionAdvisor
  */
+
+/**
+ * 引介通知（Introduction Advice）。
+ */
 public interface DynamicIntroductionAdvice extends Advice {
 
 	/**

@@ -48,6 +48,13 @@ package org.springframework.aop;
  * @see AfterReturningAdvice
  * @see MethodBeforeAdvice
  */
+
+/**
+ * 异常通知（Throws Advice），其中没有定义任何方法，它更像一个标记接口。
+ * 我们在定义异常通知时需要实现这个接口，同时方法的签名也有要求：
+ * 1、方法名称必须是afterThrowing。
+ * 2、方法的参数个数必须是1个或者4个。
+ */
 public interface ThrowsAdvice extends AfterAdvice {
 
 }

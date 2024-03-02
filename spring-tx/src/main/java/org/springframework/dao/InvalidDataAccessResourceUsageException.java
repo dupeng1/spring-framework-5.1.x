@@ -23,6 +23,10 @@ package org.springframework.dao;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 当我们不正确使用一个数据读取资源时抛出异常。比如，在使用关系数据库管理系统指定了错误的SQl语句。
+ */
 @SuppressWarnings("serial")
 public class InvalidDataAccessResourceUsageException extends NonTransientDataAccessException {
 

@@ -31,6 +31,10 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * spring集成其它数据获取技术（如jpa、toplink、jdo、hibernate等）抛出运行时异常的接口
+ */
 @FunctionalInterface
 public interface PersistenceExceptionTranslator {
 

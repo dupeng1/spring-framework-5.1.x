@@ -23,6 +23,7 @@ package org.springframework.transaction;
  * @author Rod Johnson
  * @since 17.03.2003
  */
+//使用一个事务API比如JTA（即Java Transaction API），创建不了一个事务时抛出的异常
 @SuppressWarnings("serial")
 public class CannotCreateTransactionException extends TransactionException {
 

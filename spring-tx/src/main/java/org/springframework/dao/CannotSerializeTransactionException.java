@@ -22,6 +22,10 @@ package org.springframework.dao;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 执行一个序列化模式下的事务失败抛出的异常。
+ */
 @SuppressWarnings("serial")
 public class CannotSerializeTransactionException extends PessimisticLockingFailureException {
 

@@ -25,6 +25,10 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  * @author Thomas Risberg
  */
+
+/**
+ * 资源完全失效时抛出的数据访问异常。比如，我们使用JDBC无法连接到一个数据库中
+ */
 @SuppressWarnings("serial")
 public class DataAccessResourceFailureException extends NonTransientDataAccessResourceException {
 

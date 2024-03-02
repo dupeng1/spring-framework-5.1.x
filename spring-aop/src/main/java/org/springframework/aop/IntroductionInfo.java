@@ -28,6 +28,11 @@ package org.springframework.aop;
  * @author Rod Johnson
  * @since 1.1.1
  */
+
+/**
+ * 描述一个引介需要的基本信息。引介(Introduction)是指在不更改源代码的情况，给一个现有类增加属性、方法，
+ * 以及让现有类实现其它接口或指定其它父类等，从而改变类的静态结构。是另一种类型的增强，和通知是并列的两种不同的增强。
+ */
 public interface IntroductionInfo {
 
 	/**

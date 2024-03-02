@@ -24,6 +24,7 @@ package org.springframework.transaction;
  * @author Juergen Hoeller
  * @since 17.03.2003
  */
+//事务协调器试探式的决策导致事务失败抛出的异常。
 @SuppressWarnings("serial")
 public class HeuristicCompletionException extends TransactionException {
 

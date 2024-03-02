@@ -27,6 +27,10 @@ package org.springframework.dao;
  * @author Thomas Risberg
  * @since 3.1
  */
+
+/**
+ * 查询超时抛出的异常。根据使用的数据库API可能会有不同的原因引发该异常，最有可能的就是一个执行中的查询操作完成前被数据库中断或者中止了。
+ */
 @SuppressWarnings("serial")
 public class QueryTimeoutException extends TransientDataAccessException {
 

@@ -26,6 +26,10 @@ import org.springframework.core.Ordered;
  * @since 2.0
  * @see org.springframework.aop.aspectj.autoproxy.AspectJPrecedenceComparator
  */
+
+/**
+ * 存储用来给通知、顾问根据AspectJ的排序规则进行排序用的相关信息。
+ */
 public interface AspectJPrecedenceInformation extends Ordered {
 
 	// Implementation note:

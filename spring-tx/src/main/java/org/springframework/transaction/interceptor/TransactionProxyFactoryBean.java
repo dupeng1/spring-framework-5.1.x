@@ -111,6 +111,11 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @see TransactionInterceptor
  * @see org.springframework.aop.framework.ProxyFactoryBean
  */
+
+/**
+ * 专门为目标Bean生成事务代理的工厂Bean。 每个TransactionProxyFactoryBean为一个目标Bean生成一个事务代理Bean，事务代理的方法改写了目标Bean的方法，
+ * 就是在目标Bean的方法执行之前加入开始事务，在目标Bean的方法正常结束之前提交事务，如果遇到特定异常则回滚。
+ */
 @SuppressWarnings("serial")
 public class TransactionProxyFactoryBean extends AbstractSingletonProxyFactoryBean
 		implements BeanFactoryAware {

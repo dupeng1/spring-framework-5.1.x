@@ -24,6 +24,10 @@ package org.springframework.transaction;
  * @author Juergen Hoeller
  * @since 12.05.2003
  */
+
+/**
+ * 指定一个非法的timeout时限抛出的异常，也就是说指定的时限超出了范围或者事务管理器不支持时限
+ */
 @SuppressWarnings("serial")
 public class InvalidTimeoutException extends TransactionUsageException {
 

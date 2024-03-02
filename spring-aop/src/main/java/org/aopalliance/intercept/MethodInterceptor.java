@@ -39,6 +39,10 @@ package org.aopalliance.intercept;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 方法拦截器，Interceptor的子接口，拦截方法并处理，核心类。
+ */
 @FunctionalInterface
 public interface MethodInterceptor extends Interceptor {
 

@@ -24,6 +24,10 @@ package org.springframework.dao;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 当在执行更新操作时发生了一些计划外的事情，但是事务并没有要回滚时抛出的数据读取异常。比如，当我们想要更新数据库管理系统中的1行数据时，但是却实际更新了3行。
+ */
 @SuppressWarnings("serial")
 public class IncorrectUpdateSemanticsDataAccessException extends InvalidDataAccessResourceUsageException {
 

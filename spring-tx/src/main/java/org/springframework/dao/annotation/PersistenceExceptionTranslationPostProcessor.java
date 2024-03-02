@@ -55,6 +55,12 @@ import org.springframework.util.Assert;
  * @see org.springframework.dao.DataAccessException
  * @see org.springframework.dao.support.PersistenceExceptionTranslator
  */
+
+/**
+ * 自动将标示为@repository的bean的持久化异常进行转译。
+ * 它增加一个PersistenceExceptionTranslationAdvisor来代理相应的已经存在的aop代理或者实现了目标接口的新产生的代理。
+ * 它将本地资源异常转换为spring的DataAccessException及其子类上。
+ */
 @SuppressWarnings("serial")
 public class PersistenceExceptionTranslationPostProcessor extends AbstractBeanFactoryAwareAdvisingPostProcessor {
 

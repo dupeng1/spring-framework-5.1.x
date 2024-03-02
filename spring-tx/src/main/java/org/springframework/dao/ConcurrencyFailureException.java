@@ -31,6 +31,10 @@ import org.springframework.lang.Nullable;
  * @see CannotAcquireLockException
  * @see DeadlockLoserDataAccessException
  */
+
+/**
+ * 并发失败时抛出的异常。该异常类需要被子类继承以指示失败的类型：乐观锁、未能成功获取锁等
+ */
 @SuppressWarnings("serial")
 public class ConcurrencyFailureException extends TransientDataAccessException {
 

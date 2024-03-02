@@ -32,6 +32,10 @@ import org.springframework.util.ClassUtils;
  * @see org.springframework.transaction.jta.WebLogicJtaTransactionManager
  * @see org.springframework.transaction.jta.WebSphereUowTransactionManager
  */
+
+/**
+ * 一个FactoryBean，等同于XML元素<tx:jta-transaction-manager>，自动检测WebLogic和WebSphere服务器，暴露相应的JtaTransactionManager子类。
+ */
 public class JtaTransactionManagerFactoryBean implements FactoryBean<JtaTransactionManager> {
 
 	private static final String WEBLOGIC_JTA_TRANSACTION_MANAGER_CLASS_NAME =

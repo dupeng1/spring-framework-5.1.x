@@ -33,6 +33,10 @@ import org.springframework.lang.Nullable;
  * @see TransactionProxyFactoryBean#setTransactionAttributeSource
  * @see org.springframework.transaction.annotation.AnnotationTransactionAttributeSource
  */
+
+/**
+ * 策略接口，被TransactionInterceptor使用，用于取回元数据。
+ */
 public interface TransactionAttributeSource {
 
 	/**

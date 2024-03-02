@@ -28,6 +28,10 @@ import org.springframework.util.StringUtils;
  * @author Juergen Hoeller
  * @since 16.03.2003
  */
+
+/**
+ * Spring通用的事务属性实现类。
+ */
 @SuppressWarnings("serial")
 public class DefaultTransactionAttribute extends DefaultTransactionDefinition implements TransactionAttribute {
 
@@ -130,6 +134,7 @@ public class DefaultTransactionAttribute extends DefaultTransactionDefinition im
 	 * intentionally declared as business exceptions, leading to a commit by default.
 	 * @see org.springframework.transaction.support.TransactionTemplate#execute
 	 */
+	//默认情况下发生运行时异常或Error的时候事务回滚，而这个默认行为就是通过这个rollbackOn方法来保证的
 	@Override
 	public boolean rollbackOn(Throwable ex) {
 		return (ex instanceof RuntimeException || ex instanceof Error);

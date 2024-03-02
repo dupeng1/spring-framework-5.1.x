@@ -49,6 +49,12 @@ import org.springframework.util.Assert;
  * @author Ramnivas Laddad
  * @since 2.0
  */
+
+/**
+ * AspectJ的ProceedingJoinPoint接口的一个实现类，包装了MethodInvocation。
+ * Proceedingjoinpoint接口 继承自 JoinPoint，是在JoinPoint的基础上暴露出 proceed 这个方法。环绕通知=前置+目标方法执行+后置通知，
+ * proceed方法就是用于启动目标方法执行的，暴露出这个方法，就能支持 aop:around 这种切面。
+ */
 public class MethodInvocationProceedingJoinPoint implements ProceedingJoinPoint, JoinPoint.StaticPart {
 
 	private static final ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();

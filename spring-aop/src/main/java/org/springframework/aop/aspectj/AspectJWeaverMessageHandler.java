@@ -41,6 +41,10 @@ import org.aspectj.bridge.IMessageHandler;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 实现自AspectJ的IMessageHandler接口，与常规Spring消息一样，使用相同的日志系统来对AspectJ编织消息进行路由。
+ */
 public class AspectJWeaverMessageHandler implements IMessageHandler {
 
 	private static final String AJ_ID = "[AspectJ] ";

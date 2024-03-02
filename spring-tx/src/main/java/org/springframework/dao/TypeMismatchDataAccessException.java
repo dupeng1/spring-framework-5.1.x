@@ -23,6 +23,10 @@ package org.springframework.dao;
  *
  * @author Rod Johnson
  */
+
+/**
+ * Java类型和数据库类别不匹配时抛出的异常。比如，尝试将错误类型的对象设置到一个关系数据库管理系统的列上。
+ */
 @SuppressWarnings("serial")
 public class TypeMismatchDataAccessException extends InvalidDataAccessResourceUsageException {
 

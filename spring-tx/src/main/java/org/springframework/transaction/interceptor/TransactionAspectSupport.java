@@ -75,6 +75,13 @@ import org.springframework.util.StringUtils;
  * 通过使用策略模式。 PlatformTransactionManager或ReactiveTransactionManager实现将执行实际的事务管理
  * 		PlatformTransactionManager：声明式事务管理器
  * 		ReactiveTransactionManager：编程式事务管理器
+ *
+ * 	1、TransactionAspectSupport 是Spring的事务切面逻辑抽象基类，该类实现了事务切面逻辑，但是自身设计为不能被直接使用，
+ * 	而是作为抽象基类被实现子类使用，应用于声明式事务使用场景。TransactionInterceptor，或者 AspectJ切面类AnnotationTransactionAspect.aj，JtaAnnotationTransactionAspect.aj都是继承自该类。
+ * 	2、TransactionAspectSupport为实现子类提供的核心工具方法就是#invokeWithinTransaction，该方法的实现会把一个对目标方法的调用包裹
+ * 	(可以理解成AOP中的around模式)在一个事务处理逻辑中。但是该方法何时被调用，就交给实现子类了。
+ * 	3、另外TransactionAspectSupport使用了策略设计模式(Strategy)。它会使用一个外部指定的PlatformTransactionManager来执行事务管理逻辑，
+ * 	并且使用一个外部指定的TransactionAttributeSource用来获取事务定义信息，也就是@Transactional这种注解上的信息。
  */
 public abstract class TransactionAspectSupport implements BeanFactoryAware, InitializingBean {
 
@@ -290,19 +297,23 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 		// If the transaction attribute is null, the method is non-transactional.
 		//1、 获取事务属性源 TransactionAttributeSource ，是一个策略接口，主要用来获取事务属性，根据不同类型的源，确定事务属性。
 		TransactionAttributeSource tas = getTransactionAttributeSource();
+
 		//2、根据属性源获取事务属性TransactionAttribute，是直接从 事务属性缓存
 		//Map<Object, TransactionAttribute> attributeCache 中获取的。
 		//获取了当前事务的TransactionAttribute（上面我们说过，该对象就是将@Transactional注解的属性值那过来封装了一下）
 		final TransactionAttribute txAttr = (tas != null ? tas.getTransactionAttribute(method, targetClass) : null);
+
 		//3、确定事务管理器 PlatformTransactionManager 。
 		// 如果没有指定事务管理器，会获取一个默认的事务管理器（本案例中是 DataSourceTransactionManager 并放到缓存中，之后直接从缓存获取。
 		//获取了事务的管理器TransactionManager，里面包含了数据源对象和一些默认的数据库配置
 		final PlatformTransactionManager tm = determineTransactionManager(txAttr);
+
 		//4、获取 joinpoint 标识，用于确定事务名称，值是方法全路径。
 		final String joinpointIdentification = methodIdentification(method, targetClass, txAttr);
 
 		if (txAttr == null || !(tm instanceof CallbackPreferringPlatformTransactionManager)) {
 			// Standard transaction demarcation with getTransaction and commit/rollback calls.
+
 			//5、创建事务 createTransactionIfNecessary
 			//创建了TransactionInfo对象，该方法里面做的事情比较多，提出去单独分析
 			TransactionInfo txInfo = createTransactionIfNecessary(tm, txAttr, joinpointIdentification);
@@ -316,12 +327,14 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 			}
 			catch (Throwable ex) {
 				// target invocation exception
+
 				//7、异常回滚/提交
 				//如果有异常，对当前事务进行处理,该方法也提到后面单独分析
 				completeTransactionAfterThrowing(txInfo, ex);
 				throw ex;
 			}
 			finally {
+
 				//8、清理ThreadLocal中保存的事务信息
 				//不管方法执行成功还是失败，都需要清除当前的事务信息（有可能是嵌套事务，需要给之前的事务一个干净的环境去执行）
 				cleanupTransactionInfo(txInfo);
@@ -481,6 +494,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	 * tell if there was a transaction created.
 	 * @see #getTransactionAttributeSource()
 	 */
+	//创建事务信息TransactionInfo：其中包括数据源、事务连接(ConnectionHolder)、事务状态、连接缓存等
 	@SuppressWarnings("serial")
 	protected TransactionInfo createTransactionIfNecessary(@Nullable PlatformTransactionManager tm,
 			@Nullable TransactionAttribute txAttr, final String joinpointIdentification) {
@@ -566,6 +580,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 			if (logger.isTraceEnabled()) {
 				logger.trace("Completing transaction for [" + txInfo.getJoinpointIdentification() + "]");
 			}
+			//通过事务管理器进行提交
 			txInfo.getTransactionManager().commit(txInfo.getTransactionStatus());
 		}
 	}
@@ -585,6 +600,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 			//1、检查事务属性/配置是否满足回滚条件
 			//xInfo.transactionAttribute.rollbackOn(ex)这是事务的回滚的关键判断条件
 			//当这个条件满足时，会触发 事务回滚。
+			//处理注解指定的异常，如果没指定，默认只处理RuntimeException和Error
 			if (txInfo.transactionAttribute != null && txInfo.transactionAttribute.rollbackOn(ex)) {
 				try {
 					//1.1、具体的事务管理器执行回滚操作

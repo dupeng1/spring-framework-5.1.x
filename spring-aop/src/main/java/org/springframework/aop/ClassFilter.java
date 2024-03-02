@@ -32,6 +32,15 @@ package org.springframework.aop;
  * @see Pointcut
  * @see MethodMatcher
  */
+
+/**
+ *主要作用是在类级别上对通知的应用进行一次过滤，如果它的match方法对任意的类都返回true的话，说明在类级别上我们不需要过滤，
+ * 这种情况下，通知的应用，就完全依赖MethodMatcher的匹配结果。ClassFilter有4中简单方式的实现：
+ *     （1）TypePatternClassFilter：基于AspectJ的类型匹配实现；
+ *         （2）AnnotationClassFilter：通过检查目标类是否存在指定的注解，决定是否匹配；
+ *         （3）RootClassFilter：通过判断目标类是否是指定类型（或其子类型），决定是否匹配；
+ *         （4）TrueClassFilter：这是最简单实现，matches方法总会返回true。此类设计使用了单例模式，且其对象引用直接被在ClassFilter接口中声明成了常量。
+ */
 @FunctionalInterface
 public interface ClassFilter {
 

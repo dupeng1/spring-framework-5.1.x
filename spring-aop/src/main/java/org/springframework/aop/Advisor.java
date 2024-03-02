@@ -33,6 +33,27 @@ import org.aopalliance.aop.Advice;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 1、Aspect（切面）
+ * 		切面是由Pointcut（切点）和Advice（通知）组成的，它包括了对横切关注功能的定义，也包括了对连接点的定义。
+ * 2、Advisor(顾问/增强器)
+ * 		Advisor是切面的另一种实现，绑定通知跟切点。没有指定切点的通知是没有意义的，Advisor可以说就是一个绑定在指定切点上的通知。
+ * 		它能够将通知以更为复杂的方式织入到目标对象中，是将通知包装为更复杂切面的装配器。
+ *
+ * 	3、封装了spring aop中的切点和通知。就是我们常用的@Aspect 注解标记的类。
+ * 		切点（pointcut）包含了连接点的描述信息。
+ * 		通知（advice）中包含了增强的横切代码，
+ *
+ * 	4、实现
+ * 		StaticMethodMatcherPointcut：静态方法切面。定义了一个classFilter，通过重写getClassFilter()方法来指定切面规则。另外实现了StaticMethodMatcher接口，通过重写matches来指定方法匹配规则。
+ * 		StaticMethodMatcherPointcutAdvisor：静态方法匹配切面顾问。扩展了切面排序方法。
+ * 		NameMatchMethodPointcut：名称匹配切面。通过指定方法集合变量mappedNames，模糊匹配。
+ * 		NameMatchMethodPointcutAdvisor：方法名称切面顾问。内部封装了NameMatchMethodPointcut，通过设置方法名称模糊匹配规则和通知来实现切面功能。
+ * 		RegexpMethodPointcutAdvisor：正则表达式切面顾问。可设置多个正则表达式规则，通过内部封装的JdkRegexpMethodPointcut解析正则表达式。
+ * 		DefaultPointcutAdvisor：默认切面顾问。比较灵活，可自由组合切面和通知。
+ * 		InstantiationModelAwarePointcutAdvisorImpl：springboot自动装配的顾问类型。是最常用的一种顾问实现。在注解实现的切面中，所有@Aspect类，都会被解析成该对象。
+ */
 public interface Advisor {
 
 	/**

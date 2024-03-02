@@ -27,6 +27,17 @@ import org.springframework.transaction.TransactionDefinition;
  * @author Juergen Hoeller
  * @since 1.2
  */
+
+/**
+ * 枚举类中定义了表示传播行为的枚举值：
+ *        （1）REQUIRED ：如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。
+ *         （2）SUPPORTS ：如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。
+*          （3）MANDATORY ：如果当前存在事务，则加入该事务；如果当前没有事务，则抛出异常。
+ *          （4）REQUIRES_NEW ：创建一个新的事务，如果当前存在事务，则把当前事务挂起。
+ *           （5）NOT_SUPPORTED ：以非事务方式运行，如果当前存在事务，则把当前事务挂起。
+ *           （6）NEVER ：以非事务方式运行，如果当前存在事务，则抛出异常。
+*             （7）NESTED ：若当前存在事务，则创建一个事务作为当前事务的嵌套事务来运行；若当前没有事务，则该取值等价于 REQUIRED 。
+ */
 public enum Propagation {
 
 	/**
