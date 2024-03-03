@@ -38,6 +38,10 @@ import org.springframework.beans.factory.xml.ParserContext;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 实现了接口BeanDefinitionParser，专门用来解析<aop:spring-configured/>标签。
+ */
 class SpringConfiguredBeanDefinitionParser implements BeanDefinitionParser {
 
 	/**

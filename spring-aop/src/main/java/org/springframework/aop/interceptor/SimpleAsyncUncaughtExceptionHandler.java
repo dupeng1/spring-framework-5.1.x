@@ -28,6 +28,10 @@ import org.apache.commons.logging.LogFactory;
  * @author Juergen Hoeller
  * @since 4.1
  */
+
+/**
+ * AsyncUncaughtExceptionHandler接口的一个默认实现，用来简单记录这个异常。
+ */
 public class SimpleAsyncUncaughtExceptionHandler implements AsyncUncaughtExceptionHandler {
 
 	private static final Log logger = LogFactory.getLog(SimpleAsyncUncaughtExceptionHandler.class);

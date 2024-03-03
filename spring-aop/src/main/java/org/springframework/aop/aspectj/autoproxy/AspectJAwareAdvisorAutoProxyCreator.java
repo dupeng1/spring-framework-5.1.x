@@ -43,6 +43,11 @@ import org.springframework.util.ClassUtils;
  * @author Ramnivas Laddad
  * @since 2.0
  */
+
+/**
+ * AspectJ的实现方式，也是Spring Aop中最常用的实现方式，
+ * 如果用注解方式，则用AnnotationAwareAspectJAutoProxyCreator（该类的一个子类）。
+ */
 @SuppressWarnings("serial")
 public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProxyCreator {
 

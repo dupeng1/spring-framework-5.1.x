@@ -66,6 +66,14 @@ import org.springframework.util.ClassUtils;
  * @see org.springframework.scheduling.annotation.AsyncAnnotationAdvisor
  * @see org.springframework.scheduling.annotation.AnnotationAsyncExecutionInterceptor
  */
+
+/**
+ * 异步任务选择执行器。其核心方法是invoke，主要流程；
+ * （1）获取拦截的方法。
+ * （2）根据被拦截的方法来选取执行异步任务的执行器。
+ * （3）构建任务（添加异常的处理方式）。
+ * （4）执行构建的任务并返回任务执行结果。
+ */
 public class AsyncExecutionInterceptor extends AsyncExecutionAspectSupport implements MethodInterceptor, Ordered {
 
 	/**
@@ -103,29 +111,34 @@ public class AsyncExecutionInterceptor extends AsyncExecutionAspectSupport imple
 		Class<?> targetClass = (invocation.getThis() != null ? AopUtils.getTargetClass(invocation.getThis()) : null);
 		Method specificMethod = ClassUtils.getMostSpecificMethod(invocation.getMethod(), targetClass);
 		final Method userDeclaredMethod = BridgeMethodResolver.findBridgedMethod(specificMethod);
-
+		// 获取方法调用对应的执行器
 		AsyncTaskExecutor executor = determineAsyncExecutor(userDeclaredMethod);
 		if (executor == null) {
+			// 执行器必须存在，否则直接抛出异常
 			throw new IllegalStateException(
 					"No executor specified and no default executor set on AsyncExecutionInterceptor either");
 		}
-
+		// 封装方法调用为异步任务
 		Callable<Object> task = () -> {
 			try {
+				// 调用方法调用
 				Object result = invocation.proceed();
 				if (result instanceof Future) {
+					// 等待返回值
 					return ((Future<?>) result).get();
 				}
 			}
 			catch (ExecutionException ex) {
+				// 异常处理
 				handleError(ex.getCause(), userDeclaredMethod, invocation.getArguments());
 			}
 			catch (Throwable ex) {
+				// 异常处理
 				handleError(ex, userDeclaredMethod, invocation.getArguments());
 			}
 			return null;
 		};
-
+		// 提交异步任务
 		return doSubmit(task, executor, invocation.getMethod().getReturnType());
 	}
 

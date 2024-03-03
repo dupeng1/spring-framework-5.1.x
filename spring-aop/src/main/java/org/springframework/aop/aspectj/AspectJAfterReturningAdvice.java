@@ -36,8 +36,7 @@ import org.springframework.util.TypeUtils;
  */
 
 /**
- * 后置通知，AspectJ中 afterReturning 属性对应的通知（@AfterReturning 标注的方法会被解析成该通知），
- * 在切面方法执行之后执行，如果有异常，则不执行。注意：该通知与AspectJMethodBeforeAdvice对应。
+ 包装AspectJ后置通知方法的Spring AOP Advice；
  */
 @SuppressWarnings("serial")
 public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice
@@ -67,6 +66,7 @@ public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice
 
 	@Override
 	public void afterReturning(@Nullable Object returnValue, Method method, Object[] args, @Nullable Object target) throws Throwable {
+		// 根据返回值判断是否调用
 		if (shouldInvokeOnReturnValueOf(method, returnValue)) {
 			invokeAdviceMethod(getJoinPointMatch(), returnValue, null);
 		}
@@ -85,6 +85,7 @@ public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice
 		Class<?> type = getDiscoveredReturningType();
 		Type genericType = getDiscoveredReturningGenericType();
 		// If we aren't dealing with a raw type, check if generic parameters are assignable.
+		// 判断返回值类型是否匹配，如果返回值类型是泛型类型，则泛型参数也要匹配
 		return (matchesReturnValue(type, method, returnValue) &&
 				(genericType == null || genericType == type ||
 						TypeUtils.isAssignable(genericType, method.getGenericReturnType())));
@@ -102,12 +103,15 @@ public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice
 	 */
 	private boolean matchesReturnValue(Class<?> type, Method method, @Nullable Object returnValue) {
 		if (returnValue != null) {
+			// 返回值是否是指定类型type
 			return ClassUtils.isAssignableValue(type, returnValue);
 		}
 		else if (Object.class == type && void.class == method.getReturnType()) {
+			// 方法无返回值也会匹配Object类型
 			return true;
 		}
 		else {
+			// 方法返回值类型是否匹配指定类型type
 			return ClassUtils.isAssignable(type, method.getReturnType());
 		}
 	}

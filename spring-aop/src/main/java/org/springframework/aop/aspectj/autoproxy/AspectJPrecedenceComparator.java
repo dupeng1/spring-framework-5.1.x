@@ -46,6 +46,11 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 排序比较器。它优先比较两个增强器所属的切面大小，如果是同一个切面产生的两个增强器，他们的大小是相同的，
+ * 则需要拿到它们的声明顺序即InstantiationModelAwarePointcutAdvisorImpl的declarationOrder属性。
+ */
 class AspectJPrecedenceComparator implements Comparator<Advisor> {
 
 	private static final int HIGHER_PRECEDENCE = -1;

@@ -39,10 +39,12 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
 
 /**
  * 策略实现，用于解析Spring事务注解。
+ * Spring的事务org.springframework.transaction.annotation.Transactional注解解析器
  */
 @SuppressWarnings("serial")
 public class SpringTransactionAnnotationParser implements TransactionAnnotationParser, Serializable {
 
+	//实现接口方法，解析该AnnotatedElement中@Transactional注解的事务属性
 	@Override
 	@Nullable
 	public TransactionAttribute parseTransactionAnnotation(AnnotatedElement element) {
@@ -60,17 +62,22 @@ public class SpringTransactionAnnotationParser implements TransactionAnnotationP
 		return parseTransactionAnnotation(AnnotationUtils.getAnnotationAttributes(ann, false, false));
 	}
 
+	//解析注解属性得到TransactionAttribute
 	protected TransactionAttribute parseTransactionAnnotation(AnnotationAttributes attributes) {
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
-
+		//这些就是我们平时在@Transactional中常设置的事务属性
+		//设置事务的传播属性
 		Propagation propagation = attributes.getEnum("propagation");
 		rbta.setPropagationBehavior(propagation.value());
+		//设置事务的隔离属性
 		Isolation isolation = attributes.getEnum("isolation");
 		rbta.setIsolationLevel(isolation.value());
 		rbta.setTimeout(attributes.getNumber("timeout").intValue());
 		rbta.setReadOnly(attributes.getBoolean("readOnly"));
+		//设置事务管理器的名称transactionManager
 		rbta.setQualifier(attributes.getString("value"));
 
+		//设置异常回滚属性，例如哪些异常回滚，哪些异常不会滚
 		List<RollbackRuleAttribute> rollbackRules = new ArrayList<>();
 		for (Class<?> rbRule : attributes.getClassArray("rollbackFor")) {
 			rollbackRules.add(new RollbackRuleAttribute(rbRule));

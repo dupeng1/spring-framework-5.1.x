@@ -42,6 +42,12 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @see org.springframework.aop.support.AopUtils
  */
+
+/**
+ * 对org.springframework.aop.support.AopUtils的一个补充。其中比较重要的方法： completeProxiedInterfaces
+ * （判断一个advised真正需要代理的目标接口列表 ）
+ * 和ultimateTargetClass（获取一个代理对象的最终对象类型）。
+ */
 public abstract class AopProxyUtils {
 
 	/**
@@ -117,6 +123,7 @@ public abstract class AopProxyUtils {
 	 */
 	static Class<?>[] completeProxiedInterfaces(AdvisedSupport advised, boolean decoratingProxy) {
 		Class<?>[] specifiedInterfaces = advised.getProxiedInterfaces();
+		// 首先得到用户设置的代理接口，如果没有检查和设置代理类是否是一个接口
 		if (specifiedInterfaces.length == 0) {
 			// No user-specified interfaces: check whether target class is an interface.
 			Class<?> targetClass = advised.getTargetClass();
@@ -130,8 +137,12 @@ public abstract class AopProxyUtils {
 				specifiedInterfaces = advised.getProxiedInterfaces();
 			}
 		}
+		// 如果用户代理的接口设置中没有SpringProxy接口，需要把代理类实现SpringProxy接口，该接口是个标记接口，说明是Spring代理
 		boolean addSpringProxy = !advised.isInterfaceProxied(SpringProxy.class);
+		// 如果代理类可以转化为Advised类型，并且用户没有指定Advised，则添加该接口，
+		//所以这里可以知道一般Spring的代理类都实现了该Advised接口
 		boolean addAdvised = !advised.isOpaque() && !advised.isInterfaceProxied(Advised.class);
+		//如果decoratingProxy==true，并且用户未添加DecoratingProxy接口，则代理需要实现该接口DecoratingProxy
 		boolean addDecoratingProxy = (decoratingProxy && !advised.isInterfaceProxied(DecoratingProxy.class));
 		int nonUserIfcCount = 0;
 		if (addSpringProxy) {
@@ -157,6 +168,7 @@ public abstract class AopProxyUtils {
 		if (addDecoratingProxy) {
 			proxiedInterfaces[index] = DecoratingProxy.class;
 		}
+		// 所以从上面分析得知，proxiedInterfaces会返回用户制定的代理接口+SpringProxy、Advised、DecoratingProxy
 		return proxiedInterfaces;
 	}
 

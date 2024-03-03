@@ -32,6 +32,11 @@ import org.springframework.lang.Nullable;
  * @see AspectMetadata
  * @see org.aspectj.lang.reflect.AjType
  */
+
+/**
+ * AspectInstanceFactory的子接口，返回与AspectJ annotated相关的AspectMetedata。本来AspectInstanceFactory包含该方法是最好的，
+ * 但是AspectMetedata仅仅使用Java 5，所以我们需要单独分离出该子接口。
+ */
 public interface MetadataAwareAspectInstanceFactory extends AspectInstanceFactory {
 
 	/**

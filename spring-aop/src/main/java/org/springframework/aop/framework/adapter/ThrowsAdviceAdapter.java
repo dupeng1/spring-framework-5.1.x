@@ -31,6 +31,10 @@ import org.springframework.aop.ThrowsAdvice;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 异常通知适配器。
+ */
 @SuppressWarnings("serial")
 class ThrowsAdviceAdapter implements AdvisorAdapter, Serializable {
 

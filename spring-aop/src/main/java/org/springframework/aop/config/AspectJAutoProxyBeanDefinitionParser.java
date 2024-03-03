@@ -36,12 +36,21 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 是一个实现了BeanDefinitionParser接口的类，专门用于解析切面自动代理的Bean定义的解析工作，重点在其parse方法。
+ */
 class AspectJAutoProxyBeanDefinitionParser implements BeanDefinitionParser {
 
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
+		//注册AnnotationAwareAspectJAutoProxyCreator
+		// 对于Aop的实现，基本都是靠AnnotatonAwareAspectJAutoProxyCreator去完成的，它可以根据@Point注解定义的切点来自动代理相匹配的bean。
+		//但是为了配置简便，Spring使用了自定义的配置帮助我们自动注册AnnotatonAwareAspectJAutoProxyCreator。
+		//此处实现了自动注册AnnotatonAwareAspectJAutoProxyCreator类的功能
 		AopNamespaceUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(parserContext, element);
+		//对注解中子类的处理
 		extendBeanDefinition(element, parserContext);
 		return null;
 	}

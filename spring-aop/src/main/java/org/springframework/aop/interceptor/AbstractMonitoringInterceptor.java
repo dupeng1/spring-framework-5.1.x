@@ -38,6 +38,10 @@ import org.springframework.lang.Nullable;
  * @see #setSuffix
  * @see #createInvocationTraceName
  */
+
+/**
+ * 监控拦截器的基类，比如性能监控器。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractMonitoringInterceptor extends AbstractTraceInterceptor {
 

@@ -36,6 +36,10 @@ import org.springframework.lang.Nullable;
  * @see AspectMetadata
  * @see org.aspectj.lang.reflect.AjTypeSystem
  */
+
+/**
+ * 该类主要用于对切面的校验，从切面中解析 Advisor， Advice 等。
+ */
 public interface AspectJAdvisorFactory {
 
 	/**

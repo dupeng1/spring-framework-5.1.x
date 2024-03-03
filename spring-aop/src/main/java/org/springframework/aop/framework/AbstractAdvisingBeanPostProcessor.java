@@ -31,6 +31,12 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 3.2
  */
+
+/**
+ * 继承自BeanPostProcessor，自身内置一个 Advisor，检查当前bean是否符合应用该 Advisor 的条件，
+ * 符合的话将自己的 Advisor 包裹到当前bean(必要的时候为当前bean创建代理对象以便包裹自己的Advisor)。
+ * 其中调用了函数AopUtils.canApply(this.advisor, targetClass)，用来检查某个 Advisor 是否可应用到某个 bean 上的。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractAdvisingBeanPostProcessor extends ProxyProcessorSupport implements BeanPostProcessor {
 

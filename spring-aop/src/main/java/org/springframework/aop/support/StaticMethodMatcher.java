@@ -26,16 +26,22 @@ import org.springframework.aop.MethodMatcher;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 静态方法匹配的一个抽象超类，它并不关系运行时期的参数。
+ */
 public abstract class StaticMethodMatcher implements MethodMatcher {
 
 	@Override
 	public final boolean isRuntime() {
+		// 静态匹配
 		return false;
 	}
 
 	@Override
 	public final boolean matches(Method method, Class<?> targetClass, Object... args) {
 		// should never be invoked because isRuntime() returns false
+		// 抛出不支持操作异常
 		throw new UnsupportedOperationException("Illegal MethodMatcher usage");
 	}
 

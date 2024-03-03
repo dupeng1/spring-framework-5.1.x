@@ -46,6 +46,36 @@ import org.springframework.util.Assert;
  * @since 2.0
  * @see org.springframework.aop.aspectj.annotation.AspectJAdvisorFactory
  */
+
+/**
+ * 目前SpringBoot框架中默认支持的方式，自动配置。
+ * 目前最常用的AOP使用方式。spring aop 开启注解方式之后，该类会扫描所有@Aspect()注释的类，生成对应的advisor。
+ * AnnotationAwareAspectJAutoProxyCreator的继承关系如下：
+ *         AnnotationAwareAspectJAutoProxyCreator
+ *             --AspectJAwareAdvisorAutoProxyCreator
+ *                 --AbstractAdvisorAutoProxyCreator
+ *                     --AbstractAutoProxyCreator
+ *                         -- ProxyProcessorSupport;
+ *                            SmartInstantiationAwareBeanPostProcessor;
+ *                            BeanFactoryAware;
+ *  ProxyProcessorSupport
+ *             --ProxyConfig;
+ *               Ordered;
+ *               BeanClassLoaderAware;
+ *               AopInfrastructureBean;
+ *
+ *
+ *  SmartInstantiationAwareBeanPostProcessor
+ *             --InstantiationAwareBeanPostProcessor
+ *                 --BeanPostProcessor
+ *
+ *
+ *  BeanFactoryAware
+ *             --Aware
+ *
+ *  它处理当前应用上下文用中所有的 AspectJ 中 @Aspect 注解 以及 Spring Advisor，
+ *  通过 ReflectiveAspectJAdvisorFactory 和 BeanFactoryAspectJAdvisorsBuilderAdapter 相互搭配实现
+ */
 @SuppressWarnings("serial")
 public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorAutoProxyCreator {
 
@@ -89,8 +119,10 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 	@Override
 	protected List<Advisor> findCandidateAdvisors() {
 		// Add all the Spring advisors found according to superclass rules.
+		// 通过 Spring IoC 容器获取所有 Advisor Bean
 		List<Advisor> advisors = super.findCandidateAdvisors();
 		// Build Advisors for all AspectJ aspects in the bean factory.
+		// 通过 Spring IoC 容器获取所有标注 @AspectJ 注解的 Bean，再获取标注 AspectJ 注解（除了@Pointcut 其他的注解 @After、@Before、@AfterReturning 等）的方法
 		if (this.aspectJAdvisorsBuilder != null) {
 			advisors.addAll(this.aspectJAdvisorsBuilder.buildAspectJAdvisors());
 		}

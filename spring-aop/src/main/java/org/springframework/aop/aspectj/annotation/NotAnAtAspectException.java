@@ -26,6 +26,10 @@ import org.springframework.aop.framework.AopConfigException;
  * @author Rod Johnson
  * @since 2.0
  */
+
+/**
+ * AopConfigException类的拓展，当试图对一个类生成顾问，但是该类又不是AspectJ 注解类型的切面的时候抛出异常。
+ */
 @SuppressWarnings("serial")
 public class NotAnAtAspectException extends AopConfigException {
 

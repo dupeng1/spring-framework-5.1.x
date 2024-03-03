@@ -32,10 +32,15 @@ import org.springframework.util.Assert;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 同时作为StaticMethodMatcherPointcut的Advisor的基础抽象类；
+ * 静态方法匹配切面顾问，扩展了切面排序方法。
+ */
 @SuppressWarnings("serial")
 public abstract class StaticMethodMatcherPointcutAdvisor extends StaticMethodMatcherPointcut
 		implements PointcutAdvisor, Ordered, Serializable {
-
+	// 默认空通知
 	private Advice advice = EMPTY_ADVICE;
 
 	private int order = Ordered.LOWEST_PRECEDENCE;
@@ -84,6 +89,7 @@ public abstract class StaticMethodMatcherPointcutAdvisor extends StaticMethodMat
 
 	@Override
 	public Pointcut getPointcut() {
+		// 返回自身
 		return this;
 	}
 

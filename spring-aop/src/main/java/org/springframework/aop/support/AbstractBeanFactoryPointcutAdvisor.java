@@ -40,6 +40,10 @@ import org.springframework.util.Assert;
  * @see #setAdviceBeanName
  * @see DefaultBeanFactoryPointcutAdvisor
  */
+
+/**
+ * 基于Bean工厂的切点增强器，允许任何通知配置成指向在bean工厂中的通知bean。通过指定通知bean的名字而不是通知对象本身，在初始化时可以降低耦合度，可以切点真正匹配的时候再去初始化通知对象。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractBeanFactoryPointcutAdvisor extends AbstractPointcutAdvisor implements BeanFactoryAware {
 

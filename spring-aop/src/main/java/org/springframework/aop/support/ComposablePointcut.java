@@ -40,6 +40,11 @@ import org.springframework.util.Assert;
  * @since 11.11.2003
  * @see Pointcuts
  */
+
+/**
+ * 组合模式的Pointcut；
+ * 复合切点。这种切点可以与或逻辑，任意组合其他的Pointcut、ClassFilter和MethodMatcher。其本质是通过ClassFilters和MethodMatchers两个工具类进行Pointcut内部组件的组合。
+ */
 public class ComposablePointcut implements Pointcut, Serializable {
 
 	/** use serialVersionUID from Spring 1.2 for interoperability. */
@@ -110,6 +115,7 @@ public class ComposablePointcut implements Pointcut, Serializable {
 	 * @return this composable pointcut (for call chaining)
 	 */
 	public ComposablePointcut union(ClassFilter other) {
+		// 类过滤器并集
 		this.classFilter = ClassFilters.union(this.classFilter, other);
 		return this;
 	}
@@ -120,6 +126,7 @@ public class ComposablePointcut implements Pointcut, Serializable {
 	 * @return this composable pointcut (for call chaining)
 	 */
 	public ComposablePointcut intersection(ClassFilter other) {
+		// 类过滤器交集
 		this.classFilter = ClassFilters.intersection(this.classFilter, other);
 		return this;
 	}
@@ -130,6 +137,7 @@ public class ComposablePointcut implements Pointcut, Serializable {
 	 * @return this composable pointcut (for call chaining)
 	 */
 	public ComposablePointcut union(MethodMatcher other) {
+		// 方法匹配器并集
 		this.methodMatcher = MethodMatchers.union(this.methodMatcher, other);
 		return this;
 	}
@@ -140,6 +148,7 @@ public class ComposablePointcut implements Pointcut, Serializable {
 	 * @return this composable pointcut (for call chaining)
 	 */
 	public ComposablePointcut intersection(MethodMatcher other) {
+		// 方法匹配器交集
 		this.methodMatcher = MethodMatchers.intersection(this.methodMatcher, other);
 		return this;
 	}
@@ -154,8 +163,10 @@ public class ComposablePointcut implements Pointcut, Serializable {
 	 * @return this composable pointcut (for call chaining)
 	 */
 	public ComposablePointcut union(Pointcut other) {
+		// 方法匹配器并集
 		this.methodMatcher = MethodMatchers.union(
 				this.methodMatcher, this.classFilter, other.getMethodMatcher(), other.getClassFilter());
+		// 类过滤器并集
 		this.classFilter = ClassFilters.union(this.classFilter, other.getClassFilter());
 		return this;
 	}
@@ -166,7 +177,9 @@ public class ComposablePointcut implements Pointcut, Serializable {
 	 * @return this composable pointcut (for call chaining)
 	 */
 	public ComposablePointcut intersection(Pointcut other) {
+		// 类过滤器交集
 		this.classFilter = ClassFilters.intersection(this.classFilter, other.getClassFilter());
+		// 方法匹配器交集
 		this.methodMatcher = MethodMatchers.intersection(this.methodMatcher, other.getMethodMatcher());
 		return this;
 	}

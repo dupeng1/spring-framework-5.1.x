@@ -81,6 +81,12 @@ import org.springframework.util.StringUtils;
  * @author Dave Syer
  * @since 2.0
  */
+
+/**
+ * Spring中使用AspectJ编织器来评估切点表达式的Pointcut实现；
+ * 切入点表达式值是一个 AspectJ 表达式，这可以引用其他切点，可以使用组合和其他操作。
+ * 由于这是由Spring AOP基于代理模型实现的，因此只支持方法执行切点；
+ */
 @SuppressWarnings("serial")
 public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 		implements ClassFilter, IntroductionAwareMethodMatcher, BeanFactoryAware {
@@ -190,11 +196,14 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 	 * lazily building the underlying AspectJ pointcut expression.
 	 */
 	private PointcutExpression obtainPointcutExpression() {
+		// 校验expression
 		if (getExpression() == null) {
 			throw new IllegalStateException("Must set property 'expression' before attempting to match");
 		}
+		// this.pointcutExpression懒构建
 		if (this.pointcutExpression == null) {
 			this.pointcutClassLoader = determinePointcutClassLoader();
+			// 构建this.pointcutExpression
 			this.pointcutExpression = buildPointcutExpression(this.pointcutClassLoader);
 		}
 		return this.pointcutExpression;
@@ -252,6 +261,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 	 * We also allow {@code and} between two pointcut sub-expressions.
 	 * <p>This method converts back to {@code &&} for the AspectJ pointcut parser.
 	 */
+	// 将and/or/not转换为AspectJ逻辑运算符
 	private String replaceBooleanOperators(String pcExpr) {
 		String result = StringUtils.replace(pcExpr, " and ", " && ");
 		result = StringUtils.replace(result, " or ", " || ");

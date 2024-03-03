@@ -27,6 +27,10 @@ import org.springframework.lang.Nullable;
  * @author Ramnivas Laddad
  * @since 2.5
  */
+
+/**
+ * 当前代理创建的上下文，主要给自动代理创建器使用。比如AbstractAdvisorAutoProxyCreator。
+ */
 public final class ProxyCreationContext {
 
 	/** ThreadLocal holding the current proxied bean name during Advisor matching. */

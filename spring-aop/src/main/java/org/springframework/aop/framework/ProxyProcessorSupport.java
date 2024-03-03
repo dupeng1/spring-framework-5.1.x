@@ -36,6 +36,10 @@ import org.springframework.util.ObjectUtils;
  * @see AbstractAdvisingBeanPostProcessor
  * @see org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator
  */
+
+/**
+ * 提供为代理创建器提供了一些公共方法实现。
+ */
 @SuppressWarnings("serial")
 public class ProxyProcessorSupport extends ProxyConfig implements Ordered, BeanClassLoaderAware, AopInfrastructureBean {
 
@@ -47,7 +51,7 @@ public class ProxyProcessorSupport extends ProxyConfig implements Ordered, BeanC
 
 	@Nullable
 	private ClassLoader proxyClassLoader = ClassUtils.getDefaultClassLoader();
-
+	//管理属性 proxyClassLoader 只允许设置一次
 	private boolean classLoaderConfigured = false;
 
 
@@ -101,10 +105,16 @@ public class ProxyProcessorSupport extends ProxyConfig implements Ordered, BeanC
 	 * @param beanClass the class of the bean
 	 * @param proxyFactory the ProxyFactory for the bean
 	 */
+	//检查给定 bean 类上的接口，并将它们应用到 ProxyFactory(如果可用的话)。
 	protected void evaluateProxyInterfaces(Class<?> beanClass, ProxyFactory proxyFactory) {
 		//获取beanclass 所有的 interface
 		Class<?>[] targetInterfaces = ClassUtils.getAllInterfacesForClass(beanClass, getProxyClassLoader());
 		boolean hasReasonableProxyInterface = false;
+		/**
+		 *  获取的接口列表，只要接口列表满足一个不是 Spring 框架 InitializingBean、DisposableBean、Aware 接口扩展接口和
+		 *  不是 Jdk 中 AutoCloseable 和 Closeable 接口并且不是内部语言接口（接口名称是 groovy.lang.GroovyObject
+		 *  或者是以 .cglib.proxy.Factory 结尾或者 .bytebuddy.MockAccess 结尾）并且不是空接口
+		 */
 		for (Class<?> ifc : targetInterfaces) {
 			//对所有的interface 继续判断，是否是 回调接口，或者一些内部语言接口 ，并且需要 有至少一个方法
 			if (!isConfigurationCallbackInterface(ifc) && !isInternalLanguageInterface(ifc) &&
@@ -113,6 +123,7 @@ public class ProxyProcessorSupport extends ProxyConfig implements Ordered, BeanC
 				break;
 			}
 		}
+		// 如果有可代理的接口添加到代理工厂中
 		if (hasReasonableProxyInterface) {
 			// Must allow for introductions; can't just set interfaces to the target's interfaces only.
 			for (Class<?> ifc : targetInterfaces) {

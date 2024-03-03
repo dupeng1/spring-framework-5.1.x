@@ -32,6 +32,7 @@ import org.springframework.lang.Nullable;
 /**
  * 前置通知（Before Advice）跟环绕通知不同的是，这个接口中定义的方法的返回值是void，
  * 所以前置通知是无法修改方法的返回值的。如果在前置通知中发生了异常，那么会直接终止目标方法的执行以及打断整个拦截器链的执行。
+ * Spring目前只支持方法前置通知；
  */
 public interface MethodBeforeAdvice extends BeforeAdvice {
 

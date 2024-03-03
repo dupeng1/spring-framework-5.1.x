@@ -29,6 +29,10 @@ import java.lang.reflect.Method;
  * @author Stephane Nicoll
  * @since 4.1
  */
+
+/**
+ * 异步任务执行抛出的异常catch不到时通过此接口进行处理。一个异步任务通常会返回一个java.util.concurrent.Future实例，以访问潜在的异常，当这个异步任务不提供这个返回值时，这个句柄就负责处理此类捕获不到的异常。
+ */
 @FunctionalInterface
 public interface AsyncUncaughtExceptionHandler {
 

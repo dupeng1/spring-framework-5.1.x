@@ -27,6 +27,10 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 获取增强器链的工厂接口。提供方法返回所有增强器，以数组返回。
+ */
 public interface AdvisorChainFactory {
 
 	/**

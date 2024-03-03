@@ -34,6 +34,11 @@ import org.springframework.util.Assert;
  * @see AnnotationClassFilter
  * @see AnnotationMethodMatcher
  */
+
+/**
+ * 匹配类上或者方法上是否有指定注解的Pointcut；
+ * 注解匹配切点，JDK5以后，通过注解方式声明切点。根据类上或方法上是否存在指定的注解判断切点的匹配性，如果没有显示指定注解，则匹配所有。
+ */
 public class AnnotationMatchingPointcut implements Pointcut {
 
 	private final ClassFilter classFilter;
@@ -57,7 +62,9 @@ public class AnnotationMatchingPointcut implements Pointcut {
 	 * @see AnnotationClassFilter#AnnotationClassFilter(Class, boolean)
 	 */
 	public AnnotationMatchingPointcut(Class<? extends Annotation> classAnnotationType, boolean checkInherited) {
+		// AnnotationClassFilter类过滤器，checkInherited决定要不要寻找classAnnotationType的超类
 		this.classFilter = new AnnotationClassFilter(classAnnotationType, checkInherited);
+		// 匹配任意方法
 		this.methodMatcher = MethodMatcher.TRUE;
 	}
 
@@ -91,14 +98,14 @@ public class AnnotationMatchingPointcut implements Pointcut {
 
 		Assert.isTrue((classAnnotationType != null || methodAnnotationType != null),
 				"Either Class annotation type or Method annotation type needs to be specified (or both)");
-
+		// 设置类过滤器
 		if (classAnnotationType != null) {
 			this.classFilter = new AnnotationClassFilter(classAnnotationType, checkInherited);
 		}
 		else {
 			this.classFilter = ClassFilter.TRUE;
 		}
-
+		// 设置方法过滤器
 		if (methodAnnotationType != null) {
 			this.methodMatcher = new AnnotationMethodMatcher(methodAnnotationType, checkInherited);
 		}
@@ -148,6 +155,7 @@ public class AnnotationMatchingPointcut implements Pointcut {
 	 * @param annotationType the annotation type to look for at the class level
 	 * @return the corresponding AnnotationMatchingPointcut
 	 */
+	// 生成匹配类上特定注解类型的AnnotationMatchingPointcut的工厂方法
 	public static AnnotationMatchingPointcut forClassAnnotation(Class<? extends Annotation> annotationType) {
 		Assert.notNull(annotationType, "Annotation type must not be null");
 		return new AnnotationMatchingPointcut(annotationType);
@@ -159,6 +167,7 @@ public class AnnotationMatchingPointcut implements Pointcut {
 	 * @param annotationType the annotation type to look for at the method level
 	 * @return the corresponding AnnotationMatchingPointcut
 	 */
+	// 生成匹配方法上特定注解类型的AnnotationMatchingPointcut的工厂方法
 	public static AnnotationMatchingPointcut forMethodAnnotation(Class<? extends Annotation> annotationType) {
 		Assert.notNull(annotationType, "Annotation type must not be null");
 		return new AnnotationMatchingPointcut(null, annotationType);

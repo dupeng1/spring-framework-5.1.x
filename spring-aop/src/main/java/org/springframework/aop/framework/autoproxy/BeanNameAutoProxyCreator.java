@@ -43,6 +43,10 @@ import org.springframework.util.StringUtils;
  * @see #setInterceptorNames
  * @see AbstractAutoProxyCreator
  */
+
+/**
+ * 根据指定名称创建代理对象。通过设置 advisor，可以对指定的 beanName 进行代理。支持模糊匹配。
+ */
 @SuppressWarnings("serial")
 public class BeanNameAutoProxyCreator extends AbstractAutoProxyCreator {
 

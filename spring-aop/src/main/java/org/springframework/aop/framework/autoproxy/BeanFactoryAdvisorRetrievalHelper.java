@@ -38,6 +38,10 @@ import org.springframework.util.Assert;
  * @since 2.0.2
  * @see AbstractAdvisorAutoProxyCreator
  */
+
+/**
+ * 这个类很重要，是一个Spring AOP内部工具类，用来从bean容器（BeanFactory）中获取所有Spring的Advisor bean（这里的 Spring Advisor bean指的是实现了接口org.springframework.aop.Advisor的bean）。是真正去容器中找出所有的Advisor的类。该工具内部使用了缓存机制，虽然公开的查找方法可能会被调用多次，但并不是每次都会真正查找，而是会利用缓存。
+ */
 public class BeanFactoryAdvisorRetrievalHelper {
 
 	private static final Log logger = LogFactory.getLog(BeanFactoryAdvisorRetrievalHelper.class);
@@ -69,12 +73,12 @@ public class BeanFactoryAdvisorRetrievalHelper {
 	// 其中切面BeanFactoryTransactionAttributeSourceAdvisor, 就是我们这里要拿到的。
 	public List<Advisor> findAdvisorBeans() {
 		// Determine list of advisor bean names, if not cached already.
-		// 获取缓存的advisor Bean 的名称列表，如果为null,
 		String[] advisorNames = this.cachedAdvisorBeanNames;
+		//如果cachedAdvisorBeanNames为空，则到容器中查找，并设置缓存，后续直接使用缓存即可
 		if (advisorNames == null) {
 			// Do not initialize FactoryBeans here: We need to leave all regular beans
 			// uninitialized to let the auto-proxy creator apply to them!
-			//这里是根据type  类型获取所有Advisor 对应的所有的类的beanName， 里面其实是调用的DefaultListableBeanFactory#getBeanNamesForType
+			//从容器中查找Advisor类型的bean的名称，里面其实是调用的DefaultListableBeanFactory#getBeanNamesForType
 			advisorNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 					this.beanFactory, Advisor.class, true, false);
 			this.cachedAdvisorBeanNames = advisorNames;
@@ -84,9 +88,11 @@ public class BeanFactoryAdvisorRetrievalHelper {
 		}
 
 		List<Advisor> advisors = new ArrayList<>();
+		//遍历advisorNames
 		for (String name : advisorNames) {
 			// isEligibleBean()是提供的一个钩子方法，这里默认返回值都是true
 			if (isEligibleBean(name)) {
+				//忽略正在创建中的advisor bean
 				if (this.beanFactory.isCurrentlyInCreation(name)) {
 					if (logger.isTraceEnabled()) {
 						logger.trace("Skipping currently created advisor '" + name + "'");
@@ -94,7 +100,7 @@ public class BeanFactoryAdvisorRetrievalHelper {
 				}
 				else {
 					try {
-						// 根据beanName 获取对应的Bean,加到advisors 里面
+						//调用getBean方法从容器中获取名称为name的bean，并将bean添加到advisors中
 						advisors.add(this.beanFactory.getBean(name, Advisor.class));
 					}
 					catch (BeanCreationException ex) {

@@ -33,6 +33,10 @@ import org.springframework.util.StringUtils;
  * @author Sam Brannen
  * @since 2.0
  */
+
+/**
+ * ClassFilter类过滤器。基于AspectJ的类型匹配实现。
+ */
 public class TypePatternClassFilter implements ClassFilter {
 
 	private String typePattern = "";

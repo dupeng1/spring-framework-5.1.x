@@ -30,6 +30,10 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 创建专用的target source。
+ */
 @FunctionalInterface
 public interface TargetSourceCreator {
 

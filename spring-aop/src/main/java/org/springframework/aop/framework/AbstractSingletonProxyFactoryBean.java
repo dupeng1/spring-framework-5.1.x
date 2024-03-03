@@ -38,6 +38,10 @@ import org.springframework.util.ClassUtils;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * FactoryBean的一个超类，主要用来生成singleton-scoped代理对象。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractSingletonProxyFactoryBean extends ProxyConfig
 		implements FactoryBean<Object>, BeanClassLoaderAware, InitializingBean {

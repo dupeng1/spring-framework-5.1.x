@@ -39,6 +39,11 @@ import org.springframework.util.ConcurrencyThrottleSupport;
  * @since 11.02.2004
  * @see #setConcurrencyLimit
  */
+
+/**
+ * 继承自ConcurrencyThrottleSupport，spring控制并发数的工具类。在ConcurrencyThrottleSupport类中，简单的通过synchronized和wati and notify达到控制线程数量的效果，从而实现限流的策略。
+ * 该拦截器中的invoke()方法中，在执行目标方法的前后分别执行beforeAccess()和 afterAccess()方法。在beforeAccess方法中通过内部计数器concurrencyCount来对比设置的阀值concurrencyLimit，如果超过设置值，则阻塞；若没有超过设置值，则concurrencyCount自加。在afterAccess方法中自减concurrencyCount。
+ */
 @SuppressWarnings("serial")
 public class ConcurrencyThrottleInterceptor extends ConcurrencyThrottleSupport
 		implements MethodInterceptor, Serializable {

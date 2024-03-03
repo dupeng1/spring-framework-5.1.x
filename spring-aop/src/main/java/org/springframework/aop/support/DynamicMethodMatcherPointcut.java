@@ -28,10 +28,16 @@ import org.springframework.aop.Pointcut;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 动态匹配的Pointcut；
+ * 动态方法匹配器切点。它本质上是一个方法匹配器，但同时具有了切点的功能。
+ */
 public abstract class DynamicMethodMatcherPointcut extends DynamicMethodMatcher implements Pointcut {
 
 	@Override
 	public ClassFilter getClassFilter() {
+		// 匹配任意类
 		return ClassFilter.TRUE;
 	}
 

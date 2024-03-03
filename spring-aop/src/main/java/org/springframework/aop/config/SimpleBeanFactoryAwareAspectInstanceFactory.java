@@ -33,6 +33,10 @@ import org.springframework.util.ClassUtils;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 继承自AspectInstanceFactory（切面实例工厂），该类在bean工厂中通过bean的名字可以定位到切面。
+ */
 public class SimpleBeanFactoryAwareAspectInstanceFactory implements AspectInstanceFactory, BeanFactoryAware {
 
 	@Nullable

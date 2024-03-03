@@ -36,7 +36,7 @@ import org.springframework.aop.ProxyMethodInvocation;
  */
 
 /**
- * 环绕通知，AspectJ中 around 属性对应的通知（@Around标注的方法会被解析成该通知），在切面方法执行前后执行。
+ * 包装AspectJ环绕通知方法的Spring AOP Advice
  */
 @SuppressWarnings("serial")
 public class AspectJAroundAdvice extends AbstractAspectJAdvice implements MethodInterceptor, Serializable {

@@ -28,6 +28,10 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 简单的装饰，使MetadataAwareAspectInstanceFactory实例化一次。
+ */
 @SuppressWarnings("serial")
 public class LazySingletonAspectInstanceFactoryDecorator implements MetadataAwareAspectInstanceFactory, Serializable {
 

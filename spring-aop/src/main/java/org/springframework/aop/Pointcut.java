@@ -33,7 +33,8 @@ package org.springframework.aop;
 
 /**
  * 切点。切点的主要作用是定义通知所要应用到的类跟方法。
- * 具体的哪些类、哪些方法由ClassFilter和MethodMatcher匹配，只有满足切入点的条件时才插入advice。
+ * Pointcut 由一个【ClassFilter】和一个【MethodMatcher】组成，Pointcut 要先经过【类型匹配】上了之后再通过【方法匹配】
+ * 具体的哪些类、哪些方法由【ClassFilter】和【MethodMatcher】匹配，只有满足切入点的条件时才插入【advice】。
  *
  * 	AnnotationMatchingPointcut：注解匹配切点。根据类上或方法上是否存在指定的注解判断切点的匹配性，如果没有显示指定注解，则匹配所有。
  * 	DynamicMethodMatcherPointcut：动态方法匹配器切点。它本质上是一个方法匹配器，但同时具有了切点的功能。
@@ -54,18 +55,21 @@ public interface Pointcut {
 	 * Return the ClassFilter for this pointcut.
 	 * @return the ClassFilter (never {@code null})
 	 */
+	//类过滤器，用于匹配类
 	ClassFilter getClassFilter();
 
 	/**
 	 * Return the MethodMatcher for this pointcut.
 	 * @return the MethodMatcher (never {@code null})
 	 */
+	//方法匹配器，用于匹配方法
 	MethodMatcher getMethodMatcher();
 
 
 	/**
 	 * Canonical Pointcut instance that always matches.
 	 */
+	// 默认匹配所有类的所有方法
 	Pointcut TRUE = TruePointcut.INSTANCE;
 
 }

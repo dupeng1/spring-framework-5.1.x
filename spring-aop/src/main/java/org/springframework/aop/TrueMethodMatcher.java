@@ -37,23 +37,27 @@ final class TrueMethodMatcher implements MethodMatcher, Serializable {
 	/**
 	 * Enforce Singleton pattern.
 	 */
+	// 确保单例
 	private TrueMethodMatcher() {
 	}
 
 
 	@Override
 	public boolean isRuntime() {
+		// 静态匹配
 		return false;
 	}
 
 	@Override
 	public boolean matches(Method method, Class<?> targetClass) {
+		// 匹配任意类的任意方法
 		return true;
 	}
 
 	@Override
 	public boolean matches(Method method, Class<?> targetClass, Object... args) {
 		// Should never be invoked as isRuntime returns false.
+		// 抛出不支持操作异常
 		throw new UnsupportedOperationException();
 	}
 

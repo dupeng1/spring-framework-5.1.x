@@ -59,6 +59,10 @@ import org.springframework.util.xml.DomUtils;
  * @author Ramnivas Laddad
  * @since 2.0
  */
+
+/**
+ * 用来解析<aop:config />标签，并将标签相应的BeanDefinition注册BeanFactory（DefaultListableBeanFactory）。
+ */
 class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 
 	private static final String ASPECT = "aspect";

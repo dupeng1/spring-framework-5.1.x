@@ -46,6 +46,10 @@ import org.springframework.util.ClassUtils;
  * @see #getProxy(ClassLoader)
  * @see org.springframework.aop.framework.ProxyFactory
  */
+
+/**
+ * 创建AspectJ的AOP对象，用于Spring集成AspectJ的作用，此时，就不需要使用AspectJ特定的编译器了。
+ */
 @SuppressWarnings("serial")
 public class AspectJProxyFactory extends ProxyCreatorSupport {
 

@@ -30,8 +30,13 @@ import org.springframework.aop.Pointcut;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
-public abstract class StaticMethodMatcherPointcut extends StaticMethodMatcher implements Pointcut {
 
+/**
+ *  静态匹配的Pointcut；
+ * 静态方法切面，抽象类。定义了一个classFilter，通过重写getClassFilter()方法来指定切面规则。另外实现了StaticMethodMatcher接口，通过重写matches来指定方法匹配规则。子类：NameMatchMethodPointcut（简单字符串匹配方法签名）和 AbstractRegexpMethodPointcut（正则表达式匹配方法签名）。
+ */
+public abstract class StaticMethodMatcherPointcut extends StaticMethodMatcher implements Pointcut {
+	// 类过滤器，默认匹配任意类
 	private ClassFilter classFilter = ClassFilter.TRUE;
 
 
@@ -40,6 +45,7 @@ public abstract class StaticMethodMatcherPointcut extends StaticMethodMatcher im
 	 * Default is {@link ClassFilter#TRUE}.
 	 */
 	public void setClassFilter(ClassFilter classFilter) {
+		// 设置类过滤器
 		this.classFilter = classFilter;
 	}
 

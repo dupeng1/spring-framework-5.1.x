@@ -44,6 +44,10 @@ import org.springframework.lang.Nullable;
  * @see #setUseDynamicLogger
  * @see #invokeUnderTrace(org.aopalliance.intercept.MethodInvocation, org.apache.commons.logging.Log)
  */
+
+/**
+ * MethodInterceptor的实现类，主要用于日志记录。默认情况下，写入日志中的消息是记录拦截器类而不是被拦截的类。当把bean属性开关useDynamicLogger设置为true时，拦截器类和被拦截的类日志都会被记录下来。该抽象类的实现子类必须实现方法invokeUnderTrace。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractTraceInterceptor implements MethodInterceptor, Serializable {
 
@@ -126,11 +130,14 @@ public abstract class AbstractTraceInterceptor implements MethodInterceptor, Ser
 	@Override
 	@Nullable
 	public Object invoke(MethodInvocation invocation) throws Throwable {
+		// 获取Log
 		Log logger = getLoggerForInvocation(invocation);
 		if (isInterceptorEnabled(invocation, logger)) {
+			// 日志跟踪调用
 			return invokeUnderTrace(invocation, logger);
 		}
 		else {
+			// 调用方法调用
 			return invocation.proceed();
 		}
 	}
@@ -243,6 +250,7 @@ public abstract class AbstractTraceInterceptor implements MethodInterceptor, Ser
 	 * @see #writeToLog(Log, String)
 	 * @see #writeToLog(Log, String, Throwable)
 	 */
+	// 实现子类确保方法调用一定被调用，可以在方法调用前后执行日志跟踪
 	@Nullable
 	protected abstract Object invokeUnderTrace(MethodInvocation invocation, Log logger) throws Throwable;
 

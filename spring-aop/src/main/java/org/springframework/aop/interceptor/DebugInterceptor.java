@@ -32,6 +32,10 @@ import org.aopalliance.intercept.MethodInvocation;
  * @see SimpleTraceInterceptor
  * @see CustomizableTraceInterceptor
  */
+
+/**
+ * 这个拦截器可以引入链中用来将拦截的调用的一些详细信息显示到日志记录器中。在进行调试时，可以将方法入口和出口处的一些调用细节详细的记录下来，包括调用的参数和调用的次数。
+ */
 @SuppressWarnings("serial")
 public class DebugInterceptor extends SimpleTraceInterceptor {
 

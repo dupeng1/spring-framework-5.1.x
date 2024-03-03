@@ -41,6 +41,12 @@ import org.springframework.util.ClassUtils;
  * @see org.springframework.beans.factory.BeanFactory
  * @see LazySingletonAspectInstanceFactoryDecorator
  */
+
+/**
+ * 该类就是AspectInstanceFactory接口的一个实现类，用来生成AspectJ切面的一个实例。
+ * 需要注意的是如果使用原型模式，实例化多次，可能返回的不是你想要的。
+ * 使用LazySingletonAspectInstanceFactoryDecorator包装该类，这样就可以确保每次都可以得到一个新的切面实例。
+ */
 @SuppressWarnings("serial")
 public class BeanFactoryAspectInstanceFactory implements MetadataAwareAspectInstanceFactory, Serializable {
 

@@ -43,7 +43,7 @@ package org.aopalliance.intercept;
  */
 
 /**
- * 构造器拦截器，Interceptor的子接口，拦截构造器并处理。
+ * 构造器拦截器，子类实现在构造方法调用之前和之后执行额外处理逻辑；
  */
 public interface ConstructorInterceptor extends Interceptor  {
 
@@ -58,6 +58,7 @@ public interface ConstructorInterceptor extends Interceptor  {
 	 * @throws Throwable if the interceptors or the target object
 	 * throws an exception
 	 */
+	// 构造方法调用，可以在构造方法调用之前和之后执行额外逻辑
 	Object construct(ConstructorInvocation invocation) throws Throwable;
 
 }

@@ -33,6 +33,10 @@ import org.springframework.util.Assert;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 提供了一些静态方法，在操作切点时有用，包括matches、SetterPointcut、GetterPointcut。
+ */
 public abstract class Pointcuts {
 
 	/** Pointcut matching all bean property setters, in any class. */

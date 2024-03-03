@@ -30,8 +30,13 @@ import org.springframework.util.Assert;
  * @since 2.0
  * @see AnnotationMatchingPointcut
  */
+
+/**
+ * 通过检查目标类是否存在指定的注解，决定是否匹配
+ */
 public class AnnotationClassFilter implements ClassFilter {
 
+	//注解类型
 	private final Class<? extends Annotation> annotationType;
 
 	private final boolean checkInherited;

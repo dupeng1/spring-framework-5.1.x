@@ -30,6 +30,10 @@ import org.springframework.aop.RawTargetAccess;
  * @since 2.0
  * @see ScopedProxyFactoryBean
  */
+
+/**
+ * 用于作用域对象的AOP引介接口。ScopedProxyFactoryBean创建的对象可以转换到这个接口，能够得到原始的目标对象，从它的目标scopt中剥离出该对象。Spring的Bean是有scope属性的，表示bean的生存周期。scope的值有prototype、singleton、session、request。
+ */
 public interface ScopedObject extends RawTargetAccess {
 
 	/**

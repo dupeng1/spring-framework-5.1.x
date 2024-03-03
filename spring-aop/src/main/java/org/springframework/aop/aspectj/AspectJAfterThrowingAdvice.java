@@ -32,7 +32,7 @@ import org.springframework.aop.AfterAdvice;
  */
 
 /**
- * 异常通知，AspectJ中 after 属性对应的通知（@AfterThrowing标注的方法会被解析成该通知），在连接点抛出异常后执行。
+ * 包装AspectJ抛出异常通知方法的Spring AOP Advice；
  */
 @SuppressWarnings("serial")
 public class AspectJAfterThrowingAdvice extends AbstractAspectJAdvice
@@ -66,6 +66,7 @@ public class AspectJAfterThrowingAdvice extends AbstractAspectJAdvice
 			return mi.proceed();
 		}
 		catch (Throwable ex) {
+			// 根据异常类型判断是否调用
 			if (shouldInvokeOnThrowing(ex)) {
 				invokeAdviceMethod(getJoinPointMatch(), null, ex);
 			}

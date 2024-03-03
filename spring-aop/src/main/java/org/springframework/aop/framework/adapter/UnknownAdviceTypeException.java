@@ -25,6 +25,10 @@ package org.springframework.aop.framework.adapter;
  * @see org.aopalliance.aop.Advice
  * @see org.springframework.aop.Advisor
  */
+
+/**
+ * 当尝试使用一个不支持的顾问或者通知时抛出的异常。
+ */
 @SuppressWarnings("serial")
 public class UnknownAdviceTypeException extends IllegalArgumentException {
 

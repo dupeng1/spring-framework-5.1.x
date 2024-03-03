@@ -46,6 +46,10 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @see #findCandidateAdvisors
  */
+
+/**
+ * 默认扫描所有Advisor的实现类，相对于根据Bean名称匹配，该类更加灵活。动态的匹配每一个类，判断是否可以被代理，并寻找合适的增强类，以及生成代理类。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyCreator {
 
@@ -72,7 +76,7 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	@Nullable
 	protected Object[] getAdvicesAndAdvisorsForBean(
 			Class<?> beanClass, String beanName, @Nullable TargetSource targetSource) {
-		//找出适合的 候选增强器
+		//找出适合的候选增强器，即切面
 		List<Advisor> advisors = findEligibleAdvisors(beanClass, beanName);
 		if (advisors.isEmpty()) {
 			return DO_NOT_PROXY;
@@ -90,11 +94,11 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	 * @see #sortAdvisors
 	 * @see #extendAdvisors
 	 */
-	//找出适合的 候选增强器
+	//找出适合的候选增强器，即切面
 	protected List<Advisor> findEligibleAdvisors(Class<?> beanClass, String beanName) {
 		//1、找出所有的实现了Advisor接口的候选增强器类，获取所有切面
 		List<Advisor> candidateAdvisors = findCandidateAdvisors();
-		//2、选出匹配的 增强器，过滤出符合规则的切面
+		//2、选出匹配【bean】的增强器，过滤出符合规则的切面
 		List<Advisor> eligibleAdvisors = findAdvisorsThatCanApply(candidateAdvisors, beanClass, beanName);
 		// 这个是钩子方法,用于用户自定义实现
 		extendAdvisors(eligibleAdvisors);

@@ -40,6 +40,10 @@ import org.springframework.util.ClassUtils;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 描述一个引介需要的基本信息接口的增强功能，其实现的子类可以方便的从一个指定的对象所实现的所有接口提取出来，将不应该加入的接口排除掉，同时也可以查询所有引入的接口。
+ */
 @SuppressWarnings("serial")
 public class IntroductionInfoSupport implements IntroductionInfo, Serializable {
 

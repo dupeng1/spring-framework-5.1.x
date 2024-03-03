@@ -33,6 +33,10 @@ import org.springframework.util.StopWatch;
  * @see org.springframework.util.StopWatch
  * @see JamonPerformanceMonitorInterceptor
  */
+
+/**
+ * 性能监控的拦截器，这个拦截器对于被拦截的方法不会有任何附加的作用。其在实际的性能测量时，使用了简洁的耗时统计小工具org.springframework.util.StopWatch。
+ */
 @SuppressWarnings("serial")
 public class PerformanceMonitorInterceptor extends AbstractMonitoringInterceptor {
 

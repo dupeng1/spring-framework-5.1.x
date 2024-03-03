@@ -28,6 +28,11 @@ import org.springframework.aop.Advisor;
  * @author Rod Johnson
  * @author Rob Harrop
  */
+
+/**
+ * 注册AdvisorAdapter
+ * 顾问适配器注册的接口，这是一个SPI接口，不会被任何Spring用户所实现。java spi就是提供这样的一个机制：为某个接口寻找服务实现的机制。
+ */
 public interface AdvisorAdapterRegistry {
 
 	/**
@@ -43,6 +48,7 @@ public interface AdvisorAdapterRegistry {
 	 * @throws UnknownAdviceTypeException if no registered advisor adapter
 	 * can wrap the supposed advice
 	 */
+	//把给定的 Adivice 对象包装成 Advisor
 	Advisor wrap(Object advice) throws UnknownAdviceTypeException;
 
 	/**
@@ -55,6 +61,7 @@ public interface AdvisorAdapterRegistry {
 	 * @throws UnknownAdviceTypeException if the Advisor type is
 	 * not understood by any registered AdvisorAdapter
 	 */
+	//把 Advisor 转换成 MethodInterceptor
 	MethodInterceptor[] getInterceptors(Advisor advisor) throws UnknownAdviceTypeException;
 
 	/**
@@ -63,6 +70,7 @@ public interface AdvisorAdapterRegistry {
 	 * automatically recognized by an {@code AdvisorAdapterRegistry} implementation.
 	 * @param adapter an AdvisorAdapter that understands particular Advisor or Advice types
 	 */
+	//注册 AdvisorAdapter
 	void registerAdvisorAdapter(AdvisorAdapter adapter);
 
 }

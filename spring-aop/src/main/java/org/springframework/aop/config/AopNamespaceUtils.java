@@ -40,6 +40,10 @@ import org.springframework.lang.Nullable;
  * @since 2.0
  * @see AopConfigUtils
  */
+
+/**
+ * 处理Spring AOP命名空间的工具类。
+ */
 public abstract class AopNamespaceUtils {
 
 	/**
@@ -73,19 +77,42 @@ public abstract class AopNamespaceUtils {
 
 	public static void registerAspectJAnnotationAutoProxyCreatorIfNecessary(
 			ParserContext parserContext, Element sourceElement) {
-
+		//注册或者升级AutoProxyCreator定义beanName为
+		//org.Springframework.aop.config.internalAutoProxyCreator的BeanDefinition
 		BeanDefinition beanDefinition = AopConfigUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(
 				parserContext.getRegistry(), parserContext.extractSource(sourceElement));
+		//对于proxy-target-class以及expose-proxy属性的处理
 		useClassProxyingIfNecessary(parserContext.getRegistry(), sourceElement);
+		//注册组件并通知，便于监听器进一步处理，其中BeanDefinition的className
+		// 为AnnotationAwareAspectJAutoProxyCreator
 		registerComponentIfNecessary(beanDefinition, parserContext);
 	}
 
 	private static void useClassProxyingIfNecessary(BeanDefinitionRegistry registry, @Nullable Element sourceElement) {
 		if (sourceElement != null) {
+			// 设置参数proxy-target-class
+			/**
+			 *  Spring AOP使用JDK动态代理或者CGLIB来为目标对象创建代理。如果被代理的目标对象至少实现了一个接口，则使用JDK动态代理，
+			 *  所有该目标类型实现的接口都将被代理。如果该目标对象没有实现任何接口，则创建一个CGLIB代理。
+			 *  也可以强制使用CGLIB代理，强制使用CGLIB代理需要将<aop:config>的proxy-target-class属性设置为true：
+			 *  <aop:config proxy-target-class=”true”>…</aop:config>
+			 *
+			 *  当需要使用CGLIB代理和@AspectJ自动代理支持，可以按照下面的方式设置<aop:aspectj-autoproxy>
+			 *  的proxy-target-class属性：<aop:aspectj-autoproxy proxy-target-class=”true”>。
+			 */
 			boolean proxyTargetClass = Boolean.parseBoolean(sourceElement.getAttribute(PROXY_TARGET_CLASS_ATTRIBUTE));
 			if (proxyTargetClass) {
 				AopConfigUtils.forceAutoProxyCreatorToUseClassProxying(registry);
 			}
+			// 设置参数expose-proxy
+			/**
+			 *  Spring AOP无法拦截内部方法调用，比如一个接口里面有两个方法：doSomething1()和doSomething2()。
+			 *  然后在方法1中调用了方法2：this.doSomething2()。此处this指向目标对象，因此调用this.doSomething2()
+			 *  将不会执行doSomething2的增强。（也就是切面只会对doSomething1方法进行增强，但是不会对doSomething2进行增强）。
+			 *
+			 * 解决方法：this. doSomething2 ()修改为 ((AService) AopContext.currentProxy()).doSomething2 ()。
+			 * 同时修改Spring AOP的配置：<aop:aspectj-autoproxy expose-proxy="true" />
+			 */
 			boolean exposeProxy = Boolean.parseBoolean(sourceElement.getAttribute(EXPOSE_PROXY_ATTRIBUTE));
 			if (exposeProxy) {
 				AopConfigUtils.forceAutoProxyCreatorToExposeProxy(registry);
@@ -93,6 +120,7 @@ public abstract class AopNamespaceUtils {
 		}
 	}
 
+	// 注册组件并通知，便于监听器进一步处理。
 	private static void registerComponentIfNecessary(@Nullable BeanDefinition beanDefinition, ParserContext parserContext) {
 		if (beanDefinition != null) {
 			parserContext.registerComponent(

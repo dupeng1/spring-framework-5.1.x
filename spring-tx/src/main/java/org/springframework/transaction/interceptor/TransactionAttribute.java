@@ -43,6 +43,9 @@ public interface TransactionAttribute extends TransactionDefinition {
 	 * to process this specific transaction.
 	 * @since 3.0
 	 */
+	//返回与此事务属性关联的限定符值
+	//这可以用于选择相应的事务管理器(transaction manager)来处理这个特定的事务，
+	// 在TransactionInterceptor#invokeWithinTransaction中会根据该值找相应的事务管理器。
 	@Nullable
 	String getQualifier();
 
@@ -51,6 +54,7 @@ public interface TransactionAttribute extends TransactionDefinition {
 	 * @param ex the exception to evaluate
 	 * @return whether to perform a rollback or not
 	 */
+	//判断指定的异常是否进行回滚
 	boolean rollbackOn(Throwable ex);
 
 }

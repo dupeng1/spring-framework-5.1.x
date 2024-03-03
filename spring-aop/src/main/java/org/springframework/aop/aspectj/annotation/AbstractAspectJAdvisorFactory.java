@@ -55,6 +55,11 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 作为父类完成了 是否切面、切面校验、方法切面注解获取、切面注解封装、切面参数解析等一些列工作，将核心的解析 Advisors Advice
+ * 交给了 ReflectiveAspectJAdvisorFactory。
+ */
 public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFactory {
 
 	private static final String AJC_MAGIC = "ajc$";

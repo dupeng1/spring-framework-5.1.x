@@ -31,6 +31,12 @@ import org.springframework.aop.AfterReturningAdvice;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 后置通知适配器。
+ *
+ *         在 Spring 的 Aop 中，适配器模式应用的非常广泛。Spring 使用 Advice（通知）来增强被代理类的功能，Advice 的类型主要有 BeforeAdvice、AfterReturningAdvice、ThrowsAdvice。每种 Advice 都有对应的拦截器，即 MethodBeforeAdviceInterceptor、AfterReturningAdviceInterceptor、ThrowsAdviceInterceptor。各种不同类型的 Interceptor，通过适配器统一对外提供接口。最终调用不同的 advice来实现被代理类的增强。
+ */
 @SuppressWarnings("serial")
 class AfterReturningAdviceAdapter implements AdvisorAdapter, Serializable {
 

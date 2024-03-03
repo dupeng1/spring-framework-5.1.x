@@ -31,6 +31,11 @@ import org.springframework.util.StringUtils;
  * @author Rob Harrop
  * @since 2.0
  */
+
+/**
+ * 实现了FactoryBean接口，通过调用getObject()方法获取MethodLocatingFactory对象。
+ * 主要作用是通过Bean的名称和方法名定位到这个Method，然后通过反射进行调用。
+ */
 public class MethodLocatingFactoryBean implements FactoryBean<Method>, BeanFactoryAware {
 
 	@Nullable

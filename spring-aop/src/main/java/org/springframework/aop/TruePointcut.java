@@ -38,11 +38,13 @@ final class TruePointcut implements Pointcut, Serializable {
 	private TruePointcut() {
 	}
 
+	// 匹配任何类
 	@Override
 	public ClassFilter getClassFilter() {
 		return ClassFilter.TRUE;
 	}
 
+	// 匹配任何方法
 	@Override
 	public MethodMatcher getMethodMatcher() {
 		return MethodMatcher.TRUE;

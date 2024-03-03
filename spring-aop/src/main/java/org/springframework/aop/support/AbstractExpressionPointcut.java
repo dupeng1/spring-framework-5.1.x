@@ -30,6 +30,10 @@ import org.springframework.lang.Nullable;
  * @see #setLocation
  * @see #setExpression
  */
+
+/**
+ * 表达式切点类型的抽象超类，提供定位和表达式两个属性。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractExpressionPointcut implements ExpressionPointcut, Serializable {
 

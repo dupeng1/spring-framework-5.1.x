@@ -25,6 +25,9 @@ package org.springframework.aop;
  */
 
 /**
+ * 由Pointcut驱动的Advisor的基础接口；
+ * 含盖了除引介Advisor外几乎所有的Advisor；
+ *
  * 代表具有切点的切面，它包含Advice和Pointcut两个类，
  * 这样就可以通过类、方法名以及方法方位等信息灵活地定义切面的连接点，提供更具适用性的切面。其有6种实现类：
  *
@@ -34,12 +37,16 @@ package org.springframework.aop;
  * StaticMethodMatcherPointcutAdvisor：静态方法匹配器切点定义的切面；
  * AspecJExpressionPointcutAdvisor：Aspecj切点表达式定义切点的切面；
  * AspecJPointcutAdvisor：使用AspecJ语法定义切点的切面。
+ *
+ * PointcutAdvisor的切点是方法级别的，有Pointcut，具有getClassFilter、getMethodMatcher方法
+ * IntroductionAdvisor切点是类级别的，具有getClassFilter
  */
 public interface PointcutAdvisor extends Advisor {
 
 	/**
 	 * Get the Pointcut that drives this advisor.
 	 */
+	// 获取Pointcut
 	Pointcut getPointcut();
 
 }

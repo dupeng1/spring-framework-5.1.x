@@ -26,6 +26,10 @@ import org.springframework.util.StringUtils;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 实现了接口ParseState.Entry，代表一个切面的入口。
+ */
 public class AspectEntry implements ParseState.Entry {
 
 	private final String id;

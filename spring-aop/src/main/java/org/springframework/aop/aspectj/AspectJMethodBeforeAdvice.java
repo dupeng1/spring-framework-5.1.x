@@ -31,7 +31,7 @@ import org.springframework.lang.Nullable;
  */
 
 /**
- * 前置通知，AspectJ中 before 属性对应的通知（@Before标注的方法会被解析成该通知），在切面方法执行之前执行。
+ * 包装AspectJ前置通知方法的Spring AOP Advice
  */
 @SuppressWarnings("serial")
 public class AspectJMethodBeforeAdvice extends AbstractAspectJAdvice implements MethodBeforeAdvice, Serializable {

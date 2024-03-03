@@ -52,6 +52,13 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * AOP命名空间处理器，Spring为了开放性提供了NamespaceHandler机制，这样我们就可以根据需求自己来处理我们设置的标签元素。
+ * 我们使用基于xml的spring配置时，可能需要配置如<aop:config />这样的标签，在配置这个标签之前，
+ * 通常我们需要引入这个aop所在的命名空间。只有通过配置aop的命名空间才会找到AOP标签的处理器AopNamespaceHandler，
+ * 在AOP的jar中的spring.handlers配置文件中配置了命名空间和命名空间处理器之间的关系。
+ */
 public class AopNamespaceHandler extends NamespaceHandlerSupport {
 
 	/**

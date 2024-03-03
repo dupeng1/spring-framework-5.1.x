@@ -42,6 +42,10 @@ import org.springframework.util.ObjectUtils;
  * @see #setPatterns
  * @see JdkRegexpMethodPointcut
  */
+
+/**
+ * 正则表达式切面顾问，可设置多个正则表达式规则，通过内部封装的JdkRegexpMethodPointcut解析正则表达式。
+ */
 @SuppressWarnings("serial")
 public class RegexpMethodPointcutAdvisor extends AbstractGenericPointcutAdvisor {
 

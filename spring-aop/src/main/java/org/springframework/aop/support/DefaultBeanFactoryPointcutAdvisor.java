@@ -33,6 +33,10 @@ import org.springframework.lang.Nullable;
  * @see #setPointcut
  * @see #setAdviceBeanName
  */
+
+/**
+ * AbstractBeanFactoryPointcutAdvisor抽象类的实现。基于BeanFactory的PointAdvisor，
+ */
 @SuppressWarnings("serial")
 public class DefaultBeanFactoryPointcutAdvisor extends AbstractBeanFactoryPointcutAdvisor {
 

@@ -28,6 +28,10 @@ import org.springframework.util.Assert;
  * @author Rob Harrop
  * @since 2.0
  */
+
+/**
+ * 创建一个切点的信息。
+ */
 public class PointcutComponentDefinition extends AbstractComponentDefinition {
 
 	private final String pointcutBeanName;

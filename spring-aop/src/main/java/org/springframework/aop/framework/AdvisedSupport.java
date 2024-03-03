@@ -58,6 +58,17 @@ import org.springframework.util.CollectionUtils;
  * @author Juergen Hoeller
  * @see org.springframework.aop.framework.AopProxy
  */
+
+/**
+ * ProxyConfig类的子类，封装了AOP中通用的对增强（Advice）和通知器（Advisor）的相关操作，
+ * 对于所有生成AOP代理对象都通用，而代理对象的生成由子类完成。
+ * 	ProxyConfig
+ * 		AdvisedSupport
+ *  配置当前代理的Adivsiors
+ *  配置当前代理的目标对象
+ *  配置当前代理的接口
+ *  获取对应代理方法对应有效的拦截器链
+ */
 public class AdvisedSupport extends ProxyConfig implements Advised {
 
 	/** use serialVersionUID from Spring 2.0 for interoperability. */
@@ -81,6 +92,8 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 	AdvisorChainFactory advisorChainFactory = new DefaultAdvisorChainFactory();
 
 	/** Cache with Method as key and advisor chain List as value. */
+	//缓存对于某一个方法对应的所有Advisor，当Advice或Advisor发生变化时,会清空该缓存。
+	//getInterceptorsAndDynamicInterceptionAdvice用来获取对应代理方法对应有效的拦截器链
 	private transient Map<MethodCacheKey, List<Object>> methodCache;
 
 	/**
@@ -476,10 +489,12 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 	 * @param targetClass the target class
 	 * @return a List of MethodInterceptors (may also include InterceptorAndDynamicMethodMatchers)
 	 */
+	//获取拦截器链
 	public List<Object> getInterceptorsAndDynamicInterceptionAdvice(Method method, @Nullable Class<?> targetClass) {
 		MethodCacheKey cacheKey = new MethodCacheKey(method);
 		List<Object> cached = this.methodCache.get(cacheKey);
 		if (cached == null) {
+			//DefaultAdvisorChainFactory
 			cached = this.advisorChainFactory.getInterceptorsAndDynamicInterceptionAdvice(
 					this, method, targetClass);
 			this.methodCache.put(cacheKey, cached);

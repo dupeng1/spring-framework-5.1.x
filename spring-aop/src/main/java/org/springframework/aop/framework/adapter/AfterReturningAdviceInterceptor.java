@@ -34,9 +34,13 @@ import org.springframework.util.Assert;
  * @see MethodBeforeAdviceInterceptor
  * @see ThrowsAdviceInterceptor
  */
+
+/**
+ * 包装AfterReturningAdvice的Interceptor；
+ */
 @SuppressWarnings("serial")
 public class AfterReturningAdviceInterceptor implements MethodInterceptor, AfterAdvice, Serializable {
-
+	// 后置通知
 	private final AfterReturningAdvice advice;
 
 
@@ -45,6 +49,7 @@ public class AfterReturningAdviceInterceptor implements MethodInterceptor, After
 	 * @param advice the AfterReturningAdvice to wrap
 	 */
 	public AfterReturningAdviceInterceptor(AfterReturningAdvice advice) {
+		// 校验后置通知
 		Assert.notNull(advice, "Advice must not be null");
 		this.advice = advice;
 	}
@@ -52,7 +57,9 @@ public class AfterReturningAdviceInterceptor implements MethodInterceptor, After
 
 	@Override
 	public Object invoke(MethodInvocation mi) throws Throwable {
+		// 先执行方法调用
 		Object retVal = mi.proceed();
+		// 再执行后置通知逻辑
 		this.advice.afterReturning(retVal, mi.getMethod(), mi.getArguments(), mi.getThis());
 		return retVal;
 	}

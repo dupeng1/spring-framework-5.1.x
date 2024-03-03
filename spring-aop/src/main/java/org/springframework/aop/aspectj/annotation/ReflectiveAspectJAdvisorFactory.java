@@ -66,6 +66,12 @@ import org.springframework.util.comparator.InstanceComparator;
  * @author Phillip Webb
  * @since 2.0
  */
+
+/**
+ * 获取 Advisors，从 MetadataAwareAspectInstanceFactory （包含有切面的元数据信息）中获取切面元数据信息，
+ * 将方法切点解析为对应的 AspectJExpressionPointcut（通过切点表达式），
+ * 然后封装成 InstantiationModelAwarePointcutAdvisorImpl 返回。
+ */
 @SuppressWarnings("serial")
 public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFactory implements Serializable {
 

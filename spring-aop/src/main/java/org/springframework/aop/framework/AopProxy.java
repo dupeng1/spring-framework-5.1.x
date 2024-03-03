@@ -29,6 +29,10 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @see DefaultAopProxyFactory
  */
+
+/**
+ * 代表一个AopProxy代理对象，可以通过这个对象构造代理对象实例。
+ */
 public interface AopProxy {
 
 	/**
@@ -38,6 +42,7 @@ public interface AopProxy {
 	 * @return the new proxy object (never {@code null})
 	 * @see Thread#getContextClassLoader()
 	 */
+	// 使用默认类加载器（通常是线程上下文类加载器）创建代理对象
 	Object getProxy();
 
 	/**
@@ -50,6 +55,7 @@ public interface AopProxy {
 	 * (or {@code null} for the low-level proxy facility's default)
 	 * @return the new proxy object (never {@code null})
 	 */
+	// 使用指定的类加载器创建代理对象
 	Object getProxy(@Nullable ClassLoader classLoader);
 
 }

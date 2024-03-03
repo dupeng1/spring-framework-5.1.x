@@ -34,6 +34,11 @@ import org.springframework.beans.factory.xml.ParserContext;
  * @author Mark Fisher
  * @since 2.0
  */
+
+/**
+ * <aop:scoped-proxy>标签是spring<bean>标签的装饰标签，AOP命名空间的三大标签之一，
+ * 它的作用是对生命周期短的bean提供装饰，使其能被生命周期长的bean正确调用。该类负责对该标签进行解析。
+ */
 class ScopedProxyBeanDefinitionDecorator implements BeanDefinitionDecorator {
 
 	private static final String PROXY_TARGET_CLASS = "proxy-target-class";

@@ -36,6 +36,10 @@ import org.springframework.util.Assert;
  * @author Sam Brannen
  * @since 2.5
  */
+
+/**
+ * 创建作用域代理的一些功能性类。主要被ScopedProxyBeanDefinitionDecorator 和 ClassPathBeanDefinitionScanner使用。
+ */
 public abstract class ScopedProxyUtils {
 
 	private static final String TARGET_NAME_PREFIX = "scopedTarget.";

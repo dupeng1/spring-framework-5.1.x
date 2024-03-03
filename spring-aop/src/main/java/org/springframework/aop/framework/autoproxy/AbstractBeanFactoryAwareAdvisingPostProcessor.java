@@ -36,6 +36,14 @@ import org.springframework.lang.Nullable;
  * @see AutoProxyUtils#shouldProxyTargetClass
  * @see AutoProxyUtils#determineTargetClass
  */
+
+/**
+ * 抽象类定义了这样一类BeanPostProcessor：拥有一个Advisor，对每个bean进行后置处理，如果该bean符合包裹自己所拥有的Advisor的条件，则将该Advisor包裹该bean。
+ *
+ *         这里将bean和Advisor包裹该bean的又分两种情况：目标bean是Advised，此时直接使用Advised接口定义的方法添加Advisor到目标bean。目标bean不是Advised，此时为目标对象创建代理对象，并将Advisor添加到目标bean的代理对象上。
+ *
+ *         以上主要逻辑基本实现在其父类AbstractAdvisingBeanPostProcessor 中，而该类主要是在此基础上实现了BeanFactoryAware接口。并覆盖实现父类的方法prepareProxyFactory，isEligible。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractBeanFactoryAwareAdvisingPostProcessor extends AbstractAdvisingBeanPostProcessor
 		implements BeanFactoryAware {

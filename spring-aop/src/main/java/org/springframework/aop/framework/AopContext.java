@@ -39,6 +39,10 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 13.03.2003
  */
+
+/**
+ * 代表AOP的上下文。主要是提供我们访问上下文中当前AOP对象的快速方法。
+ */
 public final class AopContext {
 
 	/**

@@ -41,6 +41,10 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * AspectJPointcutAdvisor的内部实现，注意对于每一个目标方法都会有一个该顾问的实例。
+ */
 @SuppressWarnings("serial")
 final class InstantiationModelAwarePointcutAdvisorImpl
 		implements InstantiationModelAwarePointcutAdvisor, AspectJPrecedenceInformation, Serializable {

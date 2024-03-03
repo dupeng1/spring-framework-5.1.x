@@ -35,6 +35,11 @@ import org.springframework.util.PatternMatchUtils;
  * @since 11.02.2004
  * @see #isMatch
  */
+
+/**
+ * 基于方法名称进行匹配的Pointcut，支持通配符*，如：xxx*、*xxx、*xxx*
+ * 名称匹配切面，通过指定方法集合变量mappedNames，模糊匹配。
+ */
 @SuppressWarnings("serial")
 public class NameMatchMethodPointcut extends StaticMethodMatcherPointcut implements Serializable {
 
@@ -76,8 +81,10 @@ public class NameMatchMethodPointcut extends StaticMethodMatcherPointcut impleme
 
 	@Override
 	public boolean matches(Method method, Class<?> targetClass) {
+		// 遍历已配置的映射名称集合
 		for (String mappedName : this.mappedNames) {
 			if (mappedName.equals(method.getName()) || isMatch(method.getName(), mappedName)) {
+				// 指定的方法名称匹配上映射的名称则认为匹配
 				return true;
 			}
 		}
@@ -94,6 +101,7 @@ public class NameMatchMethodPointcut extends StaticMethodMatcherPointcut impleme
 	 * @see org.springframework.util.PatternMatchUtils#simpleMatch(String, String)
 	 */
 	protected boolean isMatch(String methodName, String mappedName) {
+		// 判断指定的方法名称是否正则匹配映射名称，支持通配符*
 		return PatternMatchUtils.simpleMatch(mappedName, methodName);
 	}
 

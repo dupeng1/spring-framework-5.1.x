@@ -32,6 +32,10 @@ import org.springframework.core.annotation.OrderUtils;
  * @since 2.0
  * @see SimpleMetadataAwareAspectInstanceFactory
  */
+
+/**
+ * MetadataAwareAspectInstanceFactory的一个实现类，每次调用getAspectInstance()函数时，都会返回同一个实例。
+ */
 @SuppressWarnings("serial")
 public class SingletonMetadataAwareAspectInstanceFactory extends SingletonAspectInstanceFactory
 		implements MetadataAwareAspectInstanceFactory, Serializable {

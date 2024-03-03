@@ -29,14 +29,19 @@ import org.springframework.util.Assert;
  * @since 2.0.3
  * @see #createAopProxy()
  */
+
+/**
+ * 这个类的主要作用是为创建一个【AOP代理对象】提供一些功能支持，通过它的getAopProxyFactory能获取一个创建【代理对象的工厂】。
+ */
 @SuppressWarnings("serial")
 public class ProxyCreatorSupport extends AdvisedSupport {
-
+	//DefaultAopProxyFactory，相当于委托
 	private AopProxyFactory aopProxyFactory;
 
 	private final List<AdvisedSupportListener> listeners = new LinkedList<>();
 
 	/** Set to true when the first AOP proxy has been created. */
+	//第一次创建AOP代理后设置为true
 	private boolean active = false;
 
 
@@ -102,6 +107,10 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 		if (!this.active) {
 			activate();
 		}
+		// 实际就是使用DefaultAopProxyFactory来创建一个代理对象
+		// 可以看到在调用createAopProxy方法时，传入的参数是this
+		// 这是因为ProxyCreatorSupport本身就保存了创建整个代理对象所需要的配置信息
+		//DefaultAopProxyFactory是AopProxyFactory默认实现类
 		return getAopProxyFactory().createAopProxy(this);
 	}
 

@@ -61,7 +61,7 @@ import org.springframework.util.StringUtils;
  */
 
 /**
- * AOP基类，用来包装AspectJ切面（AspectJ aspect）或AspectJ注解（AspectJ-annotated）的通知方法。
+ * 包装AspectJ切面或者AspectJ注解标注的通知方法的AOP Advice的基础类
  */
 @SuppressWarnings("serial")
 public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedenceInformation, Serializable {
@@ -623,6 +623,7 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 	 * @return the invocation result
 	 * @throws Throwable in case of invocation failure
 	 */
+	// 调用增强方法
 	protected Object invokeAdviceMethod(
 			@Nullable JoinPointMatch jpMatch, @Nullable Object returnValue, @Nullable Throwable ex)
 			throws Throwable {
@@ -631,18 +632,21 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 	}
 
 	// As above, but in this case we are given the join point.
+	// 调用增强方法
 	protected Object invokeAdviceMethod(JoinPoint jp, @Nullable JoinPointMatch jpMatch,
 			@Nullable Object returnValue, @Nullable Throwable t) throws Throwable {
 
 		return invokeAdviceMethodWithGivenArgs(argBinding(jp, jpMatch, returnValue, t));
 	}
 
+	// 根据给定参数调用增强方法
 	protected Object invokeAdviceMethodWithGivenArgs(Object[] args) throws Throwable {
 		Object[] actualArgs = args;
 		if (this.aspectJAdviceMethod.getParameterCount() == 0) {
 			actualArgs = null;
 		}
 		try {
+			// 反射调用增强方法
 			ReflectionUtils.makeAccessible(this.aspectJAdviceMethod);
 			// TODO AopUtils.invokeJoinpointUsingReflection
 			return this.aspectJAdviceMethod.invoke(this.aspectInstanceFactory.getAspectInstance(), actualArgs);

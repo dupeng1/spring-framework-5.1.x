@@ -32,6 +32,24 @@ import org.springframework.util.ClassUtils;
  * @author Rob Harrop
  * @since 14.03.2003
  */
+
+/**
+ * ProxyFactory继承自ProxyCreatorSupport，使用它来创建一个代理对象也是要先去设置相关的配置信息，然后再调用【创建代理】的方法。
+ * 使用方式
+ * 		MyService myService = new MyService (); //原始对象
+ * 		ProxyFactory proxyFactory = new ProxyFactory();
+ * 		proxyFactory.setTarget(myService ); // 原始对象
+ * 		proxyFactory.addAdvice(new MethodBeforeAdvice() {
+ *          @Override
+ *          public void before(Method method, Object[] args, Object target) throws Throwable {
+ *             // method表示当前执行的方法,args表示执行方法的参数,target表示target对象
+ *             System.out.println("执行目标方法调用之前的逻辑");
+ *          }
+ *       });
+ * 		MyService proxy = (MyService ) proxyFactory.getProxy(); // 代理对象
+ * 		proxy.test();  // 代理对象
+ *
+ */
 @SuppressWarnings("serial")
 public class ProxyFactory extends ProxyCreatorSupport {
 
@@ -107,6 +125,8 @@ public class ProxyFactory extends ProxyCreatorSupport {
 	 * @return the proxy object
 	 */
 	public Object getProxy(@Nullable ClassLoader classLoader) {
+		// 调用了ProxyCreatorSupport的createAopProxy()方法创建一个AopProxy对象
+		// 然后调用AopProxy对象的getProxy方法
 		return createAopProxy().getProxy(classLoader);
 	}
 

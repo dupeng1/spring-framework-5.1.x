@@ -24,6 +24,13 @@ import org.springframework.beans.factory.parsing.ParseState;
  * @author Mark Fisher
  * @since 2.0
  */
+
+/**
+ * 实现了接口ParseState.Entry，代表一个切点的入口。
+ *
+ * ParseState（在包org.springframework.beans.factory.parsing中）在解析进程中作为一个简单的基于栈结构的追踪逻辑位置类。
+ * 该类中有一个内部标记接口Entry，为了进入ParseState，要实现该内部标记接口。
+ */
 public class PointcutEntry implements ParseState.Entry {
 
 	private final String name;

@@ -34,9 +34,13 @@ import org.springframework.util.Assert;
  * @see AfterReturningAdviceInterceptor
  * @see ThrowsAdviceInterceptor
  */
+
+/**
+ * 包装MethodBeforeAdvice的Interceptor；
+ */
 @SuppressWarnings("serial")
 public class MethodBeforeAdviceInterceptor implements MethodInterceptor, BeforeAdvice, Serializable {
-
+	// 前置通知
 	private final MethodBeforeAdvice advice;
 
 
@@ -45,6 +49,7 @@ public class MethodBeforeAdviceInterceptor implements MethodInterceptor, BeforeA
 	 * @param advice the MethodBeforeAdvice to wrap
 	 */
 	public MethodBeforeAdviceInterceptor(MethodBeforeAdvice advice) {
+		// 校验前置通知
 		Assert.notNull(advice, "Advice must not be null");
 		this.advice = advice;
 	}
@@ -52,7 +57,9 @@ public class MethodBeforeAdviceInterceptor implements MethodInterceptor, BeforeA
 
 	@Override
 	public Object invoke(MethodInvocation mi) throws Throwable {
+		// 先执行前置通知逻辑
 		this.advice.before(mi.getMethod(), mi.getArguments(), mi.getThis());
+		// 再执行方法调用
 		return mi.proceed();
 	}
 

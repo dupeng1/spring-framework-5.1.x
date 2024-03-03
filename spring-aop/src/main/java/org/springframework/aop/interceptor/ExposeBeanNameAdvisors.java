@@ -39,6 +39,10 @@ import org.springframework.beans.factory.NamedBean;
  * @since 2.0
  * @see org.springframework.beans.factory.NamedBean
  */
+
+/**
+ * 当Spring IOC容器创建自动代理bean时可以使用，使得创建顾问更加便捷，将bean name绑定到当前的调用。通常在spring自动代理中使用，在代理创建时，bean的名称就是已知的。
+ */
 public abstract class ExposeBeanNameAdvisors {
 
 	/**

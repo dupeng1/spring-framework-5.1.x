@@ -55,6 +55,10 @@ import org.springframework.util.ReflectionUtils;
  * @author Rob Harrop
  * @see org.springframework.aop.framework.AopProxyUtils
  */
+
+/**
+ * 该工具类是Spring非常重要的一个工具类。一个外部工具类，我们平时若想要对AOP做一些判断、处理，可使用此工具类。
+ */
 public abstract class AopUtils {
 
 	/**
@@ -223,6 +227,7 @@ public abstract class AopUtils {
 	//通过方法层面判断，其实就是判断方法是否有@Transactional注解，当然每个切点的实现不一样，判断逻辑也会有差异
 	public static boolean canApply(Pointcut pc, Class<?> targetClass, boolean hasIntroductions) {
 		Assert.notNull(pc, "Pointcut must not be null");
+		//使用 ClassFilter 匹配 class
 		if (!pc.getClassFilter().matches(targetClass)) {
 			return false;
 		}
@@ -238,7 +243,10 @@ public abstract class AopUtils {
 		if (methodMatcher instanceof IntroductionAwareMethodMatcher) {
 			introductionAwareMethodMatcher = (IntroductionAwareMethodMatcher) methodMatcher;
 		}
-		//拿到类型
+		/*
+	  	* 查找当前类及其父类（以及父类的父类等等）所实现的接口，由于接口中的方法是 public，
+	  	* 所以当前类可以继承其父类，和父类的父类中所有的接口方法
+	  	*/
 		Set<Class<?>> classes = new LinkedHashSet<>();
 		if (!Proxy.isProxyClass(targetClass)) {
 			classes.add(ClassUtils.getUserClass(targetClass));
@@ -246,10 +254,10 @@ public abstract class AopUtils {
 		classes.addAll(ClassUtils.getAllInterfacesForClassAsSet(targetClass));
 		//拿到目标类
 		for (Class<?> clazz : classes) {
-			//获取所有方法
+			// 获取当前类的方法列表，包括从父类中继承的方法
 			Method[] methods = ReflectionUtils.getAllDeclaredMethods(clazz);
 			for (Method method : methods) {
-				//判断方法是否匹配，这里其实通过切点类判断是否方法是否包含特定注解。比如@Transactional
+				// 使用 methodMatcher 匹配方法，匹配成功即可立即返回，这里其实通过切点判断方法是否包含特定注解。比如@Transactional
 				if (introductionAwareMethodMatcher != null ?
 						introductionAwareMethodMatcher.matches(method, targetClass, hasIntroductions) :
 						methodMatcher.matches(method, targetClass)) {
@@ -287,11 +295,18 @@ public abstract class AopUtils {
 	public static boolean canApply(Advisor advisor, Class<?> targetClass, boolean hasIntroductions) {
 		//引介切面类型，通过类来匹配
 		if (advisor instanceof IntroductionAdvisor) {
+			/*
+               * 从通知器中获取类型过滤器 ClassFilter，并调用 matchers 方法进行匹配。
+               * ClassFilter 接口的实现类 AspectJExpressionPointcut 为例，该类的
+               * 匹配工作由 AspectJ 表达式解析器负责，具体匹配细节这个就没法分析了，我
+               * AspectJ 表达式的工作流程不是很熟
+               */
 			return ((IntroductionAdvisor) advisor).getClassFilter().matches(targetClass);
 		}
 		//切点切面类型，通过方法判断
 		else if (advisor instanceof PointcutAdvisor) {
 			PointcutAdvisor pca = (PointcutAdvisor) advisor;
+			// 对于普通类型的通知器，这里继续调用重载方法进行筛选
 			return canApply(pca.getPointcut(), targetClass, hasIntroductions);
 		}
 		else {
@@ -315,9 +330,9 @@ public abstract class AopUtils {
 		}
 		//定义符合规则的Advisor集合。
 		List<Advisor> eligibleAdvisors = new ArrayList<>();
-		// 进行遍历，如果Advisor是IntroductionAdvisor 的实例，并且匹配，加到list 里面
+		// 进行遍历，如果Advisor是IntroductionAdvisor的实例，并且匹配，加到list里面
 		for (Advisor candidate : candidateAdvisors) {
-			//如果Advisor是"引介切面"，并且符合规则，引介切面是基于类层面判断是否符合规则
+			//刷选IntroductionAdvisor引介类型的通知器
 			if (candidate instanceof IntroductionAdvisor && canApply(candidate, clazz)) {
 				eligibleAdvisors.add(candidate);
 			}
@@ -329,7 +344,7 @@ public abstract class AopUtils {
 				// already processed
 				continue;
 			}
-			//进到这里说明这个Advisor是切点切面，切点切面是基于方法层面判断是否符合规则。
+			//刷选普通类型的通知器
 			if (canApply(candidate, clazz, hasIntroductions)) {
 				eligibleAdvisors.add(candidate);
 			}
@@ -352,7 +367,9 @@ public abstract class AopUtils {
 
 		// Use reflection to invoke the method.
 		try {
+			//让方法变得可以访问
 			ReflectionUtils.makeAccessible(method);
+			//调用Method对象的invoke
 			return method.invoke(target, args);
 		}
 		catch (InvocationTargetException ex) {

@@ -33,6 +33,10 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @since 3.1
  */
+
+/**
+ * Spring Cache相关的Pointcut；
+ */
 @SuppressWarnings("serial")
 abstract class CacheOperationSourcePointcut extends StaticMethodMatcherPointcut implements Serializable {
 
@@ -42,6 +46,7 @@ abstract class CacheOperationSourcePointcut extends StaticMethodMatcherPointcut 
 			return false;
 		}
 		CacheOperationSource cas = getCacheOperationSource();
+		// 指定方法上是否存在CacheOperation
 		return (cas != null && !CollectionUtils.isEmpty(cas.getCacheOperations(method, targetClass)));
 	}
 
@@ -72,6 +77,7 @@ abstract class CacheOperationSourcePointcut extends StaticMethodMatcherPointcut 
 	 * Obtain the underlying {@link CacheOperationSource} (may be {@code null}).
 	 * To be implemented by subclasses.
 	 */
+	// 获取CacheOperationSource，用于解析指定方法上的CacheOperation
 	@Nullable
 	protected abstract CacheOperationSource getCacheOperationSource();
 

@@ -28,20 +28,34 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @see AdvisedSupport
  */
+
+/**
+ * AOP配置类，是所有的AOP代理工厂的父类，它包含了创建一个AOP代理所需要的基础的通用的一些配置信息。它有五个属性：
+ * proxyTargetClass 是否直接对目标类进行代理，而不是通过接口产生代理；
+ *
+ *         optimize 标记是否对代理进行优化；
+ *
+ *         opaque 标记是否需要阻止通过该配置创建的代理对象转换为Advised类型；
+ *
+ *         exposeProxy 标记代理对象是否应该被aop框架通过AopContext以ThreadLocal的形式暴露出去；
+ *
+ *         frozen 标记是否需要冻结代理对象，即在代理对象生成之后，是否允许对其进行修改。
+ */
 public class ProxyConfig implements Serializable {
 
 	/** use serialVersionUID from Spring 1.2 for interoperability. */
 	private static final long serialVersionUID = -8409359707199703185L;
 
-
+	//同 @EnableAspectJAutoProxy 中的属性 proxyTargetClass 一样语义，
+	// 是否使用 CGLIB 代理，默认是 false 使用 JDK 基于接口的动态代理
 	private boolean proxyTargetClass = false;
-
+	//设置代理是否应该执行主动优化。
 	private boolean optimize = false;
-
+	//任何 AOP 代理都可以强制转换为 Advised，默认值是 false
 	boolean opaque = false;
-
+	//同 @EnableAspectJAutoProxy 中的属性 exposeProxy 一样语义，是否将代理对象暴露在 AopContext 类中。
 	boolean exposeProxy = false;
-
+	//设置该配置是否应该被冻结。当一个配置被冻结时，不能做出任何 Advice 更改
 	private boolean frozen = false;
 
 

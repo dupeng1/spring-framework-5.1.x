@@ -35,6 +35,10 @@ import org.springframework.util.Assert;
  * @since 2.0
  * @see AnnotationMatchingPointcut
  */
+
+/**
+ * 注解匹配。寻找指定的Java 5的注解进行简单的方法匹配。
+ */
 public class AnnotationMethodMatcher extends StaticMethodMatcher {
 
 	private final Class<? extends Annotation> annotationType;

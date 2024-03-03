@@ -31,17 +31,23 @@ import org.springframework.aop.MethodBeforeAdvice;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 前置通知适配器。
+ */
 @SuppressWarnings("serial")
 class MethodBeforeAdviceAdapter implements AdvisorAdapter, Serializable {
 
 	@Override
 	public boolean supportsAdvice(Advice advice) {
+		//前置通知
 		return (advice instanceof MethodBeforeAdvice);
 	}
 
 	@Override
 	public MethodInterceptor getInterceptor(Advisor advisor) {
 		MethodBeforeAdvice advice = (MethodBeforeAdvice) advisor.getAdvice();
+		//前置通知拦截器
 		return new MethodBeforeAdviceInterceptor(advice);
 	}
 

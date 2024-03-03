@@ -38,7 +38,7 @@ import org.aopalliance.aop.Advice;
  * 1、Aspect（切面）
  * 		切面是由Pointcut（切点）和Advice（通知）组成的，它包括了对横切关注功能的定义，也包括了对连接点的定义。
  * 2、Advisor(顾问/增强器)
- * 		Advisor是切面的另一种实现，绑定通知跟切点。没有指定切点的通知是没有意义的，Advisor可以说就是一个绑定在指定切点上的通知。
+ * 		Advisor是切面的另一种实现，绑定【切点】和【通知】。没有指定【切点】的【通知】是没有意义的，Advisor可以说就是一个绑定在指定【切点】上的【通知】。
  * 		它能够将通知以更为复杂的方式织入到目标对象中，是将通知包装为更复杂切面的装配器。
  *
  * 	3、封装了spring aop中的切点和通知。就是我们常用的@Aspect 注解标记的类。
@@ -53,7 +53,11 @@ import org.aopalliance.aop.Advice;
  * 		RegexpMethodPointcutAdvisor：正则表达式切面顾问。可设置多个正则表达式规则，通过内部封装的JdkRegexpMethodPointcut解析正则表达式。
  * 		DefaultPointcutAdvisor：默认切面顾问。比较灵活，可自由组合切面和通知。
  * 		InstantiationModelAwarePointcutAdvisorImpl：springboot自动装配的顾问类型。是最常用的一种顾问实现。在注解实现的切面中，所有@Aspect类，都会被解析成该对象。
- */
+ *
+ * Advisor是继承体系主要有PointcutAdvisor和IntroductionAdvisor
+ * 		PointcutAdvisor是方法级别，需要用到Pointcut和Advisor。注意Pointcut可以使用任何类型的Pointcut，Advice也可以任何类型的Advice
+ * 		IntroductionAdvisor是类级别, 只能使用IntroductionAdvice类型的Advice。
+ * */
 public interface Advisor {
 
 	/**
@@ -61,6 +65,7 @@ public interface Advisor {
 	 * {@link #getAdvice()} if no proper advice has been configured (yet).
 	 * @since 5.0
 	 */
+	// 空通知
 	Advice EMPTY_ADVICE = new Advice() {};
 
 
@@ -73,6 +78,7 @@ public interface Advisor {
 	 * @see ThrowsAdvice
 	 * @see AfterReturningAdvice
 	 */
+	// 获取通知，可以是拦截器、前置通知、抛出异常通知等
 	Advice getAdvice();
 
 	/**
@@ -85,6 +91,8 @@ public interface Advisor {
 	 * proxy creation to ensure that Advisors have the correct lifecycle model.
 	 * @return whether this advice is associated with a particular target instance
 	 */
+	// 是否和每个被通知的实例相关
+	// 当前框架还未用到该方法，可以通过单例/多例，或者恰当的代理创建来确保Advisor的生命周期正确
 	boolean isPerInstance();
 
 }

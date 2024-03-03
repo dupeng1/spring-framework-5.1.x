@@ -52,6 +52,10 @@ import org.springframework.util.ReflectionUtils;
  * @see #suppressInterface
  * @see DelegatingIntroductionInterceptor
  */
+
+/**
+ * 引介可以看成一种特殊的Advice，在没有改变原先类的定义的情况下为其增加新的方法。这中通知是spring-aop自己定义的，所以没有类似 @Before 这种配置可以直接注入advice到spring容器中，故此需要自己实现 DynamicIntroductionAdvice 这个接口来进行相应逻辑处理，又由于spring没有对 DynamicIntroductionAdvice 的关于MethodInterceptor的适配器，故此我们需要实现的其实是 IntroductionInterceptor 这个接口。DelegatingIntroductionInterceptor 和DelegatePerTargetObjectIntroductionInterceptor 就是接口IntroductionInterceptor的两个实现类。
+ */
 @SuppressWarnings("serial")
 public class DelegatePerTargetObjectIntroductionInterceptor extends IntroductionInfoSupport
 		implements IntroductionInterceptor {

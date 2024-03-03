@@ -36,14 +36,18 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @author Sam Brannen
  */
+
+/**
+ * 根据在当前现成的【堆栈信息中的方法名】来决定是否切入某个方法；
+ */
 @SuppressWarnings("serial")
 public class ControlFlowPointcut implements Pointcut, ClassFilter, MethodMatcher, Serializable {
-
+	// 匹配的类名，必须有效
 	private final Class<?> clazz;
-
+	// 匹配的方法名，支持为null，表示匹配任意方法
 	@Nullable
 	private final String methodName;
-
+	// 计数器
 	private volatile int evaluations;
 
 
@@ -74,6 +78,7 @@ public class ControlFlowPointcut implements Pointcut, ClassFilter, MethodMatcher
 	 */
 	@Override
 	public boolean matches(Class<?> clazz) {
+		// 匹配任意类
 		return true;
 	}
 
@@ -82,19 +87,23 @@ public class ControlFlowPointcut implements Pointcut, ClassFilter, MethodMatcher
 	 */
 	@Override
 	public boolean matches(Method method, Class<?> targetClass) {
+		// 匹配任意类的任意方法
 		return true;
 	}
 
 	@Override
 	public boolean isRuntime() {
+		// 动态匹配
 		return true;
 	}
 
 	@Override
 	public boolean matches(Method method, Class<?> targetClass, Object... args) {
+		// 记录次数
 		this.evaluations++;
-
+		// 遍历方法调用栈
 		for (StackTraceElement element : new Throwable().getStackTrace()) {
+			// 当前方法是否匹配类名和方法名
 			if (element.getClassName().equals(this.clazz.getName()) &&
 					(this.methodName == null || element.getMethodName().equals(this.methodName))) {
 				return true;

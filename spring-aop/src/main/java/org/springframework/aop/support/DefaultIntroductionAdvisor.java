@@ -39,6 +39,11 @@ import org.springframework.util.ClassUtils;
  * @author Juergen Hoeller
  * @since 11.11.2003
  */
+
+/**
+ * IntroductionAdvisor的简单实现，默认地应用引介到任意类型；
+ * 默认的引介通知器，它是一种通知器，但同时兼具了类过滤器的功能，且matches总返回true。它的作用是给所有bean追加指定接口。
+ */
 @SuppressWarnings("serial")
 public class DefaultIntroductionAdvisor implements IntroductionAdvisor, ClassFilter, Ordered, Serializable {
 
@@ -73,6 +78,7 @@ public class DefaultIntroductionAdvisor implements IntroductionAdvisor, ClassFil
 			if (introducedInterfaces.length == 0) {
 				throw new IllegalArgumentException("IntroductionAdviceSupport implements no interfaces");
 			}
+			// 应用引介接口信息
 			for (Class<?> ifc : introducedInterfaces) {
 				addInterface(ifc);
 			}
@@ -111,6 +117,7 @@ public class DefaultIntroductionAdvisor implements IntroductionAdvisor, ClassFil
 	@Override
 	public void validateInterfaces() throws IllegalArgumentException {
 		for (Class<?> ifc : this.interfaces) {
+			// 校验当前Advice是否支持所有的interfaces
 			if (this.advice instanceof DynamicIntroductionAdvice &&
 					!((DynamicIntroductionAdvice) this.advice).implementsInterface(ifc)) {
 				throw new IllegalArgumentException("DynamicIntroductionAdvice [" + this.advice + "] " +

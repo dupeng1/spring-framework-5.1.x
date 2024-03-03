@@ -26,10 +26,15 @@ import org.springframework.aop.MethodMatcher;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 动态方法匹配器的一个抽象超类，主要用于关注运行期间的参数
+ */
 public abstract class DynamicMethodMatcher implements MethodMatcher {
 
 	@Override
 	public final boolean isRuntime() {
+		// 动态匹配
 		return true;
 	}
 
@@ -39,6 +44,7 @@ public abstract class DynamicMethodMatcher implements MethodMatcher {
 	 */
 	@Override
 	public boolean matches(Method method, Class<?> targetClass) {
+		// 静态匹配默认匹配
 		return true;
 	}
 

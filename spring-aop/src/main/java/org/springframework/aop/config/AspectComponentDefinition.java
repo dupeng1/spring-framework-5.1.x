@@ -31,6 +31,10 @@ import org.springframework.lang.Nullable;
  * @see #getNestedComponents()
  * @see PointcutComponentDefinition
  */
+
+/**
+ * 创建一个切面的信息，包括了嵌套的切点。
+ */
 public class AspectComponentDefinition extends CompositeComponentDefinition {
 
 	private final BeanDefinition[] beanDefinitions;

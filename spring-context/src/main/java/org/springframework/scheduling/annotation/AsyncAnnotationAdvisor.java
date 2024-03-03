@@ -52,6 +52,10 @@ import org.springframework.util.function.SingletonSupplier;
  * @see Async
  * @see AnnotationAsyncExecutionInterceptor
  */
+
+/**
+ * Spring Async功能的实现，支持通过@Async注解和javax.ejb.Asynchronous注解来激活异步方法执行的Advisor；
+ */
 @SuppressWarnings("serial")
 public class AsyncAnnotationAdvisor extends AbstractPointcutAdvisor implements BeanFactoryAware {
 
@@ -94,7 +98,7 @@ public class AsyncAnnotationAdvisor extends AbstractPointcutAdvisor implements B
 	@SuppressWarnings("unchecked")
 	public AsyncAnnotationAdvisor(
 			@Nullable Supplier<Executor> executor, @Nullable Supplier<AsyncUncaughtExceptionHandler> exceptionHandler) {
-
+		// 默认支持Async和javax.ejb.Asynchronous，故size为2
 		Set<Class<? extends Annotation>> asyncAnnotationTypes = new LinkedHashSet<>(2);
 		asyncAnnotationTypes.add(Async.class);
 		try {
@@ -104,7 +108,9 @@ public class AsyncAnnotationAdvisor extends AbstractPointcutAdvisor implements B
 		catch (ClassNotFoundException ex) {
 			// If EJB 3.1 API not present, simply ignore.
 		}
+		// 根据异步执行器和异常处理器生成Advice
 		this.advice = buildAdvice(executor, exceptionHandler);
+		// 生成Pointcut
 		this.pointcut = buildPointcut(asyncAnnotationTypes);
 	}
 
@@ -162,8 +168,11 @@ public class AsyncAnnotationAdvisor extends AbstractPointcutAdvisor implements B
 	 */
 	protected Pointcut buildPointcut(Set<Class<? extends Annotation>> asyncAnnotationTypes) {
 		ComposablePointcut result = null;
+		// 遍历注解类型集合，得到一个ComposablePointcut
 		for (Class<? extends Annotation> asyncAnnotationType : asyncAnnotationTypes) {
+			// 匹配类，忽略方法（MethodMatcher.TRUE）
 			Pointcut cpc = new AnnotationMatchingPointcut(asyncAnnotationType, true);
+			// 匹配方法，忽略类（ClassFilter.TRUE）
 			Pointcut mpc = new AnnotationMatchingPointcut(null, asyncAnnotationType, true);
 			if (result == null) {
 				result = new ComposablePointcut(cpc);
@@ -173,6 +182,7 @@ public class AsyncAnnotationAdvisor extends AbstractPointcutAdvisor implements B
 			}
 			result = result.union(mpc);
 		}
+		// 若不存在注解类型，则认为全匹配
 		return (result != null ? result : Pointcut.TRUE);
 	}
 

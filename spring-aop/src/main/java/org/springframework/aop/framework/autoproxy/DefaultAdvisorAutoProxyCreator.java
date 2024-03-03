@@ -35,6 +35,10 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  * @author Rob Harrop
  */
+
+/**
+ * AbstractAdvisorAutoProxyCreator的默认实现类。可以单独使用，在框架中使用AOP，尽量不要手动创建此对象。
+ */
 @SuppressWarnings("serial")
 public class DefaultAdvisorAutoProxyCreator extends AbstractAdvisorAutoProxyCreator implements BeanNameAware {
 

@@ -40,6 +40,11 @@ import org.apache.commons.logging.Log;
  * @see com.jamonapi.MonitorFactory
  * @see PerformanceMonitorInterceptor
  */
+
+/**
+ * 性能监控的拦截器，使用了JAMon库对被拦截的方法和输出的状态信息进行性能的监测。另外它也可以对被拦截的方法抛出的异常进行跟踪计数，这些堆栈跟踪足迹可以在JAMopn的web应用中显示出来。
+ * amon的全名是：Java Application Monitor。它是一个小巧的，免费的，高性能的，线程安全的性能监测工具。它可以用来测定系统的性能瓶颈，也可以用来监视用户和应用程序之间的交互情况。 Jamon主要是用来检测jee的应用程序。
+ */
 @SuppressWarnings("serial")
 public class JamonPerformanceMonitorInterceptor extends AbstractMonitoringInterceptor {
 

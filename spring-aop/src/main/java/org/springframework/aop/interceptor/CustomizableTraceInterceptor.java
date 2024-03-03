@@ -68,6 +68,10 @@ import org.springframework.util.StringUtils;
  * @see #setExceptionMessage
  * @see SimpleTraceInterceptor
  */
+
+/**
+ * 方法级示踪器。 MethodInterceptor的实现类，使用占位符，来进行自定义的方法层级的示踪器。跟踪在方法入口处消息是否写入，在方法退出时判断方法调用是否成功。如果调用出现异常，那么一个异常消息记录下来。这些跟踪消息和占位符是高度定制化的，你可以将一些运行时信息写入日志系统中。
+ */
 @SuppressWarnings("serial")
 public class CustomizableTraceInterceptor extends AbstractTraceInterceptor {
 

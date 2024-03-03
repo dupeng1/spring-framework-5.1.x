@@ -34,6 +34,10 @@ import org.springframework.beans.factory.BeanFactory;
  * @see org.springframework.beans.factory.BeanFactory
  * @see LazySingletonAspectInstanceFactoryDecorator
  */
+
+/**
+ * 多例专用的工厂。
+ */
 @SuppressWarnings("serial")
 public class PrototypeAspectInstanceFactory extends BeanFactoryAspectInstanceFactory implements Serializable {
 

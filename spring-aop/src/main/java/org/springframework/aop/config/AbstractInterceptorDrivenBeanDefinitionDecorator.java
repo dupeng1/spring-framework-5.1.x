@@ -57,6 +57,11 @@ import org.springframework.util.StringUtils;
  * @since 2.0
  * @see org.aopalliance.intercept.MethodInterceptor
  */
+
+/**
+ * BeanDefinitionDecorator(接口)装饰相关的自定义属性。
+ * 该抽象类继承自BeanDefinitionDecorator，用于注册相应的Interceptor bean 定义。
+ */
 public abstract class AbstractInterceptorDrivenBeanDefinitionDecorator implements BeanDefinitionDecorator {
 
 	@Override

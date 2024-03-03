@@ -34,6 +34,10 @@ import org.springframework.util.ObjectUtils;
  * @see MethodMatchers
  * @see Pointcuts
  */
+
+/**
+ * 针对ClassFilter，还有一个工具类——ClassFilters。ClassFilters内部定义了两个私有的静态内部类：IntersectionClassFilter和UnionClassFilter，分别支持以与的逻辑和或的逻辑组合多个ClassFilter。此工具类同时对外提供了组合ClassFilter的API。
+ */
 public abstract class ClassFilters {
 
 	/**

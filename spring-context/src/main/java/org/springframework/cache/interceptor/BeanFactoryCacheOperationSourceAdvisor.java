@@ -28,12 +28,17 @@ import org.springframework.lang.Nullable;
  * @author Costin Leau
  * @since 3.1
  */
+
+/**
+ * Spring Cache功能的实现，基于CacheOperationSource实现的Advisor，内部持有Advice实例；
+ */
 @SuppressWarnings("serial")
 public class BeanFactoryCacheOperationSourceAdvisor extends AbstractBeanFactoryPointcutAdvisor {
-
+	// 判断当前方法是否有缓存注解，被CacheOperationSourcePointcut用来实现切入点逻辑
 	@Nullable
 	private CacheOperationSource cacheOperationSource;
 
+	// 使用基于CacheOperationSource的CacheOperationSourcePointcut作为pointcut
 	private final CacheOperationSourcePointcut pointcut = new CacheOperationSourcePointcut() {
 		@Override
 		@Nullable

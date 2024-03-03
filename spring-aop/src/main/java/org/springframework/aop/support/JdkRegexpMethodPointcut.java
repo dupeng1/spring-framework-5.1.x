@@ -37,23 +37,30 @@ import java.util.regex.PatternSyntaxException;
  * @author Rob Harrop
  * @since 1.1
  */
+
+/**
+ * JDK正则表达式切点，即使用正则表达式描述方法的拦截规则和排除规则。
+ */
 @SuppressWarnings("serial")
 public class JdkRegexpMethodPointcut extends AbstractRegexpMethodPointcut {
 
 	/**
 	 * Compiled form of the patterns.
 	 */
+	// 匹配正则
 	private Pattern[] compiledPatterns = new Pattern[0];
 
 	/**
 	 * Compiled form of the exclusion patterns.
 	 */
+	// 排除正则
 	private Pattern[] compiledExclusionPatterns = new Pattern[0];
 
 
 	/**
 	 * Initialize {@link Pattern Patterns} from the supplied {@code String[]}.
 	 */
+	// 初始化匹配正则表达式
 	@Override
 	protected void initPatternRepresentation(String[] patterns) throws PatternSyntaxException {
 		this.compiledPatterns = compilePatterns(patterns);
@@ -62,6 +69,7 @@ public class JdkRegexpMethodPointcut extends AbstractRegexpMethodPointcut {
 	/**
 	 * Initialize exclusion {@link Pattern Patterns} from the supplied {@code String[]}.
 	 */
+	// 初始化排除正则表达式
 	@Override
 	protected void initExcludedPatternRepresentation(String[] excludedPatterns) throws PatternSyntaxException {
 		this.compiledExclusionPatterns = compilePatterns(excludedPatterns);
@@ -71,6 +79,7 @@ public class JdkRegexpMethodPointcut extends AbstractRegexpMethodPointcut {
 	 * Returns {@code true} if the {@link Pattern} at index {@code patternIndex}
 	 * matches the supplied candidate {@code String}.
 	 */
+	// 是否匹配匹配正则
 	@Override
 	protected boolean matches(String pattern, int patternIndex) {
 		Matcher matcher = this.compiledPatterns[patternIndex].matcher(pattern);
@@ -81,6 +90,7 @@ public class JdkRegexpMethodPointcut extends AbstractRegexpMethodPointcut {
 	 * Returns {@code true} if the exclusion {@link Pattern} at index {@code patternIndex}
 	 * matches the supplied candidate {@code String}.
 	 */
+	// 是否匹配排除正则
 	@Override
 	protected boolean matchesExclusion(String candidate, int patternIndex) {
 		Matcher matcher = this.compiledExclusionPatterns[patternIndex].matcher(candidate);
@@ -92,6 +102,7 @@ public class JdkRegexpMethodPointcut extends AbstractRegexpMethodPointcut {
 	 * Compiles the supplied {@code String[]} into an array of
 	 * {@link Pattern} objects and returns that array.
 	 */
+	// 编译正则表达式
 	private Pattern[] compilePatterns(String[] source) throws PatternSyntaxException {
 		Pattern[] destination = new Pattern[source.length];
 		for (int i = 0; i < source.length; i++) {

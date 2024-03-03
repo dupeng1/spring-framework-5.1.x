@@ -43,6 +43,12 @@ import org.springframework.aop.support.ComposablePointcut;
  * @since 2.0
  * @see org.springframework.aop.aspectj.AspectJExpressionPointcut
  */
+
+/**
+ * AspectJ切面类的元数据，每个切面附加一个额外的Spring AOP切点。
+ * 该类有属性：aspectName、aspectClass、ajType（transient修饰，表示该属性不需要序列，序列化对象的时候,这个属性就不会被序列化）、
+ * perClausePointcut。
+ */
 @SuppressWarnings("serial")
 public class AspectMetadata implements Serializable {
 

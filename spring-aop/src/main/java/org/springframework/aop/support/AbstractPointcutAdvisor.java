@@ -35,6 +35,10 @@ import org.springframework.util.ObjectUtils;
  * @since 1.1.2
  * @see AbstractGenericPointcutAdvisor
  */
+
+/**
+ * PointcutAdvisor接口的抽象基类，其子类可以返回指定的切点/通知，或者是一个可自由配置的切点/通知。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractPointcutAdvisor implements PointcutAdvisor, Ordered, Serializable {
 

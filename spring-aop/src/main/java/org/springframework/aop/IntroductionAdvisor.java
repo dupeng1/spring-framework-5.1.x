@@ -31,7 +31,8 @@ package org.springframework.aop;
  */
 
 /**
- * advisor顾问，封装了spring aop中的切点和通知。这个接口是用来处理一个或者多个引入的顾问的父接口。
+ * 支持AOP 引介功能的Advisor的基础接口；
+ * advisor顾问，封装了spring aop中的【切点】和【通知】。这个接口是用来处理一个或者多个引入的顾问的父接口。
  */
 public interface IntroductionAdvisor extends Advisor, IntroductionInfo {
 
@@ -42,6 +43,7 @@ public interface IntroductionAdvisor extends Advisor, IntroductionInfo {
 	 * matching doesn't make sense to introductions.
 	 * @return the class filter
 	 */
+	// 获取决定引介适用性的类过滤器
 	ClassFilter getClassFilter();
 
 	/**
@@ -50,6 +52,7 @@ public interface IntroductionAdvisor extends Advisor, IntroductionInfo {
 	 * @throws IllegalArgumentException if the advised interfaces can't be
 	 * implemented by the introduction advice
 	 */
+	// 校验被通知的接口是否可以应用该IntroductionAdvisor
 	void validateInterfaces() throws IllegalArgumentException;
 
 }

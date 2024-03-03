@@ -35,11 +35,13 @@ final class TrueClassFilter implements ClassFilter, Serializable {
 	/**
 	 * Enforce Singleton pattern.
 	 */
+	// 确保单例
 	private TrueClassFilter() {
 	}
 
 	@Override
 	public boolean matches(Class<?> clazz) {
+		// 全匹配
 		return true;
 	}
 

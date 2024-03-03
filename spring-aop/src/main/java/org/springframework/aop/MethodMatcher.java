@@ -52,7 +52,9 @@ import java.lang.reflect.Method;
  */
 
 /**
- * 用来匹配方法
+ * 用来【方法匹配】，是 Pointcut 的一部分：用于检查目标方法是否有资格获得 Advice，可以静态地或在运行时（动态地）计算
+ * 静态匹配涉及方法和(可能)方法属性，动态匹配还使特定调用的参数可用
+ *
  *  接口的实现类有很多，
  *  如StaticMethodMatcher（只支持静态匹配，两个参数的matchs）、
  *  AspectJExpressionPointcut（AOP重要组件）、
@@ -71,8 +73,7 @@ public interface MethodMatcher {
 	 * @param targetClass the target class
 	 * @return whether or not this method matches statically
 	 */
-	//这个方法用来判断当前定义的切点跟目标类中的指定方法是否匹配，
-	// 它可以在创建代理的时候就被调用，从而决定是否需要进行代理，这样就可以避免每次方法执行的时候再去做判断。
+	// 是否静态地匹配指定类的指定方法
 	boolean matches(Method method, Class<?> targetClass);
 
 	/**
@@ -85,7 +86,7 @@ public interface MethodMatcher {
 	 * {@link #matches(java.lang.reflect.Method, Class, Object[])} method
 	 * is required if static matching passed
 	 */
-	//如果这个方法返回true的话，意味着每次执行方法时还需要做一次匹配。
+	// 是否动态匹配
 	boolean isRuntime();
 
 	/**
@@ -102,13 +103,14 @@ public interface MethodMatcher {
 	 * @return whether there's a runtime match
 	 * @see MethodMatcher#matches(Method, Class)
 	 */
-	//当之前的isRuntime方法返回true时，会调用这个方法再次进行一次判断，返回false的话，意味着不对这个方法应用通知。
+	// 是否动态地匹配指定类的指定方法
 	boolean matches(Method method, Class<?> targetClass, Object... args);
 
 
 	/**
 	 * Canonical instance that matches all methods.
 	 */
+	// 匹配任意方法的示例
 	MethodMatcher TRUE = TrueMethodMatcher.INSTANCE;
 
 }

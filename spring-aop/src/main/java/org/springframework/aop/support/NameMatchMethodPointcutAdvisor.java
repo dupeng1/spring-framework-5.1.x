@@ -29,6 +29,10 @@ import org.springframework.aop.Pointcut;
  * @author Rob Harrop
  * @see NameMatchMethodPointcut
  */
+
+/**
+ * 方法名称切面顾问，内部封装了NameMatchMethodPointcut，通过设置方法名称模糊匹配规则和通知来实现切面功能。
+ */
 @SuppressWarnings("serial")
 public class NameMatchMethodPointcutAdvisor extends AbstractGenericPointcutAdvisor {
 

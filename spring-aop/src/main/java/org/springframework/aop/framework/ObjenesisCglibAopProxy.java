@@ -35,6 +35,14 @@ import org.springframework.util.ReflectionUtils;
  * @author Juergen Hoeller
  * @since 4.0
  */
+
+/**
+ * 该类继承自CglibAopProxy，重写了createProxyClassAndInstance方法。
+ *
+ *         objenesis是一个小型Java类库用来实例化一个特定class的对象。Java已经支持使用class.newinstance()的类动态实例化，但是必须要有一个合适的构造函数。而很多场景下类不能够用这种方式去实例化，例如：构造函数需要参数（Constructors that require arguments）、有副作用的构造函数（Constructors that have side effects）、会抛出异常的构造函数（Constructors that throw exceptions）。
+ *
+ *         因此，常见的是在类库中看到类必须要有一个默认的构造函数的限制，Objenesis旨在通过绕过对象实例化的构造函数来克服这些限制。典型用途：（1）序列化，远程调用和持久化-对象需要被实例化并恢复到特定的状态，而不需要调用代码。（2）代理、 AOP 库和 mock 对象-类可以被子类继承而子类不用担心父类的构造器。（3）容器框架-对象可以以非标准的方式动态地实例化。
+ */
 @SuppressWarnings("serial")
 class ObjenesisCglibAopProxy extends CglibAopProxy {
 

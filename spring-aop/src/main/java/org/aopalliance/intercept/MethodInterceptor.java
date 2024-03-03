@@ -41,7 +41,7 @@ package org.aopalliance.intercept;
  */
 
 /**
- * 方法拦截器，Interceptor的子接口，拦截方法并处理，核心类。
+ * 方法拦截器，子类实现在接口调用之前和之后执行额外处理逻辑；
  */
 @FunctionalInterface
 public interface MethodInterceptor extends Interceptor {
@@ -56,6 +56,7 @@ public interface MethodInterceptor extends Interceptor {
 	 * @throws Throwable if the interceptors or the target object
 	 * throws an exception
 	 */
+	// 方法调用，可以在方法调用之前和之后执行额外逻辑
 	Object invoke(MethodInvocation invocation) throws Throwable;
 
 }

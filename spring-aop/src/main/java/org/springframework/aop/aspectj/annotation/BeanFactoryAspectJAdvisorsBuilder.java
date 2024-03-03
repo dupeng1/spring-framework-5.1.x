@@ -38,6 +38,14 @@ import org.springframework.util.Assert;
  * @since 2.0.2
  * @see AnnotationAwareAspectJAutoProxyCreator
  */
+
+/**
+ * Spring AOP内部工具类，用来从bean容器也就是BeanFactory中获取所有使用了@AspectJ注解的bean，最终用于自动代理机制(auto-proxying)。
+ *
+ *         该工具内部使用了缓存机制，虽然公开的查找方法可能会被调用多次，但并不是每次都会真正查找，而是会利用缓存。
+ *         最核心的逻辑在其方法buildAspectJAdvisors中，该方法查找容器中所有@AspectJ注解的bean，
+ *         然后将其中每个advice方法包装成一个Spring Advisor。最终结果以一个List<Advisor>的形式返回给调用者。
+ */
 public class BeanFactoryAspectJAdvisorsBuilder {
 
 	private final ListableBeanFactory beanFactory;

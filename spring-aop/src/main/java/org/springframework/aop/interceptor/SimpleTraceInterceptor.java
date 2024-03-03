@@ -32,6 +32,10 @@ import org.apache.commons.logging.Log;
  * @since 1.2
  * @see CustomizableTraceInterceptor
  */
+
+/**
+ * 继承自AbstractTraceInterceptor， 该拦截器可以引入拦截器链中，用来显示被拦截的方法调用的详细跟踪信息，包括方法进入和退出的信息。 如果想要更高级的需求，可以考虑使用自定义的跟踪拦截器CustomizableTraceInterceptor。
+ */
 @SuppressWarnings("serial")
 public class SimpleTraceInterceptor extends AbstractTraceInterceptor {
 

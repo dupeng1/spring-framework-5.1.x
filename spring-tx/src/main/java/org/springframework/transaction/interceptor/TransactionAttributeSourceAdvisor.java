@@ -40,13 +40,15 @@ import org.springframework.util.Assert;
 
 /**
  * TransactionAttributeSource的增强器，用于包含一个事务拦截器，仅用于事务方法。
+ * Spring 注解驱动的事务管理功能的实现，基于TransactionAttributeSource实现的Advisor，内部持有TransactionInterceptor实例；
  */
 @SuppressWarnings("serial")
 public class TransactionAttributeSourceAdvisor extends AbstractPointcutAdvisor {
-
+	// 被TransactionAttributeSourcePointcut用来实现切入点逻辑
 	@Nullable
 	private TransactionInterceptor transactionInterceptor;
 
+	// 使用基于TransactionAttributeSource的TransactionAttributeSourcePointcut作为pointcut
 	private final TransactionAttributeSourcePointcut pointcut = new TransactionAttributeSourcePointcut() {
 		@Override
 		@Nullable

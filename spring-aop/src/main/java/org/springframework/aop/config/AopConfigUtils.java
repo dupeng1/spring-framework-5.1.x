@@ -43,6 +43,11 @@ import org.springframework.util.Assert;
  * @since 2.5
  * @see AopNamespaceUtils
  */
+
+/**
+ * 这个是关于AOP配置的工具类。因为配置AOP的方式有多种（比如xml、注解等），
+ * 此工具类就是针对不同配置，提供不同的工具方法的。它的好处是不管什么配置，最终走底层逻辑都归一了。
+ */
 public abstract class AopConfigUtils {
 
 	/**
@@ -58,9 +63,10 @@ public abstract class AopConfigUtils {
 
 	static {
 		// Set up the escalation list...
-		APC_PRIORITY_LIST.add(InfrastructureAdvisorAutoProxyCreator.class);
-		APC_PRIORITY_LIST.add(AspectJAwareAdvisorAutoProxyCreator.class);
-		APC_PRIORITY_LIST.add(AnnotationAwareAspectJAutoProxyCreator.class);
+		/** 默认初始化3个APC（AutoProxyCreator）实现类 */
+		APC_PRIORITY_LIST.add(InfrastructureAdvisorAutoProxyCreator.class);// 第0级别
+		APC_PRIORITY_LIST.add(AspectJAwareAdvisorAutoProxyCreator.class);// 第1级别
+		APC_PRIORITY_LIST.add(AnnotationAwareAspectJAutoProxyCreator.class);// 第2级别
 	}
 
 
@@ -93,6 +99,10 @@ public abstract class AopConfigUtils {
 		return registerAspectJAnnotationAutoProxyCreatorIfNecessary(registry, null);
 	}
 
+	//用于注册或者升级AnnotationAwareAspectJAutoProxyCreator类型的APC
+	//对于AOP的实现，基本都是在AnnotationAwareAspectJAutoProxyCreator类中完成的
+	//它可以根据@Point注解定义的切点来自动代理相匹配的bean
+	//为了配置简便，Spring使用了自定义配置来帮助我们自动注册AnnotationAwareAspectJAutoProxyCreator
 	@Nullable
 	public static BeanDefinition registerAspectJAnnotationAutoProxyCreatorIfNecessary(
 			BeanDefinitionRegistry registry, @Nullable Object source) {
@@ -119,19 +129,22 @@ public abstract class AopConfigUtils {
 			Class<?> cls, BeanDefinitionRegistry registry, @Nullable Object source) {
 
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
-
+		//如果已经存在了【自动代理创建器】且存在的自动代理创建器与现在的不一致，
+		/** 步骤1：如果容器中已经存在apc实例，则试图替换为AnnotationAwareAspectJAutoProxyCreator类型 */
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 			BeanDefinition apcDefinition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
 			if (!cls.getName().equals(apcDefinition.getBeanClassName())) {
 				int currentPriority = findPriorityForClass(apcDefinition.getBeanClassName());
 				int requiredPriority = findPriorityForClass(cls);
 				if (currentPriority < requiredPriority) {
+					//改变bean最重要的就是改变bean所对应的className属性
 					apcDefinition.setBeanClassName(cls.getName());
 				}
 			}
+			//如果已经存在自动代理创建器且与将要创建的一致，那么无需再次创建
 			return null;
 		}
-
+		/** 步骤2：如果不存在，则向容器中创建AnnotationAwareAspectJAutoProxyCreator类型的apc实例对象 */
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(cls);
 		beanDefinition.setSource(source);
 		beanDefinition.getPropertyValues().add("order", Ordered.HIGHEST_PRECEDENCE);
@@ -140,10 +153,12 @@ public abstract class AopConfigUtils {
 		return beanDefinition;
 	}
 
+	/** 通过Class获得优先级别 */
 	private static int findPriorityForClass(Class<?> clazz) {
 		return APC_PRIORITY_LIST.indexOf(clazz);
 	}
 
+	/** 通过className获得优先级别 */
 	private static int findPriorityForClass(@Nullable String className) {
 		for (int i = 0; i < APC_PRIORITY_LIST.size(); i++) {
 			Class<?> clazz = APC_PRIORITY_LIST.get(i);

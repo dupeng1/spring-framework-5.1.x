@@ -39,6 +39,10 @@ import org.springframework.util.Assert;
  * @see ClassFilters
  * @see Pointcuts
  */
+
+/**
+ * 同ClassFilters一样，是一个工具类。
+ */
 public abstract class MethodMatchers {
 
 	/**

@@ -24,6 +24,10 @@ import org.springframework.core.NestedRuntimeException;
  * @author Rod Johnson
  * @since 13.03.2003
  */
+
+/**
+ * AOP配置参数非法时抛出的异常。
+ */
 @SuppressWarnings("serial")
 public class AopConfigException extends NestedRuntimeException {
 

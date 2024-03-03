@@ -33,6 +33,10 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  * @see #setAdvisorAdapterRegistry
  * @see AdvisorAdapter
  */
+
+/**
+ * 继承自BeanPostProcessor后置处理器，利用AdvisorAdapterRegistry在Bean工厂中注册AdvisorAdapter（通知适配器）。
+ */
 public class AdvisorAdapterRegistrationManager implements BeanPostProcessor {
 
 	private AdvisorAdapterRegistry advisorAdapterRegistry = GlobalAdvisorAdapterRegistry.getInstance();

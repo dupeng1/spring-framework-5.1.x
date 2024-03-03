@@ -40,10 +40,17 @@ import org.springframework.core.PriorityOrdered;
  * @author Rod Johnson
  * @author Juergen Hoeller
  */
+
+/**
+ * 将当前MethodInvocation放到当前线程对应的ThreadLocalMap里，当作一个线程本地变量；
+ * 如果使用的话，ExposeInvocationInterceptor正常都是在拦截器链首位；
+ * 暴露当前MethodInvocation的拦截器。作为线程本地对象， 我们偶尔需要这样做， 比如切入点时需要知道完整的调用上下文。除非确实有必要，否则不要使用此拦截器。 目标对象应该通常不了解Spring AOP，因为这会产生对Spring API的依赖。目标对象应尽可能是普通的POJO。如果要使用这个拦截器，要将这个拦截器放在拦截链中的开头。
+ */
 @SuppressWarnings("serial")
 public final class ExposeInvocationInterceptor implements MethodInterceptor, PriorityOrdered, Serializable {
 
 	/** Singleton instance of this class. */
+	// 单例
 	public static final ExposeInvocationInterceptor INSTANCE = new ExposeInvocationInterceptor();
 
 	/**
@@ -67,6 +74,7 @@ public final class ExposeInvocationInterceptor implements MethodInterceptor, Pri
 	 * @throws IllegalStateException if there is no AOP invocation in progress,
 	 * or if the ExposeInvocationInterceptor was not added to this interceptor chain
 	 */
+	// 获取当前MethodInvocation
 	public static MethodInvocation currentInvocation() throws IllegalStateException {
 		MethodInvocation mi = invocation.get();
 		if (mi == null) {
@@ -82,17 +90,22 @@ public final class ExposeInvocationInterceptor implements MethodInterceptor, Pri
 	/**
 	 * Ensures that only the canonical instance can be created.
 	 */
+	// 确保单例
 	private ExposeInvocationInterceptor() {
 	}
 
 	@Override
 	public Object invoke(MethodInvocation mi) throws Throwable {
+		// 缓存当前MethodInvocation
 		MethodInvocation oldInvocation = invocation.get();
+		// 更新当前MethodInvocation
 		invocation.set(mi);
 		try {
+			// 调用方法调用
 			return mi.proceed();
 		}
 		finally {
+			// 还原当前MethodInvocation
 			invocation.set(oldInvocation);
 		}
 	}

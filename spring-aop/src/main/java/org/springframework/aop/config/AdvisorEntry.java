@@ -24,6 +24,10 @@ import org.springframework.beans.factory.parsing.ParseState;
  * @author Mark Fisher
  * @since 2.0
  */
+
+/**
+ * 实现了接口ParseState.Entry，代表一个顾问的入口。
+ */
 public class AdvisorEntry implements ParseState.Entry {
 
 	private final String name;

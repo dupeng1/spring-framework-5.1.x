@@ -26,6 +26,10 @@ import org.springframework.aop.MethodMatcher;
  *
  * @author Rod Johnson
  */
+
+/**
+ * 框架的内部类，组合MethodInterceptor实例和MethodMatch作为增强器链中的一个元素。
+ */
 class InterceptorAndDynamicMethodMatcher {
 
 	final MethodInterceptor interceptor;

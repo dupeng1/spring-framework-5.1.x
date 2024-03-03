@@ -49,12 +49,14 @@ public interface ClassFilter {
 	 * @param clazz the candidate target class
 	 * @return whether the advice should apply to the given target class
 	 */
+	// 是否匹配指定的接口/类
 	boolean matches(Class<?> clazz);
 
 
 	/**
 	 * Canonical instance of a ClassFilter that matches all classes.
 	 */
+	// 匹配任意类型的示例
 	ClassFilter TRUE = TrueClassFilter.INSTANCE;
 
 }

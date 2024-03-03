@@ -90,6 +90,10 @@ import org.springframework.util.ObjectUtils;
  * @see org.springframework.aop.Advisor
  * @see Advised
  */
+
+/**
+ * ProxyFactoryBean的功能：初始化通知器链，获取单例、原型的Aop代理对象。
+ */
 @SuppressWarnings("serial")
 public class ProxyFactoryBean extends ProxyCreatorSupport
 		implements FactoryBean<Object>, BeanClassLoaderAware, BeanFactoryAware {

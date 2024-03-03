@@ -47,6 +47,11 @@ import org.springframework.util.StringUtils;
  * @since 1.1
  * @see JdkRegexpMethodPointcut
  */
+
+/**
+ * 正则表达式匹配方法签名。
+ * 使用正则表达式匹配方法全限定名称的抽象基础类，定义了匹配算法骨架，由子类实现匹配算法细节；
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractRegexpMethodPointcut extends StaticMethodMatcherPointcut
 		implements Serializable {
@@ -54,11 +59,13 @@ public abstract class AbstractRegexpMethodPointcut extends StaticMethodMatcherPo
 	/**
 	 * Regular expressions to match.
 	 */
+	// 匹配的正则表达式
 	private String[] patterns = new String[0];
 
 	/**
 	 * Regular expressions <strong>not</strong> to match.
 	 */
+	// 排除的正则表达式
 	private String[] excludedPatterns = new String[0];
 
 
@@ -130,6 +137,7 @@ public abstract class AbstractRegexpMethodPointcut extends StaticMethodMatcherPo
 	 */
 	@Override
 	public boolean matches(Method method, Class<?> targetClass) {
+		// 是否匹配方法的全限定名称
 		return (matchesPattern(ClassUtils.getQualifiedMethodName(method, targetClass)) ||
 				(targetClass != method.getDeclaringClass() &&
 						matchesPattern(ClassUtils.getQualifiedMethodName(method, method.getDeclaringClass()))));
@@ -141,18 +149,23 @@ public abstract class AbstractRegexpMethodPointcut extends StaticMethodMatcherPo
 	 * @return whether the candidate matches at least one of the specified patterns
 	 */
 	protected boolean matchesPattern(String signatureString) {
+		// 遍历配置的匹配正则表达式
 		for (int i = 0; i < this.patterns.length; i++) {
 			boolean matched = matches(signatureString, i);
 			if (matched) {
+				// 如果匹配上，则继续判断是否匹配排除正则表达式
 				for (int j = 0; j < this.excludedPatterns.length; j++) {
 					boolean excluded = matchesExclusion(signatureString, j);
 					if (excluded) {
+						// 如果匹配上排除正则表达式，则认为不匹配
 						return false;
 					}
 				}
+				// 未匹配上任何排除正则表达式，则认为匹配
 				return true;
 			}
 		}
+		// 未匹配上任何匹配正则表达式，则认为未匹配
 		return false;
 	}
 
@@ -165,6 +178,7 @@ public abstract class AbstractRegexpMethodPointcut extends StaticMethodMatcherPo
 	 * @param patterns the patterns to initialize
 	 * @throws IllegalArgumentException in case of an invalid pattern
 	 */
+	// 初始化匹配正则表达式
 	protected abstract void initPatternRepresentation(String[] patterns) throws IllegalArgumentException;
 
 	/**
@@ -175,6 +189,7 @@ public abstract class AbstractRegexpMethodPointcut extends StaticMethodMatcherPo
 	 * @param patterns the patterns to initialize
 	 * @throws IllegalArgumentException in case of an invalid pattern
 	 */
+	// 初始化排除正则表达式
 	protected abstract void initExcludedPatternRepresentation(String[] patterns) throws IllegalArgumentException;
 
 	/**
@@ -183,6 +198,7 @@ public abstract class AbstractRegexpMethodPointcut extends StaticMethodMatcherPo
 	 * @param patternIndex index of pattern (starting from 0)
 	 * @return {@code true} if there is a match, {@code false} otherwise
 	 */
+	// 是否匹配指定匹配正则
 	protected abstract boolean matches(String pattern, int patternIndex);
 
 	/**
@@ -191,6 +207,7 @@ public abstract class AbstractRegexpMethodPointcut extends StaticMethodMatcherPo
 	 * @param patternIndex index of pattern (starting from 0)
 	 * @return {@code true} if there is a match, {@code false} otherwise
 	 */
+	// 是否匹配指定排除正则
 	protected abstract boolean matchesExclusion(String pattern, int patternIndex);
 
 

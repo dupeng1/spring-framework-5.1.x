@@ -33,6 +33,10 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @since 2.0
  */
+
+/**
+ * 创建一个顾问的信息，用来弥合通过<aop:advisor>配置的顾问的bean definition和架构中的部件定义。
+ */
 public class AdvisorComponentDefinition extends AbstractComponentDefinition {
 
 	private final String advisorBeanName;

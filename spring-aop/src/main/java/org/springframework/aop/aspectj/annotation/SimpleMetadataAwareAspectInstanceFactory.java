@@ -28,6 +28,10 @@ import org.springframework.core.annotation.OrderUtils;
  * @author Juergen Hoeller
  * @since 2.0.4
  */
+
+/**
+ * MetadataAwareAspectInstanceFactory的一个实现类，每次调用getAspectInstance()函数时，都会创建指定的切面类的实例。
+ */
 public class SimpleMetadataAwareAspectInstanceFactory extends SimpleAspectInstanceFactory
 		implements MetadataAwareAspectInstanceFactory {
 

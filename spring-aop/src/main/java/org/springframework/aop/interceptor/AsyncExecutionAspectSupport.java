@@ -59,6 +59,10 @@ import org.springframework.util.function.SingletonSupplier;
  * @author Stephane Nicoll
  * @since 3.1.2
  */
+
+/**
+ * 异步任务执行切面的一个基类。核心方法determineAsyncExecutor()，返回一个执行异步任务的线程池AsyncTaskExecutor。
+ */
 public abstract class AsyncExecutionAspectSupport implements BeanFactoryAware {
 
 	/**

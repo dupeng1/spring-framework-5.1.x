@@ -34,6 +34,7 @@ import org.springframework.util.ObjectUtils;
  */
 
 /**
+ * Spring事务相关的Pointcut
  * 切点实现类。Pointcut拦截住了方法，然后使用TransactionAttributeSource去方法和类上获取事务属性，
  * 如果能获取到，说明此方法需要参与事务，则进行事务增强，反之则不增强。
  */
@@ -80,6 +81,7 @@ abstract class TransactionAttributeSourcePointcut extends StaticMethodMatcherPoi
 	 * Obtain the underlying TransactionAttributeSource (may be {@code null}).
 	 * To be implemented by subclasses.
 	 */
+	// 获取TransactionAttributeSource，用于解析指定方法上的TransactionAttribute
 	@Nullable
 	protected abstract TransactionAttributeSource getTransactionAttributeSource();
 

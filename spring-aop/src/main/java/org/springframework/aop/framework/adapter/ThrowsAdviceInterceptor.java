@@ -54,16 +54,23 @@ import org.springframework.util.Assert;
  * @see MethodBeforeAdviceInterceptor
  * @see AfterReturningAdviceInterceptor
  */
+
+/**
+ * 包装ThrowsAdvice的Interceptor；
+ * ThrowsAdvice实现子类中的异常处理方法的签名必须是以下格式：
+ * void afterThrowing([Method, args, target], ThrowableSubclass);
+ */
 public class ThrowsAdviceInterceptor implements MethodInterceptor, AfterAdvice {
 
 	private static final String AFTER_THROWING = "afterThrowing";
 
 	private static final Log logger = LogFactory.getLog(ThrowsAdviceInterceptor.class);
 
-
+	// 抛出异常增强
 	private final Object throwsAdvice;
 
 	/** Methods on throws advice, keyed by exception class. */
+	// 缓存异常处理方法，以异常类型为KEY
 	private final Map<Class<?>, Method> exceptionHandlerMap = new HashMap<>();
 
 
@@ -73,16 +80,20 @@ public class ThrowsAdviceInterceptor implements MethodInterceptor, AfterAdvice {
 	 * (usually a {@link org.springframework.aop.ThrowsAdvice} implementation)
 	 */
 	public ThrowsAdviceInterceptor(Object throwsAdvice) {
+		// 校验抛出异常增强
 		Assert.notNull(throwsAdvice, "Advice must not be null");
 		this.throwsAdvice = throwsAdvice;
 
 		Method[] methods = throwsAdvice.getClass().getMethods();
+		// 遍历抛出异常增强的所有方法，寻找异常处理方法
 		for (Method method : methods) {
 			if (method.getName().equals(AFTER_THROWING) &&
 					(method.getParameterCount() == 1 || method.getParameterCount() == 4)) {
+				//方法最后一个参数是异常类型
 				Class<?> throwableParam = method.getParameterTypes()[method.getParameterCount() - 1];
 				if (Throwable.class.isAssignableFrom(throwableParam)) {
 					// An exception handler to register...
+					// 缓存异常处理方法，方便直接根据异常类型直接获取异常处理方法
 					this.exceptionHandlerMap.put(throwableParam, method);
 					if (logger.isDebugEnabled()) {
 						logger.debug("Found exception handler method on throws advice: " + method);
@@ -109,9 +120,11 @@ public class ThrowsAdviceInterceptor implements MethodInterceptor, AfterAdvice {
 	@Override
 	public Object invoke(MethodInvocation mi) throws Throwable {
 		try {
+			// 执行方法调用
 			return mi.proceed();
 		}
 		catch (Throwable ex) {
+			// 发生异常，则根据异常类型获取对应的异常处理方法进行处理
 			Method handlerMethod = getExceptionHandler(ex);
 			if (handlerMethod != null) {
 				invokeHandlerMethod(mi, ex, handlerMethod);
@@ -125,6 +138,7 @@ public class ThrowsAdviceInterceptor implements MethodInterceptor, AfterAdvice {
 	 * @param exception the exception thrown
 	 * @return a handler for the given exception type, or {@code null} if none found
 	 */
+	//根据异常类型获取对应的异常处理方法
 	@Nullable
 	private Method getExceptionHandler(Throwable exception) {
 		Class<?> exceptionClass = exception.getClass();
@@ -142,8 +156,10 @@ public class ThrowsAdviceInterceptor implements MethodInterceptor, AfterAdvice {
 		return handler;
 	}
 
+	//拼接Method所需参数，并执行Method
 	private void invokeHandlerMethod(MethodInvocation mi, Throwable ex, Method method) throws Throwable {
 		Object[] handlerArgs;
+		// 准备方法参数
 		if (method.getParameterCount() == 1) {
 			handlerArgs = new Object[] {ex};
 		}
@@ -151,6 +167,7 @@ public class ThrowsAdviceInterceptor implements MethodInterceptor, AfterAdvice {
 			handlerArgs = new Object[] {mi.getMethod(), mi.getArguments(), mi.getThis(), ex};
 		}
 		try {
+			// 调用异常处理方法
 			method.invoke(this.throwsAdvice, handlerArgs);
 		}
 		catch (InvocationTargetException targetEx) {

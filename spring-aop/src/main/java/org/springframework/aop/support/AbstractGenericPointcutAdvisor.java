@@ -27,6 +27,10 @@ import org.aopalliance.aop.Advice;
  * @see #setAdvice
  * @see DefaultPointcutAdvisor
  */
+
+/**
+ * 一般的、通用的PointcutAdvisor。
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractGenericPointcutAdvisor extends AbstractPointcutAdvisor {
 

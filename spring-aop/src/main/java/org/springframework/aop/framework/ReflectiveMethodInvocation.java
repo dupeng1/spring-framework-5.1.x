@@ -59,6 +59,10 @@ import org.springframework.lang.Nullable;
  * @see #setUserAttribute
  * @see #getUserAttribute
  */
+
+/**
+ * 核心类，激发拦截链工作实现。该类实现了aop联盟的MethodInvocation，间接实现了Invocation和Joinpoint。
+ */
 public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Cloneable {
 
 	protected final Object proxy;
@@ -159,30 +163,44 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 	@Nullable
 	public Object proceed() throws Throwable {
 		// We start with an index of -1 and increment early.
+		//判断是不是已经执行完拦截器链上的方法了
 		if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
+			//如果已经执行完，就要去执行切点里面的方法了
 			return invokeJoinpoint();
 		}
-
+		//去获取当前执行到哪个拦截器了
+		//说白了就是去获取下一个要执行的拦截器
 		Object interceptorOrInterceptionAdvice =
 				this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);
+		//判断当前要执行的拦截器类型
+		//InterceptorAndDynamicMethhodMatch是动态拦截器，根据运行时参数来决定拦截器是否生效
 		if (interceptorOrInterceptionAdvice instanceof InterceptorAndDynamicMethodMatcher) {
 			// Evaluate dynamic method matcher here: static part will already have
 			// been evaluated and found to match.
+			//动态匹配
 			InterceptorAndDynamicMethodMatcher dm =
 					(InterceptorAndDynamicMethodMatcher) interceptorOrInterceptionAdvice;
+			//获取被代理的对象类型
 			Class<?> targetClass = (this.targetClass != null ? this.targetClass : this.method.getDeclaringClass());
+			//进行动态匹配
 			if (dm.methodMatcher.matches(this.method, targetClass, this.arguments)) {
 				return dm.interceptor.invoke(this);
 			}
+			//如果动态匹配失败，递归进行proceed
+			//不匹配就不执行当前的拦截器
 			else {
 				// Dynamic matching failed.
 				// Skip this interceptor and invoke the next in the chain.
+				//不匹配就不执行拦截器
 				return proceed();
 			}
 		}
+		//如果不是增强器，只是一般的拦截器
 		else {
 			// It's an interceptor, so we just invoke it: The pointcut will have
 			// been evaluated statically before this object was constructed.
+			//普通拦截器，直接调用拦截器。将this作为参赛传入以保障当前实例中调用链的执行。例如：MethodBeforeAdviceInterceptor
+			//拦截器逻辑执行后，还会调用MethodInvocation的proceed方法，此时相当于就发生了递归了，又去寻找下一个增强器或者拦截器了
 			return ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(this);
 		}
 	}
@@ -195,6 +213,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 	 */
 	@Nullable
 	protected Object invokeJoinpoint() throws Throwable {
+		//可以看到，对于切点的方法调用是交由AopUtils去做的
 		return AopUtils.invokeJoinpointUsingReflection(this.target, this.method, this.arguments);
 	}
 

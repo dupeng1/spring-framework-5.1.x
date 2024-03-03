@@ -35,6 +35,10 @@ import org.springframework.lang.Nullable;
  * @see #setPointcut
  * @see #setAdvice
  */
+
+/**
+ * 默认切面顾问，比较灵活。可自由组合切面和通知
+ */
 @SuppressWarnings("serial")
 public class DefaultPointcutAdvisor extends AbstractGenericPointcutAdvisor implements Serializable {
 

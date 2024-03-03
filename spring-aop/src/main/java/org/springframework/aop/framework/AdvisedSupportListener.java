@@ -24,6 +24,10 @@ package org.springframework.aop.framework;
  * @author Juergen Hoeller
  * @see ProxyCreatorSupport#addListener
  */
+
+/**
+ * 监听器，注册在ProxyCreatorSupport对象（用来注册和触发监听器）中，捕获第一个代理创建时和代理创建后通知状态发生改变的事件。
+ */
 public interface AdvisedSupportListener {
 
 	/**

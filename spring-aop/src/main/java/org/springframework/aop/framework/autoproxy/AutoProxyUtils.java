@@ -31,6 +31,10 @@ import org.springframework.util.StringUtils;
  * @since 2.0.3
  * @see AbstractAutoProxyCreator
  */
+
+/**
+ * 为自动代理组件准备的工具类。主要用于框架内部使用（AbstractAutoProxyCreator）
+ */
 public abstract class AutoProxyUtils {
 
 	/**

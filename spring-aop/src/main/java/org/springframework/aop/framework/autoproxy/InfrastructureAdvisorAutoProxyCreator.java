@@ -29,6 +29,8 @@ import org.springframework.lang.Nullable;
  */
 
 /**
+ *
+ * 自动代理创建器，所有的创建器都是AbstractAutoProxyCreator抽象类的子类。该类是Spring给自己内部使用的一个自动代理创建器。它主要是读取Advisor类，并对符合的bean进行二次代理。
  * 每一个bean初始化过程都是会运行postProcessAfterInitialization 方法
  * BeanPostProcessor
  * 	InstantiationAwareBeanPostProcessor

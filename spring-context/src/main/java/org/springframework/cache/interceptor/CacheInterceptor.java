@@ -40,6 +40,10 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 3.1
  */
+
+/**
+ * 支持Spring声明式缓存管理的AOP MethodInterceptor；
+ */
 @SuppressWarnings("serial")
 public class CacheInterceptor extends CacheAspectSupport implements MethodInterceptor, Serializable {
 
@@ -47,9 +51,10 @@ public class CacheInterceptor extends CacheAspectSupport implements MethodInterc
 	@Nullable
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
 		Method method = invocation.getMethod();
-
+		// 封装方法调用为缓存操作调用
 		CacheOperationInvoker aopAllianceInvoker = () -> {
 			try {
+				// 方法调用
 				return invocation.proceed();
 			}
 			catch (Throwable ex) {
@@ -58,6 +63,7 @@ public class CacheInterceptor extends CacheAspectSupport implements MethodInterc
 		};
 
 		try {
+			// 执行缓存操作调用
 			return execute(aopAllianceInvoker, invocation.getThis(), method, invocation.getArguments());
 		}
 		catch (CacheOperationInvoker.ThrowableWrapper th) {

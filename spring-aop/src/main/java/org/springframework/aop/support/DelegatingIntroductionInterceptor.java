@@ -49,6 +49,10 @@ import org.springframework.util.Assert;
  * @see #suppressInterface
  * @see DelegatePerTargetObjectIntroductionInterceptor
  */
+
+/**
+ * 接口IntroductionInterceptor的一个实现类，这个类就是一个委托引入拦截器，具体解释同上。
+ */
 @SuppressWarnings("serial")
 public class DelegatingIntroductionInterceptor extends IntroductionInfoSupport
 		implements IntroductionInterceptor {
@@ -112,6 +116,7 @@ public class DelegatingIntroductionInterceptor extends IntroductionInfoSupport
 
 			// Massage return value if possible: if the delegate returned itself,
 			// we really want to return the proxy.
+			// 如果返回值就是delegate本身，那么真实想返回的应该是proxy
 			if (retVal == this.delegate && mi instanceof ProxyMethodInvocation) {
 				Object proxy = ((ProxyMethodInvocation) mi).getProxy();
 				if (mi.getMethod().getReturnType().isInstance(proxy)) {
@@ -133,6 +138,7 @@ public class DelegatingIntroductionInterceptor extends IntroductionInfoSupport
 	 */
 	protected Object doProceed(MethodInvocation mi) throws Throwable {
 		// If we get here, just pass the invocation on.
+		// 调用方法调用
 		return mi.proceed();
 	}
 
