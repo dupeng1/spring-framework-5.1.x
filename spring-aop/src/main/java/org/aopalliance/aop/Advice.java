@@ -31,9 +31,12 @@ package org.aopalliance.aop;
  *
  * 【通知】是织入到【目标类】【连接点】上的【一段程序代码】
  *
- * Spring提供的通知接口都是带方位名的
- * 前置通知的标记接口：BeforeAdvice；实现的子类有：MethodBeforeAdvice
- * 后置通知的标记接口：AfterAdvice；实现子类有：AfterReturningAdvice、ThrowsAdvice
+ * Spring对方法的增强有五种方式：
+ 前置增强（org.springframework.aop.BeforeAdvice）：在目标方法执行之前进行增强；
+ 后置增强（org.springframework.aop.AfterReturningAdvice）：在目标方法执行之后进行增强；
+ 环绕增强（org.aopalliance.intercept.MethodInterceptor）：在目标方法执行前后都执行增强；
+ 异常抛出增强（org.springframework.aop.ThrowsAdvice）：在目标方法抛出异常后执行增强；
+ 引介增强（org.springframework.aop.IntroductionInterceptor）：为目标类添加新的方法和属性。
  *
  * 我们通过AOP将横切关注功能加到原有的业务逻辑上，这是对原有业务逻辑的一种增强，可以是前置、后置、返回后、抛出异常时等
  *

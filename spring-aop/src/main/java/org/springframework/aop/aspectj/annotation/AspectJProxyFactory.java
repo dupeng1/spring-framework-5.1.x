@@ -109,9 +109,13 @@ public class AspectJProxyFactory extends ProxyCreatorSupport {
 	 * @param aspectClass the AspectJ aspect class
 	 */
 	public void addAspect(Class<?> aspectClass) {
+		//全限定类名
 		String aspectName = aspectClass.getName();
+		//根据切面对象创建切面元数据类
 		AspectMetadata am = createAspectMetadata(aspectClass, aspectName);
+		//根据传入的切面类创建 切面实例 将切面实例封装为切面实例工厂
 		MetadataAwareAspectInstanceFactory instanceFactory = createAspectInstanceFactory(am, aspectClass, aspectName);
+		//从切面实例工厂中获取Advisor。
 		addAdvisorsFromAspectInstanceFactory(instanceFactory);
 	}
 
