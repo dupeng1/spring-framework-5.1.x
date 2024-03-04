@@ -54,6 +54,8 @@ import org.springframework.lang.Nullable;
 public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializable {
 
 	//根据方法参数config返回 MethodInterceptor 列表
+	//1、获取所有配置的advisors
+	//2、遍历advisors数组，根据advisor是不同的类型走不同的逻辑，最终调用registry.getInterceptors转化成Interceptor返回
 	@Override
 	public List<Object> getInterceptorsAndDynamicInterceptionAdvice(
 			Advised config, Method method, @Nullable Class<?> targetClass) {

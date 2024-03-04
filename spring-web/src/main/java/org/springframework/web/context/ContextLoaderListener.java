@@ -104,9 +104,11 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 	 * Initialize the root web application context.
 	 */
 	//监听到 Servlet 容器启动事件
+	//容器初始化完成
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		// <1> 初始化 Root WebApplicationContext
+		//创建WebApplicationContext作为spring的容器上下文
 		initWebApplicationContext(event.getServletContext());
 	}
 
@@ -115,6 +117,7 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 	 * Close the root web application context.
 	 */
 	//监听到 Servlet 销毁启动事件
+	//容器停止
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
 		// <2> 销毁 Root WebApplicationContext

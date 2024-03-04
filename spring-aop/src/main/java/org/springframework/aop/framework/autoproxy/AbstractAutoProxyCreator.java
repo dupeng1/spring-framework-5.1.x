@@ -536,7 +536,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 				evaluateProxyInterfaces(beanClass, proxyFactory);
 			}
 		}
-		////步骤3：拦截器封装转化为增强器
+		//步骤3：拦截器封装转化为增强器
 		Advisor[] advisors = buildAdvisors(beanName, specificInterceptors);
 		//步骤4：将Advisor加入到ProxyFactory中。
 		proxyFactory.addAdvisors(advisors);

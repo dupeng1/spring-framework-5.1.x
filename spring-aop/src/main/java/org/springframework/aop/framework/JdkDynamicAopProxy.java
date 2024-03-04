@@ -85,7 +85,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 	private static final Log logger = LogFactory.getLog(JdkDynamicAopProxy.class);
 
 	/** Config used to configure this proxy. */
-	// 代理的配置信息
+	// 代理的配置信息，实际就是生成动态代理对象的时候的ProxyFactory
 	private final AdvisedSupport advised;
 
 	/**
@@ -247,6 +247,9 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 			//获取所有的增强器和拦截器
 			//所有的增强器和拦截器相当于形成了一条链，下面简称为拦截器链吧
 			//反正增强器跟拦截器作用类似，都是拦截下来做额外动作的
+
+			// 得到所有作用在该方法上的拦截器和通知：创建代理的时候，只要切入点匹配了原始类的任意一个方法，原始对象都会被包装。
+			// 而真正调用的时候，有些方法是不需要增强的，不需要的直接反射调用，需要的方法才走增强调用，所以拦截器通知需要过滤。
 			List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
 
 			// Check whether we have any advice. If we don't, we can fallback on direct

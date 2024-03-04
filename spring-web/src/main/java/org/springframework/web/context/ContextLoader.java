@@ -308,7 +308,7 @@ public class ContextLoader {
 					configureAndRefreshWebApplicationContext(cwac, servletContext);
 				}
 			}
-			// <5> 记录在 servletContext 中
+			// <5> 将applicationContext设置到servletContext中
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
 
 			// <6> 记录到 currentContext 或 currentContextPerThread 中

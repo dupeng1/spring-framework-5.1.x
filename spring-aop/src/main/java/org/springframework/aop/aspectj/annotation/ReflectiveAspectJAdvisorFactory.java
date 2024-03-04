@@ -118,7 +118,9 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 
 	@Override
 	public List<Advisor> getAdvisors(MetadataAwareAspectInstanceFactory aspectInstanceFactory) {
+		// 得到切面bean的Class对象
 		Class<?> aspectClass = aspectInstanceFactory.getAspectMetadata().getAspectClass();
+		// 得到切面bean的名字
 		String aspectName = aspectInstanceFactory.getAspectMetadata().getAspectName();
 		validate(aspectClass);
 
@@ -128,8 +130,13 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 				new LazySingletonAspectInstanceFactoryDecorator(aspectInstanceFactory);
 
 		List<Advisor> advisors = new ArrayList<>();
+		// 调用getAdvisorMethods()方法来把非切点方法获取出来，并遍历
 		for (Method method : getAdvisorMethods(aspectClass)) {
+			// 先将通知上的切点构造成AspectJExpressionPointcut，然后再创建通知对应的Advisor
+			// 创建出来的Advisor实际为InstantiationModelAwarePointcutAdvisorImpl
 			Advisor advisor = getAdvisor(method, lazySingletonAspectInstanceFactory, advisors.size(), aspectName);
+			// 当前method如果是通知方法，则将通知方法对应的Advisor添加到结果集合中
+			// 如果不是通知方法，得到的Advisor会为null，就不会添加到结果集合中
 			if (advisor != null) {
 				advisors.add(advisor);
 			}
