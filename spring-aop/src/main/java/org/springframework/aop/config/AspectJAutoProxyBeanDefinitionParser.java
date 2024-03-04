@@ -45,12 +45,12 @@ class AspectJAutoProxyBeanDefinitionParser implements BeanDefinitionParser {
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
-		//注册AnnotationAwareAspectJAutoProxyCreator
-		// 对于Aop的实现，基本都是靠AnnotatonAwareAspectJAutoProxyCreator去完成的，它可以根据@Point注解定义的切点来自动代理相匹配的bean。
-		//但是为了配置简便，Spring使用了自定义的配置帮助我们自动注册AnnotatonAwareAspectJAutoProxyCreator。
+		//对于Aop的实现，基本都是靠AnnotatonAwareAspectJAutoProxyCreator去完成的，它可以根据@Point注解定义的切点来自动代理相匹配的bean。
+		//但是为了配置简便，Spring使用了自定义的配置帮助我们自动注册AnnotatonAwareAspectJAutoProxyCreator自动代理对象（如果没有注册的话），设置为优先级最高
 		//此处实现了自动注册AnnotatonAwareAspectJAutoProxyCreator类的功能
+		//过程和 @EnableAspectJAutoProxy
 		AopNamespaceUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(parserContext, element);
-		//对注解中子类的处理
+		// 解析子标签，用于指定需要开启代理的路径
 		extendBeanDefinition(element, parserContext);
 		return null;
 	}

@@ -61,7 +61,7 @@ import org.springframework.util.StringUtils;
  */
 
 /**
- * 包装AspectJ切面或者AspectJ注解标注的通知方法的AOP Advice的基础类
+ * 包装AspectJ切面或者AspectJ注解的通知方法的AOP Advice的基础类
  */
 @SuppressWarnings("serial")
 public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedenceInformation, Serializable {
@@ -102,7 +102,7 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 	private final Class<?>[] parameterTypes;
 
 	protected transient Method aspectJAdviceMethod;
-
+	// 切点
 	private final AspectJExpressionPointcut pointcut;
 
 	private final AspectInstanceFactory aspectInstanceFactory;
@@ -112,11 +112,13 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 	 * (used when determining advice precedence so that we can determine
 	 * whether two pieces of advice come from the same aspect).
 	 */
+	// 切面名称
 	private String aspectName = "";
 
 	/**
 	 * The order of declaration of this advice within the aspect.
 	 */
+	// 切面顺序
 	private int declarationOrder;
 
 	/**

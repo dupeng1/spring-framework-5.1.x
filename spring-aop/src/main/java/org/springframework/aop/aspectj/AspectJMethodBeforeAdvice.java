@@ -32,6 +32,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * 包装AspectJ前置通知方法的Spring AOP Advice
+ * 这里实现了MethodBeforeAdvice，MethodBeforeAdvice有before方法
  */
 @SuppressWarnings("serial")
 public class AspectJMethodBeforeAdvice extends AbstractAspectJAdvice implements MethodBeforeAdvice, Serializable {

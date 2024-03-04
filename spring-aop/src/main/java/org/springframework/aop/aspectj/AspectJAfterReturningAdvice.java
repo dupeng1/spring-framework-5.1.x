@@ -37,6 +37,7 @@ import org.springframework.util.TypeUtils;
 
 /**
  包装AspectJ后置通知方法的Spring AOP Advice；
+ 这里实现了AfterReturningAdvice，AfterReturningAdvice有afterReturning方法
  */
 @SuppressWarnings("serial")
 public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice

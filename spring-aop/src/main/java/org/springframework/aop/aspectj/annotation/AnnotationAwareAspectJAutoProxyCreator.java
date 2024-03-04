@@ -48,6 +48,7 @@ import org.springframework.util.Assert;
  */
 
 /**
+ * 自动代理对象
  * 目前SpringBoot框架中默认支持的方式，自动配置。
  * 目前最常用的AOP使用方式。spring aop 开启注解方式之后，该类会扫描所有@Aspect()注释的类，生成对应的advisor。
  * AnnotationAwareAspectJAutoProxyCreator的继承关系如下：

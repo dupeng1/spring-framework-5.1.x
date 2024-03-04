@@ -37,6 +37,7 @@ import org.springframework.util.Assert;
 
 /**
  * 包装AfterReturningAdvice的Interceptor；
+ * AfterAdvice没有执行方法，MethodInterceptor有执行方法，相当于将AfterAdvice转换成了MethodInterceptor接口
  */
 @SuppressWarnings("serial")
 public class AfterReturningAdviceInterceptor implements MethodInterceptor, AfterAdvice, Serializable {

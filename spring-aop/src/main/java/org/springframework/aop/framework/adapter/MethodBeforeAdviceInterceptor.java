@@ -37,6 +37,7 @@ import org.springframework.util.Assert;
 
 /**
  * 包装MethodBeforeAdvice的Interceptor；
+ * BeforeAdvice没有执行方法，MethodInterceptor有执行方法，相当于将BeforeAdvice转换成了MethodInterceptor接口
  */
 @SuppressWarnings("serial")
 public class MethodBeforeAdviceInterceptor implements MethodInterceptor, BeforeAdvice, Serializable {

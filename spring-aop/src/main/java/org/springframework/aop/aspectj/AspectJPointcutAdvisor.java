@@ -34,7 +34,7 @@ import org.springframework.util.Assert;
  */
 
 /**
- * 继承自接口PointcutAdvisor，该类用来调整AbstractAspectJAdvice 使其适应PointcutAdvisor接口 。
+ * 继承自接口PointcutAdvisor，该类用来调整AbstractAspectJAdvice 使其适应PointcutAdvisor接口，即Spring AOP切面。
  */
 public class AspectJPointcutAdvisor implements PointcutAdvisor, Ordered {
 

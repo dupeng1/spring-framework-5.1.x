@@ -126,6 +126,9 @@ public @interface EnableAspectJAutoProxy {
 	 * Indicate whether subclass-based (CGLIB) proxies are to be created as opposed
 	 * to standard Java interface-based proxies. The default is {@code false}.
 	 */
+	/**
+	 *是否开启类代理，也就是是否开启CGLIB动态代理
+	 */
 	boolean proxyTargetClass() default false;
 
 	/**
@@ -133,6 +136,10 @@ public @interface EnableAspectJAutoProxy {
 	 * for retrieval via the {@link org.springframework.aop.framework.AopContext} class.
 	 * Off by default, i.e. no guarantees that {@code AopContext} access will work.
 	 * @since 4.3.1
+	 */
+	/**
+	 * 是否需要暴露代理对象
+	 * @return
 	 */
 	boolean exposeProxy() default false;
 

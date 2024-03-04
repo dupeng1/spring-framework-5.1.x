@@ -133,9 +133,14 @@ public abstract class AopConfigUtils {
 		/** 步骤1：如果容器中已经存在apc实例，则试图替换为AnnotationAwareAspectJAutoProxyCreator类型 */
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 			BeanDefinition apcDefinition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
+			//如果已注册的 `internalAutoProxyCreator` 和入参的 Class 不相等，说明可能是继承关系
 			if (!cls.getName().equals(apcDefinition.getBeanClassName())) {
+				//获取已注册的 `internalAutoProxyCreator` 的优先级
 				int currentPriority = findPriorityForClass(apcDefinition.getBeanClassName());
+				//获取需要注册的 `internalAutoProxyCreator` 的优先级
 				int requiredPriority = findPriorityForClass(cls);
+				// InfrastructureAdvisorAutoProxyCreator < AspectJAwareAdvisorAutoProxyCreator < AnnotationAwareAspectJAutoProxyCreator
+				// 三者都是 AbstractAutoProxyCreator 自动代理对象的子类
 				if (currentPriority < requiredPriority) {
 					//改变bean最重要的就是改变bean所对应的className属性
 					apcDefinition.setBeanClassName(cls.getName());
@@ -146,10 +151,15 @@ public abstract class AopConfigUtils {
 		}
 		/** 步骤2：如果不存在，则向容器中创建AnnotationAwareAspectJAutoProxyCreator类型的apc实例对象 */
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(cls);
+		//设置来源
 		beanDefinition.setSource(source);
+		//设置为最高优先级
 		beanDefinition.getPropertyValues().add("order", Ordered.HIGHEST_PRECEDENCE);
+		//设置角色为**ROLE_INFRASTRUCTURE**，表示是 Spring 框架内部的 Bean
 		beanDefinition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+		//注册自动代理的 Bean，名称为 `org.springframework.aop.config.internalAutoProxyCreator`
 		registry.registerBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME, beanDefinition);
+		//返回刚注册的 RootBeanDefinition 对象
 		return beanDefinition;
 	}
 

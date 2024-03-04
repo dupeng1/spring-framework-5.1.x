@@ -36,8 +36,9 @@ import org.springframework.util.Assert;
  */
 
 /**
- * 匹配类上或者方法上是否有指定注解的Pointcut；
  * 注解匹配切点，JDK5以后，通过注解方式声明切点。根据类上或方法上是否存在指定的注解判断切点的匹配性，如果没有显示指定注解，则匹配所有。
+ * 匹配类上或者方法上是否有指定注解的Pointcut；
+ * @Pointcut("@annotation(com.royali.pandroid.sdmcommons.utils.annotation.OperationLogRecord)")
  */
 public class AnnotationMatchingPointcut implements Pointcut {
 

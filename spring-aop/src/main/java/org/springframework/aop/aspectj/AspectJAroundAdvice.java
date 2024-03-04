@@ -37,6 +37,7 @@ import org.springframework.aop.ProxyMethodInvocation;
 
 /**
  * 包装AspectJ环绕通知方法的Spring AOP Advice
+ * 这里实现了Advice，但是Advice没有执行方法，其实就相当于只实现了MethodInterceptor
  */
 @SuppressWarnings("serial")
 public class AspectJAroundAdvice extends AbstractAspectJAdvice implements MethodInterceptor, Serializable {

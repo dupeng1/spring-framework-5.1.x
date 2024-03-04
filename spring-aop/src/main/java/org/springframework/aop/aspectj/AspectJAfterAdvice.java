@@ -33,6 +33,7 @@ import org.springframework.aop.AfterAdvice;
 
 /**
  * 包装AspectJ最终通知方法的Spring AOP Advice；
+ * 这里实现了AfterAdvice，但是AfterAdvice没有执行方法，其实就相当于只实现了MethodInterceptor
  */
 @SuppressWarnings("serial")
 public class AspectJAfterAdvice extends AbstractAspectJAdvice
