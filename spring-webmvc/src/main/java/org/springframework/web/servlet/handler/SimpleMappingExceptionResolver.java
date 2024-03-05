@@ -43,24 +43,28 @@ import org.springframework.web.util.WebUtils;
  * @since 22.11.2003
  * @see org.springframework.web.servlet.DispatcherServlet
  */
+
+/**
+ * 主要功能是根据controller爆出的Exception类型，匹配对应的错误页面
+ */
 public class SimpleMappingExceptionResolver extends AbstractHandlerExceptionResolver {
 
 	/** The default name of the exception attribute: "exception". */
 	public static final String DEFAULT_EXCEPTION_ATTRIBUTE = "exception";
 
-
+	// 异常类型和错误界面的对应关系
 	@Nullable
 	private Properties exceptionMappings;
-
+	// 不处理的异常类型
 	@Nullable
 	private Class<?>[] excludedExceptions;
-
+	// 默认的错误界面
 	@Nullable
 	private String defaultErrorView;
-
+	// 默认错误码
 	@Nullable
 	private Integer defaultStatusCode;
-
+	//设置不同错误页面对应的状态码
 	private Map<String, Integer> statusCodes = new HashMap<>();
 
 	@Nullable
@@ -186,14 +190,17 @@ public class SimpleMappingExceptionResolver extends AbstractHandlerExceptionReso
 			HttpServletRequest request, HttpServletResponse response, @Nullable Object handler, Exception ex) {
 
 		// Expose ModelAndView for chosen error view.
+		// 根据异常类型选择错误界面
 		String viewName = determineViewName(ex, request);
 		if (viewName != null) {
 			// Apply HTTP status code for error views, if specified.
 			// Only apply it if we're processing a top-level request.
+			// 如果定义了错误页面指定的状态码或是设置了默认的状态码，设置之
 			Integer statusCode = determineStatusCode(request, viewName);
 			if (statusCode != null) {
 				applyStatusCodeIfPossible(request, response, statusCode);
 			}
+			//根据viewName, ex, request生成ModelAndView
 			return getModelAndView(viewName, ex, request);
 		}
 		else {
@@ -213,6 +220,7 @@ public class SimpleMappingExceptionResolver extends AbstractHandlerExceptionReso
 	@Nullable
 	protected String determineViewName(Exception ex, HttpServletRequest request) {
 		String viewName = null;
+		//如果该ex的类型是我们排除掉的异常, 直接return null;
 		if (this.excludedExceptions != null) {
 			for (Class<?> excludedEx : this.excludedExceptions) {
 				if (excludedEx.equals(ex.getClass())) {
@@ -221,10 +229,15 @@ public class SimpleMappingExceptionResolver extends AbstractHandlerExceptionReso
 			}
 		}
 		// Check for specific exception mappings.
+		// 匹配该异常对应的viewName
 		if (this.exceptionMappings != null) {
+			//传入了this.exceptionMappings
+			//类型为private Properties exceptionMappings;
+			//所以我们只需要通过该properties来设置viewName和ex类型的对应关系
 			viewName = findMatchingViewName(this.exceptionMappings, ex);
 		}
 		// Return default error view else, if defined.
+		// 如果viewName为null,并且设置了默认的错误页面
 		if (viewName == null && this.defaultErrorView != null) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Resolving to default view '" + this.defaultErrorView + "'");
@@ -296,6 +309,7 @@ public class SimpleMappingExceptionResolver extends AbstractHandlerExceptionReso
 	 * @see #setDefaultStatusCode
 	 * @see #applyStatusCodeIfPossible
 	 */
+	//根据viewName 获取 statusCode
 	@Nullable
 	protected Integer determineStatusCode(HttpServletRequest request, String viewName) {
 		if (this.statusCodes.containsKey(viewName)) {

@@ -56,6 +56,7 @@ import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
  */
 
 /**
+ * 用来解析@ResponseStatus标注的Exception类，并把注解定义的状态码返回给客户端
  * 1、实现 MessageSourceAware 接口，继承 AbstractHandlerExceptionResolver 抽象类，
  * 2、基于 @ResponseStatus 提供错误响应的 HandlerExceptionResolver 实现类，
  * 例如在方法上面添加 @ResponseStatus 注解，指定该方法发生异常时，需要设置的 code 响应码和 reason 错误信息
@@ -86,6 +87,7 @@ public class ResponseStatusExceptionResolver extends AbstractHandlerExceptionRes
 			}
 
 			// <2> 情况二，如果有 @ResponseStatus 注解，进行解析并设置到响应
+			// 如果controller报出的异常被@ResponseStatus注解，将repsonse中的响应码和错误信息换成注解上的
 			ResponseStatus status = AnnotatedElementUtils.findMergedAnnotation(ex.getClass(), ResponseStatus.class);
 			if (status != null) {
 				return resolveResponseStatus(status, request, response, handler, ex);

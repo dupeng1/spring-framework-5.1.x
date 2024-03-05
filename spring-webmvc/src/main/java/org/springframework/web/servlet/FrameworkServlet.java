@@ -139,6 +139,12 @@ import org.springframework.web.util.WebUtils;
  * @see #setContextInitializerClasses
  * @see #setNamespace
  */
+
+/**
+ * 1、为每个servlet管理一个WebApplicationContext实例（即每个servlet会自己的一个web容器），
+ * 每个servlet都有自己的配置空间，相互独立。（每一个<servlet> tag之间的配置属于一个namespace, 配置一个application context。）
+ * 2、对每一个请求，无论是否成功处理，都会在每个请求上发布事件。（这里是不是可以做一些事情？）
+ */
 @SuppressWarnings("serial")
 public abstract class FrameworkServlet extends HttpServletBean implements ApplicationContextAware {
 
@@ -517,6 +523,10 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	/**
 	 * Overridden method of {@link HttpServletBean}, invoked after any bean properties
 	 * have been set. Creates this servlet's WebApplicationContext.
+	 */
+	/**
+	 * FrameworkServlet初始化的过程其实就是WebApplication 配置文件加载（即容器初始化）的过程
+	 * @throws ServletException
 	 */
 	@Override
 	protected final void initServletBean() throws ServletException {
@@ -1009,14 +1019,16 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		Throwable failureCause = null;
 
 		LocaleContext previousLocaleContext = LocaleContextHolder.getLocaleContext();
+		//获取到当前请求的 LocaleContext
 		LocaleContext localeContext = buildLocaleContext(request);
 
 		RequestAttributes previousAttributes = RequestContextHolder.getRequestAttributes();
+		//获取到当前请求的 RequestAttributes
 		ServletRequestAttributes requestAttributes = buildRequestAttributes(request, response, previousAttributes);
-
+		//获取到异步管理器并设置拦截器
 		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);
 		asyncManager.registerCallableInterceptor(FrameworkServlet.class.getName(), new RequestBindingInterceptor());
-
+		//将当前请求的 LocaleContext 和 RequestAttributes 对象分别设置到 LocaleContextHolder 和 RequestContextHolder 对象中
 		initContextHolders(request, localeContext, requestAttributes);
 
 		try {
@@ -1032,11 +1044,13 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		}
 
 		finally {
+			//将 LocaleContextHolder 和 RequestContextHolder 中对应的对象恢复成原来的样子
 			resetContextHolders(request, previousLocaleContext, previousAttributes);
 			if (requestAttributes != null) {
 				requestAttributes.requestCompleted();
 			}
 			logResult(request, response, failureCause, asyncManager);
+			//发布一个 ServletRequestHandledEvent 类型的消息
 			publishRequestHandledEvent(request, response, startTime, failureCause);
 		}
 	}

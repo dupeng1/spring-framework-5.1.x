@@ -97,10 +97,10 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	@Nullable
 	private Object defaultHandler;
 
-	//URL 路径工具类，用来获取请求路径
+	//URL 路径工具类，用来获取【请求路径】
 	private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
-	//路径匹配器，用来匹配请求路径和【处理器匹配器】注册的路径是否匹配
+	//路径匹配器，用来匹配【请求路径】和【处理器匹配器】注册的路径是否匹配
 	private PathMatcher pathMatcher = new AntPathMatcher();
 
 	//配置的拦截器数组.

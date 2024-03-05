@@ -76,6 +76,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
  */
 
 /**
+ * 用@ExceptionHandler注解的方法进行异常处理
  * 1、实现 ApplicationContextAware、InitializingBean 接口，继承 AbstractHandlerMethodExceptionResolver 抽象类，
  * 2、将处理器（ handler ）执行时发生的异常（也就是处理请求，执行方法的过程中发生的异常）解析（转换）成对应的 ModelAndView 结果
  * 3、基于 @ExceptionHandler 配置 HandlerMethod 的 HandlerExceptionResolver 实现类。
@@ -138,9 +139,11 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 	@Nullable
 	private ApplicationContext applicationContext;
 
+	//controller异常处理器，key是controller的class
 	private final Map<Class<?>, ExceptionHandlerMethodResolver> exceptionHandlerCache =
 			new ConcurrentHashMap<>(64);
 
+	//ControllerAdvice异常处理器，key是ControllerAdviceBean
 	private final Map<ControllerAdviceBean, ExceptionHandlerMethodResolver> exceptionHandlerAdviceCache =
 			new LinkedHashMap<>();
 
@@ -298,6 +301,7 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 	@Override
 	public void afterPropertiesSet() {
 		// Do this first, it may add ResponseBodyAdvice beans
+		//获取ControllerAdvice类，此时只是构造了ExceptionHandlerMethodResolver
 		//初始化 exceptionHandlerAdviceCache、responseBodyAdvice
 		initExceptionHandlerAdviceCache();
 		// 初始化 argumentResolvers 参数，获得默认的 HandlerMethodArgumentResolver 数组
@@ -429,12 +433,12 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 	@Nullable
 	protected ModelAndView doResolveHandlerMethodException(HttpServletRequest request,
 			HttpServletResponse response, @Nullable HandlerMethod handlerMethod, Exception exception) {
-		// <1> 获得异常对应的 ServletInvocableHandlerMethod 对象
+		// <1> 获取跟异常匹配的@ExceptionHandler方法
 		ServletInvocableHandlerMethod exceptionHandlerMethod = getExceptionHandlerMethod(handlerMethod, exception);
 		if (exceptionHandlerMethod == null) {
 			return null;
 		}
-		// <1.1> 设置 ServletInvocableHandlerMethod 对象的相关属性
+		// <1.1> 设置 ServletInvocableHandlerMethod 入参转换和出参解析处理器
 		if (this.argumentResolvers != null) {
 			exceptionHandlerMethod.setHandlerMethodArgumentResolvers(this.argumentResolvers);
 		}
@@ -510,7 +514,7 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 			@Nullable HandlerMethod handlerMethod, Exception exception) {
 		// 处理器的类型
 		Class<?> handlerType = null;
-		// <1> 首先，如果 handlerMethod 非空，则先获得 Controller 对应的 @ExceptionHandler 处理器对应的方法
+		// <1> 如果handlerMethod所在的controller中有匹配的@ExceptionHandler方法，优先使用
 		if (handlerMethod != null) {
 			// Local exception handler methods on the controller class itself.
 			// To be invoked through the proxy, even in case of an interface-based proxy.

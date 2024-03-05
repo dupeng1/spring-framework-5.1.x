@@ -60,12 +60,12 @@ public abstract class AbstractHandlerExceptionResolver implements HandlerExcepti
 	 */
 	private int order = Ordered.LOWEST_PRECEDENCE;
 	/**
-	 * 匹配的【处理器】对象的集合
+	 * 匹配的【处理器】对象的集合，只有该集合包含此handler，该resolver才能解析该Handler抛出的异常
 	 */
 	@Nullable
 	private Set<?> mappedHandlers;
 	/**
-	 * 匹配的【处理器】类型的数组
+	 * 匹配的【处理器】类型的数组，只有该集合包含此handlerd的class，该resolver才能解析该Handler抛出的异常
 	 */
 	@Nullable
 	private Class<?>[] mappedHandlerClasses;
@@ -149,9 +149,9 @@ public abstract class AbstractHandlerExceptionResolver implements HandlerExcepti
 	@Nullable
 	public ModelAndView resolveException(
 			HttpServletRequest request, HttpServletResponse response, @Nullable Object handler, Exception ex) {
-		// <1> 判断是否可以应用
+		// <1> 判断本处理器是否能处理该类型的handler，如果处理不了 返回null
 		if (shouldApplyTo(request, handler)) {
-			// <1.1> 阻止缓存
+			// <1.1> 清除response缓存
 			prepareResponse(ex, response);
 			// <1.2> 执行解析异常，返回 ModelAndView 对象
 			ModelAndView result = doResolveException(request, response, handler, ex);
@@ -242,7 +242,7 @@ public abstract class AbstractHandlerExceptionResolver implements HandlerExcepti
 	 * @param response current HTTP response
 	 * @see #preventCaching
 	 */
-	//阻止响应缓存
+	//阻止响应缓存，给response设置响应头Cache-Control: no-store
 	protected void prepareResponse(Exception ex, HttpServletResponse response) {
 		if (this.preventResponseCaching) {
 			preventCaching(response);

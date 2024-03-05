@@ -38,6 +38,7 @@ public interface LocaleContext {
 	 * depending on the implementation strategy.
 	 * @return the current Locale, or {@code null} if no specific Locale associated
 	 */
+	//本地化信息，如果我们需要支持国际化，就会用到 Locale
 	@Nullable
 	Locale getLocale();
 

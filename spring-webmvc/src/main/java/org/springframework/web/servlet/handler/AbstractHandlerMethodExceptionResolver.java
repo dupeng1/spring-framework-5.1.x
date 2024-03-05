@@ -33,6 +33,10 @@ import org.springframework.web.servlet.ModelAndView;
  */
 
 /**
+ * ExceptionHandlerExceptionResolver用来处理@ExceptionHandler注解定义的异常处理方法，
+ * AbstractHandlerMethodExceptionResolver是它的父类，重写了shouldApplyTo方法，只支持HandlerMethod类型的handler，
+ * 即@RequestMapping定义的处理器
+ *
  * 继承 AbstractHandlerExceptionResolver 抽象类，基于 handler 类型为 HandlerMethod 的 HandlerExceptionResolver 抽象类。
  */
 public abstract class AbstractHandlerMethodExceptionResolver extends AbstractHandlerExceptionResolver {
@@ -44,6 +48,7 @@ public abstract class AbstractHandlerMethodExceptionResolver extends AbstractHan
 	 */
 	@Override
 	protected boolean shouldApplyTo(HttpServletRequest request, @Nullable Object handler) {
+		//意味着只支持null和HandlerMethod类型的处理器
 		// 情况一，如果 handler 为空，则直接调用父方法
 		if (handler == null) {
 			return super.shouldApplyTo(request, null);

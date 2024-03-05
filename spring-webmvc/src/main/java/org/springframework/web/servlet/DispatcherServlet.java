@@ -1094,7 +1094,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				// Determine handler for the current request.
 				// <3> 获得请求对应的 HandlerExecutionChain 对象（HandlerMethod 和 HandlerInterceptor 拦截器们）
 				mappedHandler = getHandler(processedRequest);
-				//没有获取到，直接退出
+				//如果没有找到，这时候会抛出一个异常，这也是我们前端页面经常看到的404
 				if (mappedHandler == null) {
 					noHandlerFound(processedRequest, response);
 					return;
@@ -1336,6 +1336,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * @param request current HTTP request
 	 * @return the HandlerExecutionChain, or {@code null} if no handler could be found
 	 */
+	//调用getHandler方法，我们可以看到从handlerMapping中获得一个handler执行链
 	@Nullable
 	protected HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
 		if (this.handlerMappings != null) {

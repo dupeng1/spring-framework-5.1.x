@@ -142,6 +142,7 @@ import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
  */
 
 /**
+ *	给了默认的异常处理，就是针对不同异常设置不同的HTTP响应码，返回new ModelAndView()
  * 1、继承 AbstractHandlerExceptionResolver 抽象类，默认 HandlerExceptionResolver 实现类，针对各种异常，设置错误响应码。
  * 2、默认 HandlerExceptionResolver 实现类，针对各种异常，设置错误响应码。例如 HTTP Method 不支持，则在这个实现类中往响应中设置错误码和错误信息
  * 3、HandlerExceptionResolver
